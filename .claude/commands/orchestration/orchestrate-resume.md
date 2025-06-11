@@ -7,14 +7,14 @@ Resume work on existing tasks by reconstructing context from persistent state:
 
 ```bash
 # Find all active tasks
-active_tasks=$(ls /tasks/active/*.json 2>/dev/null)
-blocked_tasks=$(ls /tasks/blocked/*.json 2>/dev/null)
+active_tasks=$(ls /.orchestrator/tasks/active/*.json 2>/dev/null)
+blocked_tasks=$(ls /.orchestrator/tasks/blocked/*.json 2>/dev/null)
 
 # Check for uncommitted work
 uncommitted=$(git status --porcelain)
 
 # Load registry summary for overview
-summary=$(jq '.summary' /tasks/registry.json)
+summary=$(jq '.summary' /.orchestrator/tasks/registry.json)
 ```
 
 ## 2. Reconstruct Context

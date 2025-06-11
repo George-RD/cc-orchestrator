@@ -3,8 +3,8 @@
 
 Create a comprehensive feature development workflow for ${1}:
 
-1. First, check if a PRD exists for this feature in /requirements/active/
-2. If no PRD exists, help me create one using /requirements/template.prd.md
+1. First, check if a PRD exists for this feature in /.orchestrator/requirements/active/
+2. If no PRD exists, help me create one using /.orchestrator/requirements/template.prd.md
 3. Once PRD is ready, break down the feature into tasks following the PRD structure
 4. Create a task plan with dependencies and agent assignments
 5. Begin implementation following TDD workflow from /.claude/workflows/tdd-workflow.yaml

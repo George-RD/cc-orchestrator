@@ -7,7 +7,7 @@ Display current task status with intelligent formatting and minimal context usag
 
 First, load only the summary section to minimize context:
 ```json
-# Read from /tasks/registry.json → summary section only
+# Read from /.orchestrator/tasks/registry.json → summary section only
 ```
 
 ## 2. Status Display Options
@@ -132,7 +132,7 @@ To prevent context overload:
 1. Never load full task details unless requested
 2. Use task IDs for reference
 3. Load work_log only when drilling into specific task
-4. Archive old tasks to `/tasks/archive/`
+4. Archive old tasks to `/.orchestrator/tasks/archive/`
 
 ## 5. Export Options
 

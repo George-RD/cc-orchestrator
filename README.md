@@ -33,10 +33,10 @@ A sophisticated multi-agent orchestration template for Claude Code that implemen
 
 ### Core Components
 - **Master Orchestrator** (`CLAUDE.md`): Coordinates specialists with dynamic task allocation
-- **Specialist Agents** (`specialists/`): Domain experts with enhanced capabilities
-- **PRD System** (`requirements/`): Machine-executable requirement documents
-- **Event System** (`events/`): Asynchronous coordination and monitoring
-- **Shared Resources** (`shared/`): Reusable protocols, utilities, and templates
+- **Specialist Agents** (`/.orchestrator/specialists/`): Domain experts with enhanced capabilities
+- **PRD System** (`/.orchestrator/requirements/`): Machine-executable requirement documents
+- **Event System** (`/.orchestrator/events/`): Asynchronous coordination and monitoring
+- **Shared Resources** (`/.orchestrator/shared/`): Reusable protocols, utilities, and templates
 
 ## 🚦 Quick Start
 
@@ -58,13 +58,13 @@ claude-code --instructions CLAUDE.md
 ### 3. Create a PRD
 Start with a Product Requirements Document:
 ```bash
-cp requirements/template.prd.md requirements/active/your-feature.prd.md
+cp .orchestrator/requirements/template.prd.md .orchestrator/requirements/active/your-feature.prd.md
 # Edit to define your requirements
 ```
 
 ### 4. Execute Feature Development
 ```
-You: Create the user authentication system defined in requirements/active/auth-system.prd.md
+You: Create the user authentication system defined in .orchestrator/requirements/active/auth-system.prd.md
 
 Claude: I'll implement the authentication system following the PRD specifications. Let me start by analyzing the requirements and creating a development plan...
 
@@ -89,38 +89,40 @@ Claude: I'll implement the authentication system following the PRD specification
 │   ├── permissions.yaml          # Permission batching
 │   └── mcp-config.json          # Model Context Protocol
 │
-├── requirements/                 # PRD-driven development
-│   ├── template.prd.md          # PRD template
-│   ├── active/                  # Current project PRDs
-│   └── examples/                # Example PRDs
+├── .orchestrator/               # Orchestration system files
+│   ├── requirements/            # PRD-driven development
+│   │   ├── template.prd.md      # PRD template
+│   │   ├── active/              # Current project PRDs
+│   │   └── examples/            # Example PRDs
 │
-├── specialists/                  # Enhanced specialist agents
-│   ├── backend.md               # Senior Backend Architect
-│   ├── frontend.md              # Frontend Expert
-│   ├── qa.md                    # Quality Guardian
-│   └── docs.md                  # Documentation Architect
+│   ├── specialists/             # Enhanced specialist agents
+│   │   ├── backend.md           # Senior Backend Architect
+│   │   ├── frontend.md          # Frontend Expert
+│   │   ├── qa.md                # Quality Guardian
+│   │   └── docs.md              # Documentation Architect
 │
-├── shared/                      # Shared resources
-│   ├── protocols/               # Communication standards
-│   │   ├── communication.md     # JSON message format
-│   │   └── handoff.md          # Task handoff protocol
-│   ├── utilities/               # Reusable utilities
-│   │   ├── logging.md          # Structured logging
-│   │   ├── validation.md       # Input validation
-│   │   └── token-optimization.md # Token usage strategies
-│   └── templates/               # Reusable templates
+│   ├── shared/                  # Shared resources
+│   │   ├── protocols/           # Communication standards
+│   │   │   ├── communication.md # JSON message format
+│   │   │   └── handoff.md      # Task handoff protocol
+│   │   ├── utilities/           # Reusable utilities
+│   │   │   ├── logging.md      # Structured logging
+│   │   │   ├── validation.md   # Input validation
+│   │   │   └── token-optimization.md # Token usage strategies
+│   │   └── templates/           # Reusable templates
 │
-├── events/                      # Event-driven architecture
-│   ├── definitions.yaml         # Event schemas
-│   ├── handlers/               # Event processing
-│   └── logs/                   # Event history
+│   ├── events/                  # Event-driven architecture
+│   │   ├── definitions.yaml     # Event schemas
+│   │   ├── handlers/           # Event processing
+│   │   └── logs/               # Event history
 │
-├── monitoring/                  # Observability
-│   ├── metrics.yaml            # KPI definitions
-│   ├── alerts.yaml             # Alert configurations
-│   ├── health-checks.md        # Health patterns
-│   ├── benchmarks.md           # Performance benchmarks
-│   └── dashboards/             # Monitoring dashboards
+│   ├── monitoring/              # Observability
+│   │   ├── metrics.yaml        # KPI definitions
+│   │   ├── alerts.yaml         # Alert configurations
+│   │   ├── health-checks.md    # Health patterns
+│   │   ├── benchmarks.md       # Performance benchmarks
+│   │   └── dashboards/         # Monitoring dashboards
+│   └── tasks/                   # Task management system
 │
 ├── docs/                       # Documentation
 │   └── adr/                    # Architecture decisions

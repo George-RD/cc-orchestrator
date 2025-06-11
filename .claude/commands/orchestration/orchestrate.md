@@ -9,18 +9,18 @@ First, I'll check the current repository state:
 
 ```bash
 # Check for existing tasks
-active_tasks=$(ls /tasks/active/ 2>/dev/null | wc -l)
-blocked_tasks=$(ls /tasks/blocked/ 2>/dev/null | wc -l)
-completed_recent=$(find /tasks/completed/ -type f -mtime -7 2>/dev/null | wc -l)
+active_tasks=$(ls /.orchestrator/tasks/active/ 2>/dev/null | wc -l)
+blocked_tasks=$(ls /.orchestrator/tasks/blocked/ 2>/dev/null | wc -l)
+completed_recent=$(find /.orchestrator/tasks/completed/ -type f -mtime -7 2>/dev/null | wc -l)
 
 # Check for PRDs
-active_prds=$(ls /requirements/active/*.prd.md 2>/dev/null | wc -l)
+active_prds=$(ls /.orchestrator/requirements/active/*.prd.md 2>/dev/null | wc -l)
 
 # Check git status
 uncommitted_changes=$(git status --porcelain 2>/dev/null | wc -l)
 
 # Load registry summary only (not full task list)
-registry_summary=$(jq '.summary' /tasks/registry.json 2>/dev/null)
+registry_summary=$(jq '.summary' /.orchestrator/tasks/registry.json 2>/dev/null)
 ```
 
 ## 2. Smart Recommendations

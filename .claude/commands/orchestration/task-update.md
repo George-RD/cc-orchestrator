@@ -6,7 +6,7 @@ Update task state and maintain work history:
 ## 1. Load Task
 
 ```bash
-task_file="/tasks/active/${1}.json"
+task_file="/.orchestrator/tasks/active/${1}.json"
 if [ ! -f "$task_file" ]; then
     echo "❌ Task not found: ${1}"
     exit 1
@@ -81,7 +81,7 @@ Document what's preventing progress:
 
 Move task to blocked directory:
 ```bash
-mv /tasks/active/${1}.json /tasks/blocked/${1}.json
+mv /.orchestrator/tasks/active/${1}.json /.orchestrator/tasks/blocked/${1}.json
 ```
 
 ### 2.4 Task Completion
@@ -123,7 +123,7 @@ status_transitions:
     
   blocker:
     then: status = "blocked"
-    move_to: /tasks/blocked/
+    move_to: /.orchestrator/tasks/blocked/
     
   complete:
     if: all_criteria_met

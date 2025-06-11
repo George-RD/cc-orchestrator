@@ -7,7 +7,7 @@ Initialize a new Product Requirements Document for structured feature developmen
 
 ```bash
 # Verify feature doesn't already exist
-existing_prd=$(find /requirements -name "*${1}*" -type f 2>/dev/null)
+existing_prd=$(find /.orchestrator/requirements -name "*${1}*" -type f 2>/dev/null)
 if [ -n "$existing_prd" ]; then
     echo "⚠️  Similar PRD may exist: $existing_prd"
     echo "Continue with new PRD? (y/n)"
@@ -20,11 +20,11 @@ Copy and customize the PRD template:
 
 ```bash
 # Copy template
-cp /requirements/template.prd.md /requirements/active/${1}.prd.md
+cp /.orchestrator/requirements/template.prd.md /.orchestrator/requirements/active/${1}.prd.md
 
 # Create version directory
-mkdir -p /requirements/active/versions/
-cp /requirements/active/${1}.prd.md /requirements/active/versions/${1}.v1.0.prd.md
+mkdir -p /.orchestrator/requirements/active/versions/
+cp /.orchestrator/requirements/active/${1}.prd.md /.orchestrator/requirements/active/versions/${1}.v1.0.prd.md
 ```
 
 ## 3. Guide PRD Completion
@@ -123,8 +123,8 @@ PRD created successfully! Next actions:
 3. **Begin work**: `/orchestrate`
 
 ### PRD Location:
-- Active: `/requirements/active/${1}.prd.md`
-- Version: `/requirements/active/versions/${1}.v1.0.prd.md`
+- Active: `/.orchestrator/requirements/active/${1}.prd.md`
+- Version: `/.orchestrator/requirements/active/versions/${1}.v1.0.prd.md`
 
 ---
 *PRD initialized. Use `/tasks-create ${1}` when ready to break down into tasks.*

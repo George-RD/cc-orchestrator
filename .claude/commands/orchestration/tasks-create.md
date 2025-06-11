@@ -7,11 +7,11 @@ Break down a PRD into actionable tasks with proper sizing and dependencies:
 
 ```bash
 # Load PRD file
-prd_file="/requirements/active/${1}.prd.md"
+prd_file="/.orchestrator/requirements/active/${1}.prd.md"
 if [ ! -f "$prd_file" ]; then
     echo "❌ PRD not found: ${1}"
     echo "Available PRDs:"
-    ls /requirements/active/*.prd.md
+    ls /.orchestrator/requirements/active/*.prd.md
     exit 1
 fi
 ```
@@ -168,7 +168,7 @@ Update the task registry with new tasks:
 ## 6. Task File Creation
 
 For each task:
-1. Create JSON file in `/tasks/active/`
+1. Create JSON file in `/.orchestrator/tasks/active/`
 2. Include full task details
 3. Initialize work_log with creation entry
 4. Set initial status to "draft"

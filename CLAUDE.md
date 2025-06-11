@@ -47,7 +47,7 @@ prd_analysis:
   - Create traceable task chain
 ```
 
-Reference: `/requirements/template.prd.md` for PRD structure
+Reference: `/.orchestrator/requirements/template.prd.md` for PRD structure
 
 ## Event-Driven Coordination
 
@@ -70,7 +70,7 @@ parallel_execution:
 ## Communication Protocols
 
 ### Inter-Agent Messaging
-Use structured JSON format from `/shared/protocols/communication.md`:
+Use structured JSON format from `/.orchestrator/shared/protocols/communication.md`:
 ```json
 {
   "message_id": "uuid",
@@ -88,7 +88,7 @@ Use structured JSON format from `/shared/protocols/communication.md`:
 ```
 
 ### Task Handoff Protocol
-Follow `/shared/protocols/handoff.md` for context preservation:
+Follow `/.orchestrator/shared/protocols/handoff.md` for context preservation:
 - Include complete background
 - Document decisions made
 - Specify deliverables
@@ -111,7 +111,7 @@ Success Criteria: [measurable outcomes]
 Dependencies: [prior tasks that must complete]
 Deadline: [if time-sensitive]
 
-Use specialist template: /specialists/[domain].md
+Use specialist template: /.orchestrator/specialists/[domain].md
 Expected Deliverables: [specific outputs needed]
 ```
 
@@ -180,7 +180,7 @@ consensus_protocol:
 ## Performance Optimization
 
 ### Token Usage Strategy
-Follow `/shared/utilities/token-optimization.md`:
+Follow `/.orchestrator/shared/utilities/token-optimization.md`:
 - Batch related operations
 - Use Sonnet 4 for routine tasks
 - Reserve Opus 4 for complex decisions
@@ -301,7 +301,7 @@ All project state is persisted to the filesystem, enabling work resumption acros
 Always check for existing work:
 ```bash
 # Quick state check
-if [ -d "/tasks/active" ] && [ "$(ls -A /tasks/active)" ]; then
+if [ -d "/.orchestrator/tasks/active" ] && [ "$(ls -A /.orchestrator/tasks/active)" ]; then
     echo "Active tasks found. Run /orchestrate or /orchestrate-resume"
 else
     echo "No active tasks. Run /orchestrate for guidance"
@@ -312,13 +312,13 @@ fi
 ```yaml
 task_persistence:
   directories:
-    /tasks/active/     # Currently being worked on
-    /tasks/blocked/    # Waiting on dependencies
-    /tasks/completed/  # Finished tasks
-    /tasks/archive/    # Old tasks (30+ days)
+    /.orchestrator/tasks/active/     # Currently being worked on
+    /.orchestrator/tasks/blocked/    # Waiting on dependencies
+    /.orchestrator/tasks/completed/  # Finished tasks
+    /.orchestrator/tasks/archive/    # Old tasks (30+ days)
     
   registry:
-    location: /tasks/registry.json
+    location: /.orchestrator/tasks/registry.json
     contains: summary_only  # Full details in task files
     usage: load_summary_first  # Minimize context usage
 ```
@@ -338,14 +338,14 @@ registry_loading:
     
   large_projects:  # 200+ tasks
     - Keep only last 30 days in registry
-    - Archive older to /tasks/archive/
+    - Archive older to /.orchestrator/tasks/archive/
     - Use filters to query subsets
 ```
 
 ### Task Lifecycle with State
 1. **Creation** (`/tasks-create`)
    - Generate task JSON files
-   - Initialize in `/tasks/active/`
+   - Initialize in `/.orchestrator/tasks/active/`
    - Update registry summary
 
 2. **Assignment** (Orchestrator)
@@ -365,7 +365,7 @@ registry_loading:
 
 ### Work Resumption Protocol
 When resuming (`/orchestrate-resume`):
-1. Scan `/tasks/active/` for in-progress work
+1. Scan `/.orchestrator/tasks/active/` for in-progress work
 2. Read work_log to understand progress
 3. Check git for uncommitted changes
 4. Reconstruct context from artifacts
@@ -391,7 +391,7 @@ prd_versioning:
   command: /prd-evolve <prd-id> <change-type>
   versions: semantic (1.0.0)
   tracking:
-    - All versions in /requirements/active/versions/
+    - All versions in /.orchestrator/requirements/active/versions/
     - Changelog in <prd-id>.changelog.md
     - Impact analysis on tasks
     - Notifications in affected work_logs
@@ -443,7 +443,7 @@ If state appears corrupted:
 - error.* (detected, resolved)
 
 ### Key Files
-- `/requirements/` - PRD templates and active projects
-- `/shared/protocols/` - Communication standards
-- `/.claude/workflows/` - Reusable workflow patterns
-- `/monitoring/` - Metrics and alerting configuration
+- `/.orchestrator/requirements/` - PRD templates and active projects
+- `/.orchestrator/shared/protocols/` - Communication standards
+- `/.orchestrator/workflows/` - Reusable workflow patterns
+- `/.orchestrator/monitoring/` - Metrics and alerting configuration

@@ -6,10 +6,10 @@ Implement test immutability to ensure tests remain stable once written:
 ## 1. Load Task and Verify Tests
 
 ```bash
-task_file="/tasks/active/${1}.json"
+task_file="/.orchestrator/tasks/active/${1}.json"
 if [ ! -f "$task_file" ]; then
     # Check completed tasks too
-    task_file="/tasks/completed/${1}.json"
+    task_file="/.orchestrator/tasks/completed/${1}.json"
 fi
 
 # Extract test files from task artifacts
@@ -108,7 +108,7 @@ git commit -m "test: Lock test files for ${1}
 
 Track all locked tests:
 ```json
-// In /tasks/test-locks.json
+// In /.orchestrator/tasks/test-locks.json
 {
   "locked_tests": {
     "${1}": {

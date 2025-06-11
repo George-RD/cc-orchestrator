@@ -31,7 +31,7 @@ Major direction changes:
 ### 2.1 Create New Version
 ```bash
 # Determine version bump
-current_version=$(grep "version:" /requirements/active/${1}.prd.md | cut -d: -f2)
+current_version=$(grep "version:" /.orchestrator/requirements/active/${1}.prd.md | cut -d: -f2)
 
 case ${2} in
   clarification)
@@ -46,12 +46,12 @@ case ${2} in
 esac
 
 # Create versioned copy
-cp /requirements/active/${1}.prd.md \
-   /requirements/active/versions/${1}.v${new_version}.prd.md
+cp /.orchestrator/requirements/active/${1}.prd.md \
+   /.orchestrator/requirements/active/versions/${1}.v${new_version}.prd.md
 ```
 
 ### 2.2 Update Changelog
-Create/append to `/requirements/active/${1}.changelog.md`:
+Create/append to `/.orchestrator/requirements/active/${1}.changelog.md`:
 
 ```markdown
 # ${1} PRD Changelog
@@ -83,7 +83,7 @@ Required Actions:
 ```javascript
 // Pseudo-code for impact analysis
 affected_tasks = []
-for task in /tasks/*/*.json:
+for task in /.orchestrator/tasks/*/*.json:
   if task.prd_id == ${1}:
     if task.prd_version < new_version:
       affected_tasks.add({
@@ -215,9 +215,9 @@ Version: ${old} → ${new}
 Change Type: ${2}
 
 Files Updated:
-- /requirements/active/${1}.prd.md (current)
-- /requirements/active/versions/${1}.v${new}.prd.md
-- /requirements/active/${1}.changelog.md
+- /.orchestrator/requirements/active/${1}.prd.md (current)
+- /.orchestrator/requirements/active/versions/${1}.v${new}.prd.md
+- /.orchestrator/requirements/active/${1}.changelog.md
 
 Impact Summary:
 - Total tasks: ${total_tasks}
