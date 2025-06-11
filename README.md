@@ -77,29 +77,33 @@ Claude: I'll implement the authentication system following the PRD specification
 /
 ├── .claude/                      # Claude Code specific configurations
 │   ├── commands/                 # Custom slash commands
-│   │   ├── feature.md           # Feature development workflow
-│   │   ├── review.md            # Code review command
 │   │   ├── debug.md             # Debugging workflow
+│   │   ├── architecture.md      # Architecture decisions
 │   │   ├── optimize.md          # Performance optimization
-│   │   └── architecture.md      # Architecture decisions
+│   │   └── orchestration/       # Orchestration commands
+│   │       └── test-lock.md     # Test protection system
 │   ├── workflows/                # Reusable workflow definitions
 │   │   ├── tdd-workflow.yaml    # Test-driven development
-│   │   └── ultrathink-*.yaml    # Deep analysis workflows
+│   │   └── ultrathink-architecture.yaml # Deep analysis workflows
 │   ├── confidence-rules.yaml     # Autonomy thresholds
 │   ├── permissions.yaml          # Permission batching
-│   └── mcp-config.json          # Model Context Protocol
+│   └── shared/                   # Shared Claude configurations
 │
 ├── .orchestrator/               # Orchestration system files
 │   ├── requirements/            # PRD-driven development
 │   │   ├── template.prd.md      # PRD template
 │   │   ├── active/              # Current project PRDs
 │   │   └── examples/            # Example PRDs
+│   │       ├── auth-system.prd.md
+│   │       └── api-redesign.prd.md
 │
 │   ├── specialists/             # Enhanced specialist agents
 │   │   ├── backend.md           # Senior Backend Architect
 │   │   ├── frontend.md          # Frontend Expert
 │   │   ├── qa.md                # Quality Guardian
-│   │   └── docs.md              # Documentation Architect
+│   │   ├── docs.md              # Documentation Architect
+│   │   ├── devops.md            # DevOps Specialist
+│   │   └── security.md          # Security Specialist
 │
 │   ├── shared/                  # Shared resources
 │   │   ├── protocols/           # Communication standards
@@ -109,7 +113,10 @@ Claude: I'll implement the authentication system following the PRD specification
 │   │   │   ├── logging.md      # Structured logging
 │   │   │   ├── validation.md   # Input validation
 │   │   │   └── token-optimization.md # Token usage strategies
-│   │   └── templates/           # Reusable templates
+│   │   ├── templates/           # Reusable templates
+│   │   │   └── task-format.md  # Task formatting standards
+│   │   ├── security/            # Security standards
+│   │   └── testing/             # Testing responsibility matrix
 │
 │   ├── events/                  # Event-driven architecture
 │   │   ├── definitions.yaml     # Event schemas
@@ -117,25 +124,27 @@ Claude: I'll implement the authentication system following the PRD specification
 │   │   └── logs/               # Event history
 │
 │   ├── monitoring/              # Observability
-│   │   ├── metrics.yaml        # KPI definitions
+│   │   ├── metrics.yaml        # KPI definitions (420+ lines)
 │   │   ├── alerts.yaml         # Alert configurations
 │   │   ├── health-checks.md    # Health patterns
 │   │   ├── benchmarks.md       # Performance benchmarks
 │   │   └── dashboards/         # Monitoring dashboards
+│
 │   └── tasks/                   # Task management system
+│       ├── registry.json       # Smart task registry
+│       ├── templates/          # Task templates
+│       │   └── task.json       # Comprehensive task schema
+│       ├── active/             # Currently being worked on
+│       ├── blocked/            # Waiting on dependencies
+│       ├── completed/          # Finished tasks
+│       └── archive/            # Old tasks (30+ days)
 │
 ├── docs/                       # Documentation
 │   └── adr/                    # Architecture decisions
 │       ├── template.md         # ADR template
-│       └── *.md                # Decision records
+│       └── 0001-use-jwt-auth.md # Example decision record
 │
-├── .github/                    # GitHub integration
-│   ├── workflows/              # CI/CD pipelines
-│   │   ├── claude-review.yaml  # Automated PR review
-│   │   └── quality-gates.yaml  # Quality enforcement
-│   └── claude-templates/       # PR templates
-│
-└── CLAUDE.md                   # Master orchestrator
+└── CLAUDE.md                   # Master orchestrator (441 lines)
 ```
 
 ## 🎯 Key Concepts
