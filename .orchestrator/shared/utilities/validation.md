@@ -227,42 +227,13 @@ const validateFileSize = (file, maxSizeInBytes) => {
 
 ## Security Validation
 
-### SQL Injection Prevention
+**IMPORTANT**: Use security validation patterns from `/.orchestrator/shared/security/standards.md`
 
-```javascript
-const validateSQLSafe = (value) => {
-  const sqlKeywords = /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|UNION|ALTER|CREATE)\b)/gi;
-  const sqlSpecialChars = /[;'"\\]/g;
-  
-  const hasSQLKeywords = sqlKeywords.test(value);
-  const hasSpecialChars = sqlSpecialChars.test(value);
-  
-  return {
-    valid: !hasSQLKeywords && !hasSpecialChars,
-    error: (hasSQLKeywords || hasSpecialChars) ? "Potentially unsafe input detected" : null
-  };
-};
-```
-
-### XSS Prevention
-
-```javascript
-const validateXSSSafe = (value) => {
-  const xssPatterns = [
-    /<script[^>]*>.*?<\/script>/gi,
-    /<iframe[^>]*>.*?<\/iframe>/gi,
-    /javascript:/gi,
-    /on\w+\s*=/gi
-  ];
-  
-  const hasXSS = xssPatterns.some(pattern => pattern.test(value));
-  
-  return {
-    valid: !hasXSS,
-    error: hasXSS ? "Potentially unsafe HTML detected" : null
-  };
-};
-```
+For security-specific validation (SQL injection prevention, XSS protection, etc.), reference the dedicated security standards module which provides:
+- Comprehensive input sanitization patterns
+- SQL injection prevention techniques  
+- XSS protection methods
+- OWASP compliance validation patterns
 
 ## Composite Validators
 

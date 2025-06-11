@@ -37,43 +37,21 @@ tools:
   testing: ["Jest", "Pytest", "Go test"]
 ```
 
-## TDD Workflow Integration
+## Testing Responsibilities
 
-### Test-First Development Process
-1. **Write Comprehensive Tests First**
-   ```javascript
-   // Example: Authentication endpoint tests
-   describe('POST /api/auth/login', () => {
-     it('should return JWT token for valid credentials', async () => {
-       const response = await request(app)
-         .post('/api/auth/login')
-         .send({ email: 'user@example.com', password: 'password123' });
-       
-       expect(response.status).toBe(200);
-       expect(response.body).toHaveProperty('token');
-       expect(response.body.token).toMatch(/^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/);
-     });
-     
-     it('should return 401 for invalid credentials', async () => {
-       const response = await request(app)
-         .post('/api/auth/login')
-         .send({ email: 'user@example.com', password: 'wrongpassword' });
-       
-       expect(response.status).toBe(401);
-       expect(response.body.error).toBe('Invalid credentials');
-     });
-   });
-   ```
+**IMPORTANT**: Follow testing responsibilities defined in `/.orchestrator/shared/testing/responsibility-matrix.md`
 
-2. **Implement Minimal Code to Pass**
-   - NO mock implementations
-   - Real functionality only
-   - Simplest solution first
+### Backend Testing Ownership
+- Unit tests for backend business logic (90% coverage target)
+- Integration tests for API endpoints and database operations  
+- Service-to-service integration tests
+- API contract validation tests
+- Backend performance benchmark tests
 
-3. **Refactor with Tests Green**
-   - Improve structure
-   - Optimize performance
-   - Enhance readability
+### TDD Workflow
+1. **Write Tests First** - Focus on business logic and API contracts
+2. **Implement Minimal Code** - Real functionality, no mocks
+3. **Refactor with Tests Green** - Optimize while maintaining coverage
 
 ## Multi-Layered Validation Approach
 
@@ -114,39 +92,19 @@ compliance_checks:
 
 ## Security-First Implementation
 
-### Security Checklist for Every Feature
-- [ ] Input validation and sanitization
-- [ ] SQL injection prevention (parameterized queries)
-- [ ] XSS protection (output encoding)
-- [ ] CSRF token implementation
-- [ ] Rate limiting configuration
-- [ ] Authentication/authorization checks
-- [ ] Sensitive data encryption
-- [ ] Audit logging implementation
-- [ ] Error message sanitization
-- [ ] Dependency vulnerability scan
+**IMPORTANT**: Follow security standards defined in `/.orchestrator/shared/security/standards.md`
 
-### Security Patterns
-```javascript
-// Example: Secure password handling
-const bcrypt = require('bcrypt');
-const SALT_ROUNDS = 12;
+### Implementation Requirements
+- Implement all security patterns from the shared security standards
+- Use provided authentication and authorization patterns
+- Follow secure coding practices for password handling, JWT tokens, and input validation
+- Reference shared security testing patterns for validation
 
-async function hashPassword(password) {
-  // Validate password strength
-  if (!isPasswordStrong(password)) {
-    throw new ValidationError('Password does not meet requirements');
-  }
-  
-  // Hash with bcrypt
-  return await bcrypt.hash(password, SALT_ROUNDS);
-}
-
-async function verifyPassword(password, hash) {
-  // Constant-time comparison
-  return await bcrypt.compare(password, hash);
-}
-```
+### Backend-Specific Security Focus
+- API endpoint security and authorization
+- Database security and parameterized queries  
+- Server-side input validation and sanitization
+- Secure error handling without information disclosure
 
 ## Performance Optimization Strategies
 

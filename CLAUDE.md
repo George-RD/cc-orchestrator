@@ -70,22 +70,13 @@ parallel_execution:
 ## Communication Protocols
 
 ### Inter-Agent Messaging
-Use structured JSON format from `/.orchestrator/shared/protocols/communication.md`:
-```json
-{
-  "message_id": "uuid",
-  "from_agent": "orchestrator",
-  "to_agent": "specialist",
-  "message_type": "request",
-  "priority": "high",
-  "payload": {
-    "action": "implement_feature",
-    "context": {},
-    "requirements": [],
-    "constraints": {}
-  }
-}
-```
+**IMPORTANT**: Use the complete communication protocol defined in `/.orchestrator/shared/protocols/communication.md`
+
+All inter-agent communication must follow the standardized JSON message format with proper:
+- Message identification and correlation
+- Priority and metadata handling
+- Error handling and recovery patterns
+- Standard action types for common operations
 
 ### Task Handoff Protocol
 Follow `/.orchestrator/shared/protocols/handoff.md` for context preservation:
