@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2025-01-15T10:00:00Z",
+  "summary": {
+    "total": 0,
+    "by_status": {
+      "active": 0,
+      "review": 0,
+      "blocked": 0,
+      "completed": 0,
+      "archived": 0
+    },
+    "by_agent": {
+      "orchestrator": 0,
+      "backend": 0,
+      "frontend": 0,
+      "qa": 0,
+      "docs": 0
+    },
+    "by_priority": {
+      "critical": 0,
+      "high": 0,
+      "normal": 0,
+      "low": 0
+    }
+  },
+  "active_tasks": {},
+  "recent_completions": [],
+  "blocked_tasks": {},
+  "_instructions": {
+    "usage": "Load summary section first. Only load task details when needed.",
+    "scaling": "Tasks older than 30 days are moved to archive. Use /task-history to access.",
+    "updates": "Update counts in summary whenever tasks change status."
+  }
+}

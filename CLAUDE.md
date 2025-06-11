@@ -292,6 +292,119 @@ This activates extended computational analysis for:
 - Scalability planning
 - Security architecture
 
+## Persistent State Management
+
+### Overview
+All project state is persisted to the filesystem, enabling work resumption across sessions. The repository serves as the single source of truth.
+
+### On Startup
+Always check for existing work:
+```bash
+# Quick state check
+if [ -d "/tasks/active" ] && [ "$(ls -A /tasks/active)" ]; then
+    echo "Active tasks found. Run /orchestrate or /orchestrate-resume"
+else
+    echo "No active tasks. Run /orchestrate for guidance"
+fi
+```
+
+### Task State Architecture
+```yaml
+task_persistence:
+  directories:
+    /tasks/active/     # Currently being worked on
+    /tasks/blocked/    # Waiting on dependencies
+    /tasks/completed/  # Finished tasks
+    /tasks/archive/    # Old tasks (30+ days)
+    
+  registry:
+    location: /tasks/registry.json
+    contains: summary_only  # Full details in task files
+    usage: load_summary_first  # Minimize context usage
+```
+
+### Smart Registry Usage
+```yaml
+registry_loading:
+  on_startup:
+    - Load summary section only
+    - Check active/blocked counts
+    - Do NOT load full task list
+    
+  when_needed:
+    - /status → Load active tasks only
+    - /orchestrate-resume → Load active + blocked
+    - /task-history → Load specific subset
+    
+  large_projects:  # 200+ tasks
+    - Keep only last 30 days in registry
+    - Archive older to /tasks/archive/
+    - Use filters to query subsets
+```
+
+### Task Lifecycle with State
+1. **Creation** (`/tasks-create`)
+   - Generate task JSON files
+   - Initialize in `/tasks/active/`
+   - Update registry summary
+
+2. **Assignment** (Orchestrator)
+   - Read task from active directory
+   - Check dependencies
+   - Handoff with full context
+
+3. **Progress** (`/task-update`)
+   - Append to work_log
+   - Update progress percentage
+   - Document decisions/blockers
+
+4. **Completion** (`/task-update complete`)
+   - Move to completed directory
+   - Update registry
+   - Trigger dependent tasks
+
+### Work Resumption Protocol
+When resuming (`/orchestrate-resume`):
+1. Scan `/tasks/active/` for in-progress work
+2. Read work_log to understand progress
+3. Check git for uncommitted changes
+4. Reconstruct context from artifacts
+5. Re-engage appropriate agents
+
+### Test Protection System
+Tests become immutable once validated:
+```yaml
+test_locking:
+  when: task_type == "test" && status == "complete"
+  command: /test-lock <task-id>
+  effect:
+    - Adds lock headers to test files
+    - Creates .test-lock marker
+    - Prevents modifications
+    - Requires approval for changes
+```
+
+### PRD Evolution Tracking
+PRDs can evolve with full traceability:
+```yaml
+prd_versioning:
+  command: /prd-evolve <prd-id> <change-type>
+  versions: semantic (1.0.0)
+  tracking:
+    - All versions in /requirements/active/versions/
+    - Changelog in <prd-id>.changelog.md
+    - Impact analysis on tasks
+    - Notifications in affected work_logs
+```
+
+### State Recovery
+If state appears corrupted:
+1. Check git history for last good state
+2. Review task work_logs
+3. Scan filesystem for artifacts
+4. Reconstruct from available data
+5. Mark questionable tasks for review
+
 ## Integration Points
 
 ### With PRDs
