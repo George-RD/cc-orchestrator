@@ -192,6 +192,139 @@ docs:
     description: Number of docs not updated after code changes
 ```
 
+## DevOps Agent Metrics
+```yaml
+devops_metrics:
+  deployment_frequency:
+    type: counter
+    description: Number of deployments per environment
+    labels:
+      - environment (dev|staging|production)
+      - deployment_type (feature|hotfix|rollback)
+      - status (success|failure|partial)
+  
+  deployment_duration:
+    type: histogram
+    description: Time taken for deployments
+    unit: minutes
+    buckets: [1, 5, 10, 20, 30, 60, 120]
+    labels:
+      - environment
+      - deployment_type
+  
+  infrastructure_provisioning:
+    type: histogram
+    description: Time to provision new infrastructure
+    unit: minutes
+    buckets: [5, 10, 30, 60, 120, 300]
+    labels:
+      - resource_type (compute|storage|network|database)
+      - cloud_provider
+  
+  pipeline_execution:
+    type: histogram
+    description: CI/CD pipeline execution times
+    unit: minutes
+    buckets: [1, 3, 5, 10, 15, 30, 60]
+    labels:
+      - pipeline_stage (build|test|security_scan|deploy)
+      - branch_type (main|feature|hotfix)
+  
+  system_uptime:
+    type: gauge
+    description: System availability percentage
+    labels:
+      - service
+      - environment
+  
+  resource_utilization:
+    type: gauge
+    description: Infrastructure resource usage
+    labels:
+      - resource_type (cpu|memory|disk|network)
+      - service
+      - environment
+  
+  backup_operations:
+    type: counter
+    description: Database and file backup operations
+    labels:
+      - backup_type (full|incremental|differential)
+      - status (success|failure|timeout)
+  
+  container_metrics:
+    type: gauge
+    description: Container orchestration metrics
+    labels:
+      - container_status (running|stopped|failed|pending)
+      - service
+      - environment
+```
+
+## Security Agent Metrics
+```yaml
+security_metrics:
+  vulnerability_scans:
+    type: counter
+    description: Security vulnerability scans performed
+    labels:
+      - scan_type (sast|dast|dependency|container|infrastructure)
+      - severity (critical|high|medium|low|info)
+      - status (found|resolved|false_positive|accepted_risk)
+  
+  security_test_coverage:
+    type: gauge
+    description: Percentage of security tests vs total endpoints
+    labels:
+      - test_type (authentication|authorization|input_validation|encryption)
+  
+  compliance_checks:
+    type: counter
+    description: Compliance validation results
+    labels:
+      - framework (owasp|gdpr|pci|sox|hipaa)
+      - check_type (automated|manual)
+      - result (pass|fail|warning)
+  
+  penetration_testing:
+    type: histogram
+    description: Time spent on penetration testing activities
+    unit: hours
+    buckets: [1, 2, 4, 8, 16, 24, 48]
+    labels:
+      - test_phase (reconnaissance|scanning|enumeration|exploitation|reporting)
+  
+  threat_detection:
+    type: counter
+    description: Security threats detected and responded to
+    labels:
+      - threat_type (malware|intrusion|data_breach|ddos|social_engineering)
+      - severity (critical|high|medium|low)
+      - response_time_minutes: [1, 5, 15, 30, 60, 240]
+  
+  security_policy_violations:
+    type: counter
+    description: Security policy violations detected
+    labels:
+      - policy_type (access_control|data_handling|encryption|authentication)
+      - severity (critical|high|medium|low)
+  
+  certificate_management:
+    type: gauge
+    description: SSL/TLS certificate status and expiry tracking
+    labels:
+      - certificate_type (ssl|code_signing|client)
+      - status (valid|expiring|expired|revoked)
+      - days_until_expiry: [7, 30, 60, 90]
+  
+  access_control_audits:
+    type: counter
+    description: User access and permission audits
+    labels:
+      - audit_type (user_access|role_permissions|privileged_accounts)
+      - result (compliant|violation|needs_review)
+```
+
 ## Business Metrics
 
 ### Development Velocity

@@ -15,11 +15,15 @@ agents:
   - frontend: required
   - qa: required
   - docs: optional
+  - devops: optional  # required for deployment/infrastructure changes
+  - security: optional  # required for security-sensitive features
 constraints:
   security_level: high  # low, medium, high, critical
   performance_target: <100ms
   accessibility: WCAG-AA
   browser_support: ["chrome", "firefox", "safari", "edge"]
+  compliance_requirements: []  # GDPR, PCI, SOX, HIPAA
+  deployment_environments: ["dev", "staging", "production"]
 complexity: medium  # simple, medium, complex
 estimated_effort: 5  # story points or days
 ```
@@ -74,6 +78,58 @@ entities:
       - id: uuid
       - name: string
       - created_at: timestamp
+```
+
+### Infrastructure Requirements
+```yaml
+infrastructure:
+  compute:
+    - cpu_cores: 4
+    - memory_gb: 8
+    - storage_gb: 100
+  networking:
+    - load_balancer: required
+    - cdn: optional
+    - ssl_termination: required
+  environments:
+    development:
+      - replicas: 1
+      - resources: minimal
+    staging:
+      - replicas: 2  
+      - resources: production-like
+    production:
+      - replicas: 3
+      - resources: optimized
+  monitoring:
+    - metrics: required
+    - logging: centralized
+    - alerting: critical_paths
+```
+
+### Security Requirements
+```yaml
+security:
+  authentication:
+    - method: jwt  # jwt, oauth, saml
+    - mfa: required  # required, optional, disabled
+    - session_timeout: 30m
+  authorization:
+    - rbac: required
+    - permissions: fine_grained
+    - audit_trail: required
+  data_protection:
+    - encryption_at_rest: required
+    - encryption_in_transit: required
+    - pii_handling: gdpr_compliant
+  compliance:
+    - frameworks: ["OWASP", "GDPR"]  # OWASP, GDPR, PCI, SOX, HIPAA
+    - penetration_testing: required
+    - vulnerability_scanning: automated
+  network_security:
+    - firewall_rules: restrictive
+    - network_segmentation: required
+    - intrusion_detection: enabled
 ```
 
 ## Non-Functional Requirements

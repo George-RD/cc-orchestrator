@@ -136,46 +136,100 @@ describe('Performance Tests', () => {
 ## Shared Responsibilities
 
 ### Security Testing
-**Primary Owner**: QA Specialist
-**Contributors**: Backend and Frontend Specialists
+**Primary Owner**: Security Specialist
+**Contributors**: QA, Backend, Frontend, and DevOps Specialists
 
 ```yaml
+security_specialist:
+  - OWASP Top 10 comprehensive validation
+  - Penetration testing execution and coordination
+  - Security architecture validation
+  - Vulnerability scanning and assessment
+  - Compliance framework testing (GDPR, PCI, SOX)
+  - Threat modeling validation
+  - Security policy enforcement testing
+
 qa_specialist:
-  - OWASP Top 10 validation
-  - Penetration testing coordination
-  - Security test strategy
-  - Cross-cutting security tests
+  - Security test strategy integration
+  - Cross-cutting security test coordination
+  - Security regression testing
+  - Security acceptance criteria validation
 
 backend_specialist:
   - API security implementation tests
-  - Authentication/authorization tests
-  - Data encryption validation
+  - Authentication/authorization unit tests
+  - Data encryption implementation validation
+  - Secure coding pattern verification
 
 frontend_specialist:
   - XSS prevention validation
   - Client-side security tests
-  - Secure data handling tests
+  - Secure data handling implementation tests
+  - CSRF protection validation
+
+devops_specialist:
+  - Infrastructure security testing
+  - Container security scanning
+  - CI/CD pipeline security validation
+  - Secret management testing
+  - Network security configuration tests
 ```
 
 ### Performance Testing
 **Primary Owner**: QA Specialist  
-**Contributors**: Backend and Frontend Specialists
+**Contributors**: Backend, Frontend, and DevOps Specialists
 
 ```yaml
 qa_specialist:
-  - Load testing strategy
+  - Load testing strategy and coordination
   - End-to-end performance testing
   - Performance regression testing
+  - User experience performance validation
 
 backend_specialist:
   - API performance benchmarks
   - Database query optimization tests
   - Caching effectiveness tests
+  - Service-level performance tests
 
 frontend_specialist:
   - Bundle size optimization tests
   - Rendering performance tests
   - User interaction responsiveness
+  - Client-side resource optimization
+
+devops_specialist:
+  - Infrastructure performance testing
+  - System scalability testing
+  - Resource utilization optimization
+  - Deployment performance validation
+  - Auto-scaling behavior testing
+```
+
+### Infrastructure and Deployment Testing
+**Primary Owner**: DevOps Specialist
+**Contributors**: Backend and Security Specialists
+
+```yaml
+devops_specialist:
+  - Infrastructure provisioning tests
+  - CI/CD pipeline validation
+  - Deployment automation testing
+  - Environment configuration tests
+  - Disaster recovery testing
+  - Backup and restore validation
+  - Container orchestration tests
+  - Monitoring and alerting validation
+
+backend_specialist:
+  - Service deployment validation
+  - Database migration testing
+  - API endpoint availability post-deployment
+
+security_specialist:
+  - Infrastructure security validation
+  - Deployment security scanning
+  - Network security configuration
 ```
 
 ## Test Coordination Protocols

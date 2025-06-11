@@ -15,11 +15,15 @@ agents:
   - frontend: required
   - qa: required
   - docs: required
+  - devops: required  # Infrastructure for secure session management
+  - security: required  # Critical for authentication system
 constraints:
   security_level: critical
   performance_target: <200ms
   accessibility: WCAG-AA
   browser_support: ["chrome", "firefox", "safari", "edge"]
+  compliance_requirements: ["OWASP", "GDPR"]
+  deployment_environments: ["dev", "staging", "production"]
 complexity: complex
 estimated_effort: 13
 ```

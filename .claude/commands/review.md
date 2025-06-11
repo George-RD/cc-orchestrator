@@ -45,4 +45,4 @@ Output format:
 3. Suggestions for improvement
 4. Positive aspects to reinforce good practices
 
-Use the consensus-based approach from .orchestrator/specialists/qa.md for thorough analysis.
+Use the consensus-based approach from /.orchestrator/specialists/qa.md for thorough analysis.
