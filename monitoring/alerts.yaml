@@ -1,0 +1,431 @@
+# Alerting Configuration
+
+## Alert Severity Levels
+
+```yaml
+severity_levels:
+  info:
+    description: "Informational alerts, no action required"
+    notification: log_only
+    color: blue
+    
+  warning:
+    description: "Potential issues that may require attention"
+    notification: 
+      - log
+      - dashboard
+    color: yellow
+    
+  error:
+    description: "Issues affecting functionality"
+    notification:
+      - log
+      - dashboard
+      - email
+    color: orange
+    
+  critical:
+    description: "Critical issues requiring immediate action"
+    notification:
+      - log
+      - dashboard  
+      - email
+      - slack
+      - pagerduty
+    color: red
+```
+
+## Alert Categories
+
+### Performance Alerts
+
+```yaml
+performance_alerts:
+  high_latency:
+    condition: "response_time_p95 > threshold"
+    thresholds:
+      warning: 3000ms
+      error: 5000ms
+      critical: 10000ms
+    duration: 5m
+    description: "Agent response time exceeding acceptable limits"
+    runbook: "/runbooks/high-latency.md"
+    
+  degraded_throughput:
+    condition: "tasks_per_minute < threshold"
+    thresholds:
+      warning: "baseline * 0.7"
+      error: "baseline * 0.5"
+      critical: "baseline * 0.3"
+    duration: 10m
+    description: "Task processing rate below expected"
+    
+  memory_pressure:
+    condition: "memory_usage_percent > threshold"
+    thresholds:
+      warning: 70
+      error: 85
+      critical: 95
+    duration: 5m
+    description: "High memory usage detected"
+```
+
+### Availability Alerts
+
+```yaml
+availability_alerts:
+  agent_down:
+    condition: "agent_health_check == 0"
+    severity: critical
+    duration: 1m
+    description: "Agent not responding to health checks"
+    auto_remediation:
+      - restart_agent
+      - failover_to_backup
+      
+  partial_outage:
+    condition: "available_agents < required_agents"
+    severity: error
+    duration: 5m
+    description: "Insufficient agents available"
+    
+  dependency_failure:
+    condition: "external_service_health == 0"
+    severity: error
+    duration: 2m
+    description: "Required external service unavailable"
+```
+
+### Quality Alerts
+
+```yaml
+quality_alerts:
+  high_error_rate:
+    condition: "error_rate > threshold"
+    thresholds:
+      warning: 0.02  # 2%
+      error: 0.05    # 5%
+      critical: 0.10 # 10%
+    duration: 5m
+    description: "Error rate exceeding acceptable threshold"
+    
+  low_confidence_decisions:
+    condition: "avg(confidence_score) < threshold"
+    thresholds:
+      warning: 0.80
+      error: 0.70
+      critical: 0.60
+    duration: 15m
+    description: "Agent confidence dropping below threshold"
+    
+  test_failure_spike:
+    condition: "test_failure_rate > threshold"
+    thresholds:
+      warning: 0.10
+      error: 0.20
+      critical: 0.30
+    duration: 5m
+    description: "Increased test failure rate detected"
+```
+
+### Security Alerts
+
+```yaml
+security_alerts:
+  unauthorized_access:
+    condition: "unauthorized_attempts > 0"
+    severity: critical
+    duration: immediate
+    description: "Unauthorized access attempt detected"
+    actions:
+      - log_security_event
+      - block_source
+      - notify_security_team
+      
+  suspicious_activity:
+    condition: "anomaly_score > threshold"
+    thresholds:
+      warning: 0.7
+      error: 0.85
+      critical: 0.95
+    duration: 5m
+    description: "Anomalous behavior pattern detected"
+    
+  vulnerable_dependency:
+    condition: "critical_vulnerabilities > 0"
+    severity: error
+    duration: immediate
+    description: "Critical security vulnerability in dependencies"
+```
+
+### Business Alerts
+
+```yaml
+business_alerts:
+  sla_breach_risk:
+    condition: "completion_time_p95 > sla_threshold * 0.8"
+    severity: warning
+    duration: 15m
+    description: "At risk of breaching SLA"
+    
+  cost_overrun:
+    condition: "hourly_cost > budget_threshold"
+    thresholds:
+      warning: "budget * 1.1"
+      error: "budget * 1.25"
+      critical: "budget * 1.5"
+    duration: 1h
+    description: "Token usage exceeding budget"
+    
+  velocity_decline:
+    condition: "weekly_velocity < historical_avg * 0.7"
+    severity: warning
+    duration: 1d
+    description: "Development velocity declining"
+```
+
+## Alert Routing
+
+```yaml
+routing_rules:
+  - match:
+      severity: critical
+      category: security
+    notify:
+      - security_team
+      - on_call_engineer
+      - management
+    priority: P1
+    
+  - match:
+      severity: critical
+      category: availability
+    notify:
+      - on_call_engineer
+      - platform_team
+    priority: P1
+    
+  - match:
+      severity: error
+    notify:
+      - development_team
+      - team_lead
+    priority: P2
+    
+  - match:
+      severity: warning
+    notify:
+      - development_team
+    priority: P3
+```
+
+## Notification Channels
+
+```yaml
+channels:
+  slack:
+    webhook_url: "${SLACK_WEBHOOK_URL}"
+    channel_mapping:
+      critical: "#alerts-critical"
+      error: "#alerts-error"
+      warning: "#alerts-warning"
+    message_template: |
+      🚨 *${severity}*: ${alert_name}
+      *Description*: ${description}
+      *Current Value*: ${current_value}
+      *Threshold*: ${threshold}
+      *Duration*: ${duration}
+      *Runbook*: ${runbook_link}
+      
+  email:
+    smtp_server: "${SMTP_SERVER}"
+    from_address: "alerts@example.com"
+    subject_template: "[${severity}] ${alert_name} - ${environment}"
+    
+  pagerduty:
+    api_key: "${PAGERDUTY_API_KEY}"
+    service_id: "${PAGERDUTY_SERVICE_ID}"
+    severity_mapping:
+      critical: "critical"
+      error: "error"
+      warning: "warning"
+      info: "info"
+```
+
+## Alert Aggregation
+
+```yaml
+aggregation_rules:
+  - name: "repeated_errors"
+    condition: "count(same_error) > 5 within 10m"
+    action: "group_and_escalate"
+    
+  - name: "cascade_detection"
+    condition: "related_alerts > 3 within 5m"
+    action: "create_incident"
+    
+  - name: "flapping_detection"
+    condition: "state_changes > 5 within 30m"
+    action: "suppress_and_investigate"
+```
+
+## Alert Suppression
+
+```yaml
+suppression_rules:
+  maintenance_window:
+    schedule: "0 2 * * SUN"  # Sunday 2 AM
+    duration: 2h
+    suppress:
+      - category: performance
+      - severity: [info, warning]
+      
+  known_issues:
+    - alert: "memory_pressure"
+      reason: "Known memory leak, fix in progress"
+      until: "2025-02-01"
+      ticket: "JIRA-1234"
+      
+  dependent_alerts:
+    - primary: "database_down"
+      suppress:
+        - "api_errors"
+        - "slow_queries"
+        - "connection_pool_exhausted"
+```
+
+## Alert Actions
+
+### Auto-Remediation
+
+```yaml
+auto_remediation:
+  restart_agent:
+    trigger: "agent_down"
+    steps:
+      - verify_alert
+      - attempt_graceful_restart
+      - wait: 30s
+      - check_health
+      - escalate_if_failed
+      
+  scale_resources:
+    trigger: "high_load"
+    steps:
+      - check_current_capacity
+      - calculate_required_capacity
+      - provision_resources
+      - distribute_load
+      - monitor_impact
+      
+  clear_cache:
+    trigger: "memory_pressure"
+    steps:
+      - identify_cache_size
+      - clear_oldest_entries
+      - monitor_memory_usage
+      - report_action
+```
+
+### Escalation Policies
+
+```yaml
+escalation_policies:
+  standard:
+    levels:
+      - level: 1
+        notify: ["on_call_primary"]
+        wait: 5m
+        
+      - level: 2
+        notify: ["on_call_secondary", "team_lead"]
+        wait: 15m
+        
+      - level: 3
+        notify: ["engineering_manager", "director"]
+        wait: 30m
+        
+  critical_security:
+    levels:
+      - level: 1
+        notify: ["security_team", "on_call_primary"]
+        wait: immediate
+        
+      - level: 2
+        notify: ["ciso", "engineering_director"]
+        wait: 5m
+```
+
+## Alert Analytics
+
+```yaml
+analytics:
+  metrics_to_track:
+    - alert_frequency
+    - mean_time_to_acknowledge
+    - mean_time_to_resolve
+    - false_positive_rate
+    - alert_fatigue_score
+    
+  reports:
+    weekly_summary:
+      schedule: "0 9 * * MON"
+      include:
+        - top_alerts_by_frequency
+        - average_resolution_time
+        - false_positive_analysis
+        - on_call_burden
+        
+    monthly_analysis:
+      schedule: "0 9 1 * *"
+      include:
+        - alert_trends
+        - root_cause_analysis
+        - remediation_effectiveness
+        - cost_of_incidents
+```
+
+## Alert Testing
+
+```yaml
+alert_testing:
+  synthetic_alerts:
+    - name: "test_critical_alert"
+      schedule: "0 10 * * *"  # Daily at 10 AM
+      verify:
+        - notification_delivered
+        - correct_routing
+        - acknowledgment_received
+        
+  chaos_testing:
+    scenarios:
+      - inject_high_latency
+      - simulate_agent_failure
+      - create_memory_spike
+      - generate_error_burst
+    schedule: "0 2 * * SAT"  # Saturday 2 AM
+    environment: staging_only
+```
+
+## Runbook References
+
+```yaml
+runbooks:
+  high_latency:
+    location: "/runbooks/performance/high-latency.md"
+    steps:
+      - check_system_resources
+      - analyze_slow_queries
+      - review_recent_changes
+      - implement_quick_fixes
+      - escalate_if_needed
+      
+  agent_failure:
+    location: "/runbooks/availability/agent-failure.md"
+    steps:
+      - verify_agent_status
+      - check_dependencies
+      - attempt_restart
+      - failover_procedure
+      - post_mortem_process
+```

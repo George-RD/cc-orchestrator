@@ -1,0 +1,89 @@
+# Confidence-Based Autonomy Rules
+
+# Define confidence thresholds for different levels of autonomous action
+confidence_thresholds:
+  # High confidence: Proceed without human review
+  autonomous:
+    threshold: 0.95
+    actions:
+      - code_formatting
+      - import_organization
+      - variable_renaming
+      - comment_updates
+      - test_additions
+      - documentation_updates
+    
+  # Medium confidence: Execute with detailed logging
+  logged_execution:
+    threshold: 0.75
+    actions:
+      - refactoring
+      - bug_fixes
+      - api_changes
+      - dependency_updates
+    require:
+      - detailed_explanation
+      - rollback_plan
+      
+  # Low confidence: Require human review
+  review_required:
+    threshold: 0.0  # anything below 0.75
+    actions:
+      - architecture_changes
+      - security_modifications
+      - data_model_changes
+      - external_api_integrations
+    process:
+      - present_options
+      - explain_tradeoffs
+      - await_approval
+
+# Task-specific confidence calculations
+task_confidence:
+  code_generation:
+    factors:
+      - existing_patterns: 0.3  # Similar code exists in project
+      - test_coverage: 0.2      # Can verify with tests
+      - complexity: 0.2         # Lower complexity = higher confidence
+      - domain_knowledge: 0.3   # Understanding of the domain
+      
+  refactoring:
+    factors:
+      - test_coverage: 0.4      # Most important for safe refactoring
+      - scope_size: 0.3         # Smaller scope = higher confidence
+      - dependencies: 0.3       # Fewer dependencies = safer
+      
+  bug_fixing:
+    factors:
+      - reproduction: 0.3       # Can reproduce the bug
+      - test_exists: 0.3        # Test to verify fix
+      - impact_scope: 0.2       # Limited impact area
+      - root_cause: 0.2         # Understanding of cause
+
+# Escalation rules
+escalation:
+  triggers:
+    - confidence_below: 0.5
+    - security_impact: true
+    - data_loss_risk: true
+    - breaking_change: true
+    - estimated_impact: "> 100 files"
+    
+  actions:
+    - request_human_review
+    - provide_risk_assessment
+    - suggest_safer_alternative
+    - create_rollback_plan
+
+# Learning and adaptation
+adaptation:
+  track_outcomes:
+    - action_taken
+    - confidence_level
+    - actual_result
+    - human_feedback
+    
+  adjust_thresholds:
+    - success_rate: "> 0.98"  # Increase autonomy
+    - failure_rate: "> 0.05"  # Decrease autonomy
+    - review_pattern: true    # Learn from corrections

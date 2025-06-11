@@ -1,0 +1,154 @@
+{
+  "mcpServers": {
+    "database": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-postgres"],
+      "env": {
+        "DATABASE_URL": "${DATABASE_URL}"
+      },
+      "capabilities": {
+        "query": true,
+        "schema": true,
+        "transactions": true
+      }
+    },
+    "github": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "capabilities": {
+        "repositories": true,
+        "issues": true,
+        "pullRequests": true,
+        "actions": true
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-filesystem", "--allowed-paths", "${PROJECT_ROOT}"],
+      "capabilities": {
+        "read": true,
+        "write": true,
+        "watch": true
+      }
+    },
+    "slack": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-slack"],
+      "env": {
+        "SLACK_BOT_TOKEN": "${SLACK_BOT_TOKEN}",
+        "SLACK_APP_TOKEN": "${SLACK_APP_TOKEN}"
+      },
+      "capabilities": {
+        "channels": true,
+        "messages": true,
+        "users": true
+      }
+    },
+    "google-drive": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-gdrive"],
+      "env": {
+        "GOOGLE_CLIENT_ID": "${GOOGLE_CLIENT_ID}",
+        "GOOGLE_CLIENT_SECRET": "${GOOGLE_CLIENT_SECRET}",
+        "GOOGLE_REFRESH_TOKEN": "${GOOGLE_REFRESH_TOKEN}"
+      },
+      "capabilities": {
+        "files": true,
+        "folders": true,
+        "search": true,
+        "share": true
+      }
+    },
+    "custom-api": {
+      "command": "node",
+      "args": ["./mcp-servers/custom-api-server.js"],
+      "env": {
+        "API_BASE_URL": "${API_BASE_URL}",
+        "API_KEY": "${API_KEY}"
+      },
+      "capabilities": {
+        "endpoints": true,
+        "authentication": true,
+        "caching": true
+      }
+    }
+  },
+  "defaultTimeout": 30000,
+  "retryConfig": {
+    "maxRetries": 3,
+    "retryDelay": 1000,
+    "backoffMultiplier": 2
+  },
+  "logging": {
+    "level": "info",
+    "format": "json",
+    "destination": "./logs/mcp.log"
+  },
+  "security": {
+    "allowedDomains": [
+      "*.internal.company.com",
+      "api.github.com",
+      "api.slack.com"
+    ],
+    "restrictedPaths": [
+      "/etc",
+      "/sys",
+      "/proc"
+    ],
+    "sandboxMode": false
+  },
+  "caching": {
+    "enabled": true,
+    "ttl": 300,
+    "maxSize": "100MB",
+    "strategy": "lru"
+  },
+  "customTools": [
+    {
+      "name": "deploy",
+      "description": "Deploy application to specified environment",
+      "command": "./scripts/deploy.sh",
+      "args": ["${environment}", "${version}"],
+      "requiredPermissions": ["deployment:write"]
+    },
+    {
+      "name": "runTests",
+      "description": "Execute test suite with coverage",
+      "command": "npm",
+      "args": ["test", "--", "--coverage", "${testPattern}"],
+      "timeout": 60000
+    },
+    {
+      "name": "generateReport",
+      "description": "Generate performance or quality report",
+      "command": "./scripts/generate-report.js",
+      "args": ["${reportType}", "${dateRange}"],
+      "outputFormat": "json"
+    }
+  ],
+  "environmentProfiles": {
+    "development": {
+      "mcpServers": ["filesystem", "database"],
+      "security": {
+        "sandboxMode": true
+      }
+    },
+    "staging": {
+      "mcpServers": ["filesystem", "database", "github"],
+      "security": {
+        "sandboxMode": true
+      }
+    },
+    "production": {
+      "mcpServers": ["filesystem", "database", "github", "slack", "google-drive"],
+      "security": {
+        "sandboxMode": false,
+        "requireAuthentication": true
+      }
+    }
+  },
+  "version": "1.0.0"
+}

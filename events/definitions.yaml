@@ -1,0 +1,360 @@
+# Event Schema Definitions
+
+## Core Event Structure
+```yaml
+event:
+  id: uuid
+  timestamp: ISO8601
+  type: string
+  source: agent_name
+  version: "1.0"
+  correlation_id: uuid (optional)
+  causation_id: uuid (optional)
+  metadata:
+    priority: low|normal|high|critical
+    ttl: seconds (optional)
+    retry_count: integer
+  payload: object
+```
+
+## Event Types
+
+### Task Events
+
+#### task.created
+Emitted when a new task is created
+```yaml
+type: task.created
+payload:
+  task_id: uuid
+  title: string
+  description: string
+  priority: low|normal|high|critical
+  assigned_to: agent_name
+  created_by: agent_name
+  requirements: array
+  deadline: ISO8601 (optional)
+```
+
+#### task.assigned
+Emitted when a task is assigned to an agent
+```yaml
+type: task.assigned
+payload:
+  task_id: uuid
+  assigned_to: agent_name
+  assigned_by: agent_name
+  previous_assignee: agent_name (optional)
+  reason: string
+```
+
+#### task.started
+Emitted when an agent begins working on a task
+```yaml
+type: task.started
+payload:
+  task_id: uuid
+  agent: agent_name
+  estimated_completion: ISO8601
+  approach: string
+```
+
+#### task.progress
+Emitted to report task progress
+```yaml
+type: task.progress
+payload:
+  task_id: uuid
+  agent: agent_name
+  percentage: 0-100
+  completed_steps: array
+  remaining_steps: array
+  blockers: array (optional)
+```
+
+#### task.completed
+Emitted when a task is finished
+```yaml
+type: task.completed
+payload:
+  task_id: uuid
+  agent: agent_name
+  duration_ms: integer
+  deliverables: array
+  test_results: object
+  next_steps: array (optional)
+```
+
+#### task.failed
+Emitted when a task cannot be completed
+```yaml
+type: task.failed
+payload:
+  task_id: uuid
+  agent: agent_name
+  error_code: string
+  error_message: string
+  attempted_solutions: array
+  recommendations: array
+```
+
+### Code Events
+
+#### code.changed
+Emitted when code is modified
+```yaml
+type: code.changed
+payload:
+  files: array
+  change_type: create|update|delete
+  author: agent_name
+  description: string
+  diff_stats:
+    additions: integer
+    deletions: integer
+    files_changed: integer
+```
+
+#### code.reviewed
+Emitted when code review is complete
+```yaml
+type: code.reviewed
+payload:
+  review_id: uuid
+  files: array
+  reviewer: agent_name
+  status: approved|changes_requested|rejected
+  comments: array
+  security_issues: array
+  performance_issues: array
+```
+
+#### code.merged
+Emitted when code is merged
+```yaml
+type: code.merged
+payload:
+  merge_id: uuid
+  source_branch: string
+  target_branch: string
+  files_changed: integer
+  conflicts_resolved: boolean
+  merged_by: agent_name
+```
+
+### Test Events
+
+#### test.started
+Emitted when test execution begins
+```yaml
+type: test.started
+payload:
+  test_run_id: uuid
+  test_suite: string
+  total_tests: integer
+  agent: agent_name
+```
+
+#### test.completed
+Emitted when test execution finishes
+```yaml
+type: test.completed
+payload:
+  test_run_id: uuid
+  test_suite: string
+  passed: integer
+  failed: integer
+  skipped: integer
+  duration_ms: integer
+  coverage: float
+  failed_tests: array
+```
+
+### Build Events
+
+#### build.started
+Emitted when build process begins
+```yaml
+type: build.started
+payload:
+  build_id: uuid
+  trigger: manual|automated|scheduled
+  triggered_by: agent_name
+  environment: development|staging|production
+```
+
+#### build.completed
+Emitted when build process finishes
+```yaml
+type: build.completed
+payload:
+  build_id: uuid
+  status: success|failure
+  duration_ms: integer
+  artifacts: array
+  errors: array (if failed)
+```
+
+### Error Events
+
+#### error.detected
+Emitted when an error is detected
+```yaml
+type: error.detected
+payload:
+  error_id: uuid
+  severity: low|medium|high|critical
+  error_type: string
+  error_message: string
+  stack_trace: string
+  affected_component: string
+  detected_by: agent_name
+```
+
+#### error.resolved
+Emitted when an error is fixed
+```yaml
+type: error.resolved
+payload:
+  error_id: uuid
+  resolution: string
+  resolved_by: agent_name
+  fix_type: code_change|configuration|rollback
+  verification: string
+```
+
+### System Events
+
+#### agent.online
+Emitted when an agent becomes available
+```yaml
+type: agent.online
+payload:
+  agent: agent_name
+  capabilities: array
+  capacity: integer
+  version: string
+```
+
+#### agent.offline
+Emitted when an agent becomes unavailable
+```yaml
+type: agent.offline
+payload:
+  agent: agent_name
+  reason: planned|error|timeout
+  expected_return: ISO8601 (optional)
+```
+
+#### agent.overloaded
+Emitted when an agent is at capacity
+```yaml
+type: agent.overloaded
+payload:
+  agent: agent_name
+  current_load: integer
+  max_capacity: integer
+  queued_tasks: integer
+```
+
+## Event Handlers
+
+### Registration
+```javascript
+const eventHandlers = {
+  'task.created': [handleTaskCreated, notifyTeam],
+  'task.completed': [updateMetrics, triggerNextTask],
+  'code.changed': [runLinter, triggerTests],
+  'test.failed': [notifyDeveloper, blockMerge],
+  'error.detected': [logError, createTicket, alertOncall]
+};
+```
+
+### Handler Interface
+```javascript
+interface EventHandler {
+  // Return true if event was handled successfully
+  handle(event: Event): Promise<boolean>;
+  
+  // Return true if this handler can process this event
+  canHandle(event: Event): boolean;
+  
+  // Priority for handler execution order
+  priority: number;
+}
+```
+
+## Event Patterns
+
+### Event Sourcing
+Store all events for complete audit trail:
+```yaml
+event_store:
+  - Store all events immutably
+  - Use for rebuilding state
+  - Enable time travel debugging
+  - Audit trail for compliance
+```
+
+### Event Choreography
+Agents react to events independently:
+```yaml
+choreography_example:
+  - Backend emits 'api.created'
+  - Frontend subscribes and updates UI
+  - Docs subscribes and generates documentation  
+  - QA subscribes and creates test cases
+```
+
+### Event Orchestration
+Central orchestrator directs event flow:
+```yaml
+orchestration_example:
+  - Orchestrator receives 'feature.requested'
+  - Orchestrator emits 'task.created' to Backend
+  - Waits for 'task.completed' from Backend
+  - Then emits 'task.created' to Frontend
+```
+
+## Best Practices
+
+### Event Design
+1. **Make events immutable** - Never modify past events
+2. **Use past tense** - 'task.completed' not 'task.complete'
+3. **Include context** - Enough data to understand the event
+4. **Version events** - Support backward compatibility
+5. **Keep payloads small** - Reference IDs, not full objects
+
+### Error Handling
+```javascript
+const resilientHandler = async (event) => {
+  try {
+    await processEvent(event);
+  } catch (error) {
+    // Retry with exponential backoff
+    await retryWithBackoff(
+      () => processEvent(event),
+      { maxRetries: 3, initialDelay: 1000 }
+    );
+    
+    // If still failing, dead letter queue
+    if (stillFailing) {
+      await deadLetterQueue.add(event);
+    }
+  }
+};
+```
+
+### Performance
+- Use event batching for high-volume events
+- Implement event filtering at source
+- Consider event aggregation for metrics
+- Use appropriate retention policies
+
+### Monitoring
+Track key event metrics:
+- Event throughput by type
+- Handler processing time
+- Error rates by handler
+- Event lag (time from emission to processing)
+- Dead letter queue size

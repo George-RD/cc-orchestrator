@@ -1,0 +1,95 @@
+# Test-Driven Development Workflow
+
+name: TDD Implementation Flow
+description: Systematic test-first development approach
+trigger_phrases:
+  - "implement using TDD"
+  - "test-driven development"
+  - "write tests first"
+
+workflow:
+  - step: requirement_analysis
+    actions:
+      - parse_requirements
+      - identify_test_scenarios
+      - define_acceptance_criteria
+      
+  - step: write_failing_tests
+    rules:
+      - no_implementation_yet
+      - comprehensive_coverage
+      - edge_cases_included
+    outputs:
+      - unit_tests
+      - integration_tests
+      - test_descriptions
+      
+  - step: verify_tests_fail
+    actions:
+      - run_test_suite
+      - confirm_all_fail
+      - validate_error_messages
+    checkpoint: tests_must_fail
+    
+  - step: minimal_implementation
+    rules:
+      - simplest_solution_first
+      - no_premature_optimization
+      - just_enough_to_pass
+    constraints:
+      - no_mock_implementations
+      - real_functionality_only
+      
+  - step: verify_tests_pass
+    actions:
+      - run_test_suite
+      - check_coverage
+      - validate_behavior
+    requirements:
+      - all_tests_green
+      - coverage_above_80
+      
+  - step: refactor
+    conditions:
+      - tests_still_passing
+    actions:
+      - improve_code_structure
+      - eliminate_duplication
+      - enhance_readability
+      - optimize_performance
+      
+  - step: add_edge_cases
+    actions:
+      - identify_missed_scenarios
+      - write_additional_tests
+      - handle_error_conditions
+      
+  - step: document
+    outputs:
+      - code_documentation
+      - test_documentation
+      - usage_examples
+
+validation:
+  test_quality:
+    - descriptive_names
+    - single_assertion_principle
+    - arranged_act_assert_pattern
+    - independent_tests
+    
+  code_quality:
+    - follows_solid_principles
+    - clear_naming
+    - appropriate_abstractions
+    - no_test_pollution
+
+anti_patterns_to_avoid:
+  - writing_code_before_tests
+  - testing_implementation_details
+  - mock_heavy_tests
+  - ignored_failing_tests
+  - retroactive_test_writing
+
+example_usage: |
+  "Implement a user authentication service using TDD. Start with tests for 
+  user registration, login, and password reset functionality."
