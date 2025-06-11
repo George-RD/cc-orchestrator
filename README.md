@@ -11,6 +11,7 @@ A sophisticated multi-agent orchestration template for Claude Code that implemen
 - **🧪 TDD Integration**: Test-first development built into every specialist agent
 - **📈 Comprehensive Monitoring**: Real-time metrics, health checks, and performance tracking
 - **🔒 Security-First**: Built-in security validation and compliance checking
+- **🚀 DevOps Integration**: Automated infrastructure provisioning and deployment pipelines
 - **💡 Ultra-Think Mode**: Deep analysis for complex architectural decisions
 
 ## 🏗️ Architecture
@@ -23,12 +24,12 @@ A sophisticated multi-agent orchestration template for Claude Code that implemen
 │     Based)      │
 └────────┬────────┘
          │
-    ┌────┴────┬──────┬──────┬──────┐
-    ▼         ▼      ▼      ▼      ▼
-┌────────┐┌────────┐┌────┐┌────┐┌──────┐
-│Backend ││Frontend││ QA ││Docs││Events│
-│  Agent ││  Agent ││Agent│Agent│ Bus  │
-└────────┘└────────┘└────┘└────┘└──────┘
+    ┌────┴────┬──────┬──────┬──────┬──────┬──────┐
+    ▼         ▼      ▼      ▼      ▼      ▼      ▼
+┌────────┐┌────────┐┌────┐┌────┐┌──────┐┌────────┐┌──────┐
+│Backend ││Frontend││ QA ││Docs││DevOps││Security││Events│
+│  Agent ││  Agent ││Agent│Agent│ Agent ││  Agent ││ Bus  │
+└────────┘└────────┘└────┘└────┘└──────┘└────────┘└──────┘
 ```
 
 ### Core Components

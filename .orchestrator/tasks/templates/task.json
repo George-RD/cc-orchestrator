@@ -17,7 +17,7 @@
   },
   
   "assignment": {
-    "assigned_to": "orchestrator|backend|frontend|qa|docs",
+    "assigned_to": "orchestrator|backend|frontend|qa|docs|devops|security",
     "assigned_at": "ISO8601",
     "assigned_by": "orchestrator"
   },

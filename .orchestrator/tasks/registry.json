@@ -15,7 +15,9 @@
       "backend": 0,
       "frontend": 0,
       "qa": 0,
-      "docs": 0
+      "docs": 0,
+      "devops": 0,
+      "security": 0
     },
     "by_priority": {
       "critical": 0,

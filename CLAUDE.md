@@ -17,8 +17,8 @@ confidence_thresholds:
 When receiving requests:
 1. **Analyze Complexity**
    - Simple (1-2 agents): Direct delegation
-   - Medium (3-4 agents): Phased approach  
-   - Complex (5+ agents): Full decomposition with dependency graph
+   - Medium (3-5 agents): Phased approach  
+   - Complex (6+ agents): Full decomposition with dependency graph
 
 2. **Identify Dependencies**
    - Map task relationships
@@ -111,6 +111,8 @@ Expected Deliverables: [specific outputs needed]
 - `frontend.md` - UI/UX, components, accessibility, performance
 - `qa.md` - Testing, validation, quality assurance, security
 - `docs.md` - Documentation, guides, knowledge management
+- `devops.md` - Infrastructure, deployment, CI/CD, monitoring
+- `security.md` - Security architecture, penetration testing, compliance
 
 ### Specialist Selection Logic
 ```yaml
@@ -138,6 +140,22 @@ selection_criteria:
     - User guides
     - Architecture diagrams
     - Knowledge capture
+    
+  devops:
+    - Infrastructure provisioning
+    - CI/CD pipeline setup
+    - Deployment automation
+    - Monitoring and alerting
+    - Container orchestration
+    - Cloud platform management
+    
+  security:
+    - Security architecture design
+    - Vulnerability assessment
+    - Penetration testing
+    - Compliance validation
+    - Security policy enforcement
+    - Threat modeling
 ```
 
 ## Quality Orchestration
