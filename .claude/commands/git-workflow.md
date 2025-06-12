@@ -79,7 +79,7 @@ git merge worktrees/{specialist}-work/{specialist}-work --no-ff -m "Merge task-{
 ### Mid-Task Recovery
 ```bash
 # Orchestrator checks active tasks
-ls .orchestrator/tasks/active/
+ls .orchestrator/tasks/in_progress/
 
 # For each active task, check corresponding worktree
 cd worktrees/{specialist}-work
