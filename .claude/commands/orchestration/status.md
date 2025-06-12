@@ -13,29 +13,43 @@ Read from /.orchestrator/tasks/registry.json → summary section only
 ## 2. Status Display Options
 
 ### Default View (no filter):
-Show active tasks and recent updates only:
+Show current work status using new folder structure:
 
 ```
 📊 Task Status Overview
 ═══════════════════════════════════════════
 
-🔵 Active Tasks (${active_count})
+📋 Todo Tasks (${todo_count})
 ────────────────────────────────
-• task-auth-001: JWT implementation [backend] - 75% complete
-  └─ Last update: 2 hours ago - "Implemented token generation"
-• task-auth-002: Login UI [frontend] - blocked by auth-001  
-  └─ Waiting for: API endpoints
-• task-docs-001: API documentation [docs] - 30% complete
-  └─ Last update: Yesterday - "Documented auth endpoints"
+• task-001: File Structure Cleanup [docs] - Ready to start
+• task-002: Template Validation Tool [qa] - Ready to start
+• task-004: Orchestration Logic Restoration [docs] - Ready to start
+• task-005: TodoWrite Integration Strategy [docs] - Ready to start
+
+⚡ In Progress (${in_progress_count})
+────────────────────────────────
+[Currently none]
+
+✅ Recently Completed (${completed_count})
+────────────────────────────────────
+• task-006: Minimal Auto-Orchestration Command Logic - Completed
+• task-007: Complex Command Analysis & Simplification - Completed  
+• task-008: Command Simplification Implementation - Completed
 
 🟡 In Review (${review_count})
 ────────────────────────────────
-• task-data-003: Database migrations - READY FOR CODE REVIEW
-• task-test-001: Integration tests - AWAITING QA VALIDATION
+[Currently none]
+
+❌ Rejected (${rejected_count})
+────────────────────────────────
+• task-003: Framework Tier Creation - Rejected
 
 📈 Quick Stats
 ────────────────────────────────
-• Total Active: ${active} tasks
+• Total Todo: ${todo} tasks
+• Total In Progress: ${in_progress} tasks  
+• Total Completed: ${completed} tasks
+• Total Rejected: ${rejected} tasks
 • Blocked: ${blocked} tasks  
 • Completed Today: ${completed_today}
 • Weekly Velocity: ${velocity} tasks/week

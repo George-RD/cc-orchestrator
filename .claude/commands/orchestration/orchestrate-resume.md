@@ -6,10 +6,10 @@ Simple logic to resume work on existing tasks:
 ## Resume Logic
 
 ### Step 1: Show Current State
-**Display active tasks:**
-- List all files in `/.orchestrator/tasks/active/`
-- Show task titles and types
-- Highlight high priority tasks
+**Display current tasks:**
+- List all files in `/.orchestrator/tasks/todo/` and `/.orchestrator/tasks/in_progress/`
+- Show task titles, types, and current status
+- Highlight high priority tasks and tasks ready to start
 
 ### Step 2: Task State Analysis
 **Task states and actions:**
@@ -17,8 +17,8 @@ Simple logic to resume work on existing tasks:
 - **in_progress**: Currently being worked on - add log entries as you work  
 - **blocked**: Cannot proceed - identify and resolve blockers
 - **review**: Completed work - needs validation before completion
-- **completed**: Fully done - move to completed directory
-- **rejected**: Task was rejected - moved to Rejected directory
+- **completed**: Fully done - move to `/completed/` directory
+- **rejected**: Task was rejected - moved to `/rejected/` directory
 
 ### Step 3: Resumption Recommendations
 **Smart suggestions based on states:**

@@ -39,7 +39,8 @@ Simple PRD-to-task conversion using logical mapping:
 
 ### Step 5: Auto-Registry Update
 - Update `registry.json` with new task counts
-- Add to `active_tasks` list
+- Add to `todo_tasks` list
+- Place task files in `/.orchestrator/tasks/todo/` directory
 
 ## Simplicity Rules
 1. **No bash scripting** - Pure logical mapping

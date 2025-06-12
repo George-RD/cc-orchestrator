@@ -28,6 +28,6 @@ if no PRD && no tasks:
 2. **Smart Routing**: Delegate heavy lifting to specialized commands
 3. **State Detection**: 
    - Check `/.orchestrator/requirements/active/` for PRDs (file count only)
-   - Check `/.orchestrator/tasks/active/` for todo/in_progress tasks (file count only)
+   - Check `/.orchestrator/tasks/todo/` and `/.orchestrator/tasks/in_progress/` for active work (file count only)
    - Route to appropriate command based on state
 4. **Full Auto**: Enable completely autonomous operation through command chaining
