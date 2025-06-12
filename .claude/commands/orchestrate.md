@@ -3,28 +3,44 @@
 ## Purpose
 Intelligent state detection and action command that adapts based on current project state.
 
-## Behavior Logic
+## Behavior Logic - Auto Command Delegation
 ```
 if PRD exists && no active tasks:
-  → Parse PRD and create task breakdown
+  → Call /tasks-create to parse PRD and create task breakdown
   
 if active tasks exist:
-  → Show status and resume work
+  → Call /status to show current state
+  → Call /orchestrate-resume for resumption options
   
 if no PRD && no tasks:
-  → Guide user to create PRD using template
+  → Call /prd-init to guide PRD creation using template
+  
+if tasks blocked or need update:
+  → Call /task-update for progress management
 ```
 
 ## Usage Examples
 ```bash
-/orchestrate                    # Auto-detect and act
-/orchestrate create            # Force create tasks from PRD
-/orchestrate resume            # Force resume existing work  
-/orchestrate status            # Show current state only
+/orchestrate                    # Auto-detect and delegate to appropriate command
+/orchestrate create            # Force call /tasks-create
+/orchestrate resume            # Force call /orchestrate-resume
+/orchestrate status            # Force call /status
+/orchestrate init              # Force call /prd-init
 ```
 
+## Auto-Delegation Map
+**State Detection → Command Routing:**
+- **No PRD, No Tasks** → `/prd-init`
+- **PRD exists, No Tasks** → `/tasks-create` 
+- **Active Tasks exist** → `/status` then `/orchestrate-resume`
+- **Tasks blocked** → `/task-update`
+- **Force modes** → Direct command calls
+
 ## Implementation
-The command checks:
-1. `/.orchestrator/requirements/active/` for PRDs
-2. `/.orchestrator/tasks/active/` for ongoing work
-3. Provides appropriate next steps based on findings
+1. **Minimal Context Load**: Only check directory existence, not file contents
+2. **Smart Routing**: Delegate heavy lifting to specialized commands
+3. **State Detection**: 
+   - Check `/.orchestrator/requirements/active/` for PRDs (file count only)
+   - Check `/.orchestrator/tasks/active/` for tasks (file count only)
+   - Route to appropriate command based on state
+4. **Full Auto**: Enable completely autonomous operation through command chaining

@@ -1,33 +1,42 @@
 {
   "version": "1.0.0",
-  "last_updated": "2025-01-15T10:00:00Z",
+  "last_updated": "2025-06-12T02:54:00Z",
   "summary": {
-    "total": 0,
+    "total": 7,
     "by_status": {
-      "active": 0,
+      "active": 5,
       "review": 0,
       "blocked": 0,
-      "completed": 0,
+      "completed": 2,
       "archived": 0
     },
     "by_agent": {
       "orchestrator": 0,
       "backend": 0,
       "frontend": 0,
-      "qa": 0,
-      "docs": 0,
+      "qa": 1,
+      "docs": 6,
       "devops": 0,
       "security": 0
     },
     "by_priority": {
       "critical": 0,
-      "high": 0,
-      "normal": 0,
+      "high": 4,
+      "normal": 3,
       "low": 0
     }
   },
-  "active_tasks": {},
-  "recent_completions": [],
+  "active_tasks": {
+    "task-001": "File Structure Cleanup",
+    "task-002": "Template Validation Tool",
+    "task-003": "Framework Tier Creation (Minimal/Standard/Enterprise)",
+    "task-004": "Orchestration Logic Restoration",
+    "task-005": "TodoWrite Integration Strategy"
+  },
+  "recent_completions": [
+    {"id": "task-006", "title": "Minimal Auto-Orchestration Command Logic", "completed": "2025-06-12T03:25:00Z"},
+    {"id": "task-007", "title": "Analyze Complex Orchestration Commands for Simplification", "completed": "2025-06-12T03:35:00Z"}
+  ],
   "blocked_tasks": {},
   "_instructions": {
     "usage": "Load summary section first. Only load task details when needed.",

@@ -1,0 +1,25 @@
+{
+  "id": "task-005",
+  "title": "TodoWrite Integration Strategy",
+  "type": "docs",
+  "status": "active",
+  "confidence": "medium",
+  "assigned_specialist": "docs",
+  "coordination_type": "development",
+  "git_worktree": "worktrees/docs-work",
+  "git_branch": "docs-work",
+  "dependencies": [],
+  "blockers": [],
+  "can_parallel_with": ["task-001", "task-002", "task-003", "task-004"],
+  "execution_pattern": "parallel",
+  "acceptance": [
+    "Document TodoWrite for orchestrator internal planning (session-based)",
+    "Document JSON tasks for specialist assignments (persistent)",
+    "Create guidelines for when to use each approach",
+    "Avoid dual state management conflicts"
+  ],
+  "log": [
+    "2025-06-12T03:10:00Z: Task created from PRD High Merit Item #6"
+  ],
+  "commits": []
+}

@@ -1,0 +1,28 @@
+{
+  "id": "task-006",
+  "title": "Minimal Auto-Orchestration Command Logic",
+  "type": "docs",
+  "status": "completed",
+  "confidence": "high",
+  "assigned_specialist": "docs",
+  "coordination_type": "development",
+  "git_worktree": "worktrees/docs-work",
+  "git_branch": "docs-work",
+  "dependencies": ["task-004"],
+  "blockers": [],
+  "can_parallel_with": ["task-001", "task-002", "task-003", "task-005"],
+  "execution_pattern": "sequential",
+  "acceptance": [
+    "Update .claude/commands/orchestrate.md with minimal logic to detect state and call other commands",
+    "Ensure /orchestrate knows WHEN to call /tasks-create, /status, /prd-init, etc.",
+    "Keep core command lightweight - delegate complex logic to specialized commands",
+    "Enable full auto operation without loading unnecessary context",
+    "Maintain separation of concerns: orchestrate = decision engine, other commands = action engines"
+  ],
+  "log": [
+    "2025-06-12T03:20:00Z: Task created for core auto-orchestration requirement",
+    "2025-06-12T03:25:00Z: Updated orchestrate.md with auto-delegation logic",
+    "2025-06-12T03:25:00Z: Task completed - minimal decision engine implemented"
+  ],
+  "commits": []
+}
