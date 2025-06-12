@@ -13,16 +13,17 @@ Simple logic to resume work on existing tasks:
 
 ### Step 2: Task State Analysis
 **Task states and actions:**
-- **active**: Ready to start - can transition to in_progress
+- **todo**: Ready to start - can transition to in_progress
 - **in_progress**: Currently being worked on - add log entries as you work  
 - **blocked**: Cannot proceed - identify and resolve blockers
 - **review**: Completed work - needs validation before completion
 - **completed**: Fully done - move to completed directory
+- **rejected**: Task was rejected - moved to Rejected directory
 
 ### Step 3: Resumption Recommendations
 **Smart suggestions based on states:**
 ```
-If active tasks (different specialists):
+If todo tasks (different specialists):
   → "Start parallel work: Task X (docs), Task Y (qa), Task Z (backend)"
 
 If in_progress tasks exist:

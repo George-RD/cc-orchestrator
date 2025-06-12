@@ -2,7 +2,7 @@
   "id": "task-002",
   "title": "Template Validation Tool",
   "type": "qa",
-  "status": "active",
+  "status": "todo",
   "confidence": "high",
   "assigned_specialist": "qa",
   "coordination_type": "development",

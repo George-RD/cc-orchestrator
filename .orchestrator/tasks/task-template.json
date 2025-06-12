@@ -1,18 +1,10 @@
 {
   "id": "task-xxx",
-  "title": "Clear description",
+  "title": "Clear description", 
   "type": "backend|frontend|qa|docs|devops|security",
   "status": "todo|in_progress|blocked|review|completed|rejected",
   "confidence": "high|medium|low",
-  "assigned_specialist": "backend|frontend|qa|docs|devops|security",
-  "coordination_type": "development|infrastructure|security",
-  "git_worktree": "worktrees/{specialist}-work|main",
-  "git_branch": "{specialist}-work|main", 
   "dependencies": [],
-  "blockers": [],
-  "can_parallel_with": [],
-  "execution_pattern": "parallel|sequential|staged",
   "acceptance": [],
-  "log": [],
-  "commits": []
+  "log": []
 }

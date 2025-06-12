@@ -2,7 +2,7 @@
   "id": "task-005",
   "title": "TodoWrite Integration Strategy",
   "type": "docs",
-  "status": "active",
+  "status": "todo",
   "confidence": "medium",
   "assigned_specialist": "docs",
   "coordination_type": "development",

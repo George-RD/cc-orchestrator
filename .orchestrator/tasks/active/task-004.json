@@ -2,7 +2,7 @@
   "id": "task-004",
   "title": "Orchestration Logic Restoration",
   "type": "docs",
-  "status": "active",
+  "status": "todo",
   "confidence": "high",
   "assigned_specialist": "docs",
   "coordination_type": "development",

@@ -64,8 +64,8 @@ Simple JSON structure:
 {
   "id": "task-xxx",
   "title": "Clear description", 
-  "type": "backend|frontend|qa|docs",
-  "status": "active|done|blocked|review",
+  "type": "backend|frontend|qa|docs|devops|security",
+  "status": "todo|in_progress|blocked|review|completed|rejected",
   "confidence": "high|medium|low",
   "dependencies": [],
   "acceptance": [],

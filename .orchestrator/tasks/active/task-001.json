@@ -2,7 +2,7 @@
   "id": "task-001",
   "title": "File Structure Cleanup",
   "type": "docs",
-  "status": "active",
+  "status": "todo",
   "confidence": "high",
   "assigned_specialist": "docs",
   "coordination_type": "development",
