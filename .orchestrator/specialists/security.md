@@ -46,4 +46,10 @@ Load and follow: `/.orchestrator/shared/coding-ethos.md`
 - Role-based access control
 - Security audit logging
 
-When complete: Update task JSON, document in log, assess confidence level.
+## Git Workflow
+- **Work Location**: Main branch (project-wide security analysis and changes)
+- **Start**: `cd project-root && git pull origin main`
+- **Progress**: Regular commits with `git commit -m "Security task-{id}: {change}"`
+- **Complete**: Final commit with `git commit -m "Complete Security task-{id}: {title} (confidence: {level})"`
+
+When complete: Update task JSON, commit to main branch, assess confidence level.

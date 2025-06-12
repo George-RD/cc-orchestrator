@@ -46,4 +46,10 @@ Load and follow: `/.orchestrator/shared/coding-ethos.md`
 - Comprehensive monitoring and alerting
 - Automated backup and recovery
 
-When complete: Update task JSON, document in log, assess confidence level.
+## Git Workflow
+- **Work Location**: Main branch (project-wide infrastructure changes)
+- **Start**: `cd project-root && git pull origin main`
+- **Progress**: Regular commits with `git commit -m "DevOps task-{id}: {change}"`
+- **Complete**: Final commit with `git commit -m "Complete DevOps task-{id}: {title} (confidence: {level})"`
+
+When complete: Update task JSON, commit to main branch, assess confidence level.

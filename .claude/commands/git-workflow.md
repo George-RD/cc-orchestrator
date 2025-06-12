@@ -1,17 +1,20 @@
 # Git Worktree Workflow
 
 ## Architecture Overview
-Each specialist operates in dedicated git worktrees, enabling true parallel development with session recovery.
+Two orchestration patterns: parallel development for code specialists in worktrees, sequential coordination for infrastructure specialists in main branch.
 
 ## Worktree Structure
 ```
 project-root/               # Main branch (orchestrator)
 ├── .git/
-├── worktrees/
-│   ├── backend-work/       # Backend specialist worktree
-│   ├── frontend-work/      # Frontend specialist worktree  
-│   ├── qa-work/           # QA specialist worktree
-│   └── docs-work/         # Docs specialist worktree
+└── worktrees/
+    ├── backend-work/       # Backend specialist worktree
+    ├── frontend-work/      # Frontend specialist worktree  
+    ├── qa-work/           # QA specialist worktree
+    └── docs-work/         # Docs specialist worktree
+
+# DevOps & Security work directly in main branch
+# (Project-wide infrastructure & security changes)
 ```
 
 ## Workflow Patterns
@@ -96,12 +99,32 @@ git diff    # Review conflicts
 git commit -m "Resolve conflicts in task-{id}: {resolution_notes}"
 ```
 
-## Branch Naming Convention
-- `backend-work` - Backend specialist development
-- `frontend-work` - Frontend specialist development  
-- `qa-work` - QA specialist development
-- `docs-work` - Documentation specialist development
-- `feature/{task-id}` - Optional task-specific branches for complex features
+## Specialist Workflow Patterns
+
+### Development Specialists (Use Worktrees)
+- **Backend, Frontend, QA, Docs**: Dedicated worktrees for parallel development
+- **Pattern**: Iterative development, session recovery, conflict isolation
+- **Branches**: `backend-work`, `frontend-work`, `qa-work`, `docs-work`
+
+### Infrastructure Specialists (Use Main Branch)
+- **DevOps, Security**: Work directly in main branch with careful coordination
+- **Pattern**: Project-wide analysis, infrastructure changes, compliance reviews
+- **Workflow**: 
+  ```bash
+  # DevOps/Security workflow
+  cd project-root  # Work in main branch
+  git pull origin main  # Always start with latest
+  # Make infrastructure/security changes
+  git commit -m "DevOps task-{id}: {description} (confidence: {level})"
+  ```
+
+### Branch Naming Convention
+- `backend-work` - Backend specialist development worktree
+- `frontend-work` - Frontend specialist development worktree
+- `qa-work` - QA specialist development worktree  
+- `docs-work` - Documentation specialist worktree
+- `main` - DevOps and Security work here directly
+- `feature/{task-id}` - Optional for complex multi-specialist features
 
 ## Commit Message Format
 ```
@@ -135,7 +158,37 @@ Examples:
 - **Medium confidence**: Create PR for review with notes
 - **Low confidence**: Hold for human review with concerns
 
+## Orchestration Timing Patterns
+
+### Parallel Development Triggers
+```
+Feature Development Phase:
+├── Backend task-001 (parallel) → worktrees/backend-work
+├── Frontend task-002 (parallel) → worktrees/frontend-work  
+├── QA task-003 (parallel) → worktrees/qa-work
+└── Docs task-004 (parallel) → worktrees/docs-work
+```
+
+### Sequential Coordination Triggers
+```
+Infrastructure Phase:
+├── DevOps task-005 (sequential) → main branch
+└── After infrastructure: Resume parallel development
+
+Security Review Phase:
+├── Security task-006 (sequential) → main branch  
+└── After security: Resume parallel development
+```
+
+### Optimal Orchestration Flow
+1. **Start**: Parallel development specialists work on core features
+2. **Infrastructure Need**: Sequential DevOps intervention when required
+3. **Security Review**: Sequential Security analysis at milestones
+4. **Resume**: Return to parallel development pattern
+
 ## Commands Integration
 - `/git-status` - Show all worktree statuses and active tasks
 - `/git-sync` - Update all worktrees from main branch
 - `/git-merge task-{id}` - Merge specific completed task
+- `/coordinate devops` - Sequential DevOps intervention
+- `/coordinate security` - Sequential Security review

@@ -60,7 +60,7 @@ Create a weighted scoring matrix:
 - Set success metrics
 
 ## 5. Documentation
-Create an ADR following docs/adr/template.md:
+Create an Architecture Decision Record (ADR):
 - Clear problem statement
 - Detailed context
 - Decision rationale

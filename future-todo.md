@@ -66,6 +66,11 @@ This document tracks items discovered during the Claude Template Simplification 
 - **Specialist agent marketplace**: Sharing custom specialist definitions
 - **Template showcase**: Gallery of successful projects using the template
 
+### File Structure Cleanup Needed
+- **Discovered**: Redundant task folders (completed/ and done/), irrelevant docs/adr/ examples
+- **Impact**: Confusing structure with leftover complex template artifacts  
+- **Future**: Systematic cleanup of template cruft, standardize folder naming
+
 ### Core vs Advanced Feature Balance
 - **Discovered**: Framework can be 574 lines (core) or 867 lines (with advanced commands)
 - **Impact**: Clear distinction between essential and enhancement features
