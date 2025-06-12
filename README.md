@@ -5,15 +5,12 @@ A simplified AI orchestration framework that maintains power while dramatically 
 
 ## Quick Start
 1. **Copy to your project**: `cp CLAUDE_template.md your-project/CLAUDE.md`
-2. **Create a PRD**: Use `.orchestrator/requirements/template.prd.md`
+2. **Create a PRD**: Use `.orchestrator/templates/prd-template.md`
 3. **Start orchestrating**: The master orchestrator handles the rest
 
 ## Structure
 ```
-├── CLAUDE_template.md (95 lines)      # Master orchestrator
-├── .claude/
-│   ├── confidence.yaml (35 lines)     # Simple autonomy rules
-│   └── commands/git-workflow.md       # Git worktree management
+├── CLAUDE_template.md (95 lines)      # Master orchestrator with confidence rules
 ├── worktrees/                         # Development specialist worktrees
 │   ├── backend-work/                  # Backend development branch
 │   ├── frontend-work/                 # Frontend development branch
@@ -21,10 +18,10 @@ A simplified AI orchestration framework that maintains power while dramatically 
 │   └── docs-work/                     # Documentation branch
 │   # DevOps & Security work in main branch (infrastructure/project-wide)
 └── .orchestrator/
-    ├── shared/coding-ethos.md          # Common principles + git workflow
+    ├── shared/coding-ethos.md          # Common principles with git workflow
     ├── specialists/                    # 4 core specialists (~55 lines each)
-    ├── tasks/task-template.json        # Task structure with git tracking
-    └── requirements/template.prd.md    # Simple PRD format
+    ├── templates/task-template.json     # Task structure with git tracking
+    └── templates/prd-template.md        # Simple PRD format
 ```
 
 ## Core Principles
