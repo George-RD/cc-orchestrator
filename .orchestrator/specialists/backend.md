@@ -46,4 +46,9 @@ Load and follow: `/.orchestrator/shared/coding-ethos.md`
 - Environment-based configuration
 - Comprehensive error responses
 
-When complete: Update task JSON, document in log, assess confidence level.
+## Git Workflow
+- **Start**: `cd worktrees/backend-work && git reset --hard origin/main`
+- **Progress**: Regular commits with `git commit -m "Progress on task-{id}: {change}"`
+- **Complete**: Final commit with `git commit -m "Complete task-{id}: {title} (confidence: {level})"`
+
+When complete: Update task JSON, commit final state, assess confidence level.

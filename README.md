@@ -10,26 +10,34 @@ A simplified AI orchestration framework that maintains power while dramatically 
 
 ## Structure
 ```
-├── CLAUDE_template.md (92 lines)      # Master orchestrator
-├── .claude/confidence.yaml (20 lines) # Simple autonomy rules
+├── CLAUDE_template.md (95 lines)      # Master orchestrator
+├── .claude/
+│   ├── confidence.yaml (35 lines)     # Simple autonomy rules
+│   └── commands/git-workflow.md       # Git worktree management
+├── worktrees/                         # Specialist git worktrees
+│   ├── backend-work/                  # Backend development branch
+│   ├── frontend-work/                 # Frontend development branch
+│   ├── qa-work/                       # QA development branch
+│   └── docs-work/                     # Documentation branch
 └── .orchestrator/
-    ├── shared/coding-ethos.md          # Common principles
-    ├── specialists/                    # 4 core specialists (~50 lines each)
-    ├── tasks/task-template.json        # Minimal task structure
+    ├── shared/coding-ethos.md          # Common principles + git workflow
+    ├── specialists/                    # 4 core specialists (~55 lines each)
+    ├── tasks/task-template.json        # Task structure with git tracking
     └── requirements/template.prd.md    # Simple PRD format
 ```
 
 ## Core Principles
 - **MECE**: Mutually Exclusive, Collectively Exhaustive
 - **Confidence-Based**: Simple high/medium/low autonomy levels
-- **Context Efficient**: Leverages Claude Code's `/compact` feature
+- **Context Efficient**: Natural flow through orchestrator delegation
 - **Progressive Enhancement**: Start minimal, add only proven necessities
 
 ## Usage
 1. **Create PRD**: Define what you want to build
-2. **Run `/orchestrate`**: Smart command detects state and acts
-3. **Monitor progress**: Simple confidence-based delegation
-4. **Context management**: Use `/compact` between major phases
+2. **Setup git worktrees**: `git worktree add worktrees/{specialist}-work {specialist}-work`
+3. **Run `/orchestrate`**: Smart command detects state and delegates to worktrees
+4. **Monitor progress**: Each specialist commits regularly in their worktree
+5. **Integration**: Orchestrator merges completed features from worktrees to main
 
 ## Success Metrics
 - ✅ Total framework < 500 lines (achieved: ~308 lines)

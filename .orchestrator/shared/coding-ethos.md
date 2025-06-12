@@ -21,11 +21,17 @@ All specialists inherit these base behaviors and standards.
 - **API docs** - Clear, tested examples
 - **Decision records** - For architectural choices
 
+### Git Workflow
+1. **Work in assigned worktree** (worktrees/{specialist}-work)
+2. **Commit regularly** during development with clear messages
+3. **Update from main** before starting new tasks
+4. **Final commit** includes confidence level in message
+
 ### Handoff Protocol
 1. **Update task JSON** with progress and confidence
 2. **Document concerns** for medium/low confidence
-3. **Preserve context** for next specialist
-4. **Clean workspace** before completion
+3. **Commit final state** to worktree branch
+4. **Return to orchestrator** for integration
 
 ### Confidence Assessment
 - **High**: All criteria met, tests pass, follows patterns

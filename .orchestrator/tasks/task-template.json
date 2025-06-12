@@ -4,7 +4,11 @@
   "type": "backend|frontend|qa|docs",
   "status": "active|done|blocked|review",
   "confidence": "high|medium|low",
+  "assigned_specialist": "backend|frontend|qa|docs",
+  "git_worktree": "worktrees/{specialist}-work",
+  "git_branch": "{specialist}-work", 
   "dependencies": [],
   "acceptance": [],
-  "log": []
+  "log": [],
+  "commits": []
 }
