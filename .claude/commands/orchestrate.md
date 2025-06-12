@@ -6,30 +6,21 @@ Intelligent state detection and action command that adapts based on current proj
 ## Behavior Logic - Auto Command Delegation
 ```
 if PRD exists && no active tasks:
-  → Call /orchestration/tasks-create to parse PRD and create task breakdown
+  → Call /project/orchestration/tasks-create to parse PRD and create task breakdown
   
 if active tasks exist:
-  → Call /orchestration/status to show current state
-  → Call /orchestration/orchestrate-resume for resumption options
+  → Call /project/orchestration/status to show current state
+  → Call /project/orchestration/orchestrate-resume for resumption options
   
 if no PRD && no tasks:
   → Call /orchestration/prd-init to guide PRD creation using template
 ```
 
-## Usage Examples
-```bash
-/orchestrate                    # Auto-detect and delegate to appropriate command
-/orchestrate create            # Force call /orchestration/tasks-create
-/orchestrate resume            # Force call /orchestration/orchestrate-resume
-/orchestrate status            # Force call /orchestration/status
-/orchestrate init              # Force call /orchestration/prd-init
-```
-
 ## Auto-Delegation Map
 **State Detection → Command Routing:**
-- **No PRD, No Tasks** → `/orchestration/prd-init`
-- **PRD exists, No Tasks** → `/orchestration/tasks-create` 
-- **Active Tasks exist** → `/orchestration/status` then `/orchestration/orchestrate-resume`
+- **No PRD, No Tasks** → `/project/orchestration/prd-init`
+- **PRD exists, No Tasks** → `/project/orchestration/tasks-create` 
+- **Active Tasks exist** → `/project/orchestration/status` then `/project/orchestration/orchestrate-resume`
 - **Force modes** → Direct command calls
 
 ## Implementation

@@ -2,7 +2,7 @@
   "id": "task-003",
   "title": "Framework Tier Creation (Minimal/Standard/Enterprise)",
   "type": "docs",
-  "status": "active",
+  "status": "rejected",
   "confidence": "medium",
   "assigned_specialist": "docs",
   "coordination_type": "development",
@@ -20,6 +20,7 @@
   ],
   "log": [
     "2025-06-12T03:10:00Z: Task created from PRD High Merit Item #4"
+    "Rejected by user"
   ],
   "commits": []
 }

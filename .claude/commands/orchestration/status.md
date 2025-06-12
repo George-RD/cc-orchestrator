@@ -6,9 +6,9 @@ Display current task status with intelligent formatting and minimal context usag
 ## 1. Load Registry Summary
 
 First, load only the summary section to minimize context:
-```json
-# Read from /.orchestrator/tasks/registry.json → summary section only
-```
+
+Read from /.orchestrator/tasks/registry.json → summary section only
+
 
 ## 2. Status Display Options
 
