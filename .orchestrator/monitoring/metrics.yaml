@@ -1,9 +1,6 @@
 # Agent-Specific Metrics Configuration
 
-## Core Metrics
-
-### Response Time Metrics
-```yaml
+# Core Metrics
 response_time:
   type: histogram
   unit: milliseconds
@@ -18,57 +15,44 @@ response_time:
     - p90
     - p95
     - p99
-```
 
-### Task Completion Metrics
-```yaml
 task_completion:
   type: counter
   labels:
     - agent
     - task_type
-    - status (success|failure|timeout|cancelled)
+    - status  # (success|failure|timeout|cancelled)
     - complexity
   derived_metrics:
-    - success_rate: success / (success + failure)
-    - completion_rate: (success + failure) / total
-```
+    - success_rate: "success / (success + failure)"
+    - completion_rate: "(success + failure) / total"
 
-### Error Rate Metrics
-```yaml
 error_rate:
   type: counter
   labels:
     - agent
     - error_type
     - severity
-    - recoverable (true|false)
+    - recoverable  # (true|false)
   alerts:
-    - threshold: rate > 0.05
+    - threshold: "rate > 0.05"
       severity: warning
-    - threshold: rate > 0.10
+    - threshold: "rate > 0.10"
       severity: critical
-```
 
-### Confidence Score Distribution
-```yaml
 confidence_scores:
   type: histogram
-  unit: ratio (0.0-1.0)
+  unit: "ratio (0.0-1.0)"
   buckets: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 0.99, 1.0]
   labels:
     - agent
     - decision_type
   thresholds:
-    - autonomous: >= 0.95
-    - supervised: >= 0.75
-    - manual: < 0.75
-```
+    autonomous: ">= 0.95"
+    supervised: ">= 0.75" 
+    manual: "< 0.75"
 
-## Agent-Specific Metrics
-
-### Orchestrator Metrics
-```yaml
+# Agent-Specific Metrics
 orchestrator:
   delegation_count:
     type: counter
@@ -78,23 +62,20 @@ orchestrator:
   
   coordination_overhead:
     type: histogram
-    description: Time spent coordinating vs executing
+    description: "Time spent coordinating vs executing"
     unit: milliseconds
   
   parallel_execution:
     type: gauge
-    description: Number of parallel tasks being coordinated
+    description: "Number of parallel tasks being coordinated"
     
   decision_accuracy:
     type: counter
-    description: Correct vs incorrect routing decisions
+    description: "Correct vs incorrect routing decisions"
     labels:
       - decision_type
       - outcome
-```
 
-### Backend Agent Metrics
-```yaml
 backend:
   api_endpoints_created:
     type: counter
@@ -105,12 +86,12 @@ backend:
   database_operations:
     type: counter
     labels:
-      - operation (select|insert|update|delete)
+      - operation  # (select|insert|update|delete)
       - table
   
   code_complexity:
     type: histogram
-    description: Cyclomatic complexity of generated code
+    description: "Cyclomatic complexity of generated code"
     buckets: [1, 5, 10, 15, 20, 30, 50]
   
   security_violations_detected:
@@ -118,10 +99,7 @@ backend:
     labels:
       - violation_type
       - severity
-```
 
-### Frontend Agent Metrics
-```yaml
 frontend:
   components_created:
     type: counter
@@ -131,7 +109,7 @@ frontend:
   
   accessibility_score:
     type: gauge
-    description: WCAG compliance score (0-100)
+    description: "WCAG compliance score (0-100)"
     
   bundle_size:
     type: histogram
@@ -141,16 +119,13 @@ frontend:
   lighthouse_scores:
     type: gauge
     labels:
-      - metric (performance|accessibility|seo|best_practices)
-```
+      - metric  # (performance|accessibility|seo|best_practices)
 
-### QA Agent Metrics
-```yaml
 qa:
   tests_written:
     type: counter
     labels:
-      - test_type (unit|integration|e2e)
+      - test_type  # (unit|integration|e2e)
       - framework
   
   bugs_detected:
@@ -161,51 +136,46 @@ qa:
   
   code_coverage:
     type: gauge
-    description: Percentage of code covered by tests
+    description: "Percentage of code covered by tests"
     labels:
-      - coverage_type (line|branch|function)
+      - coverage_type  # (line|branch|function)
   
   false_positive_rate:
     type: gauge
-    description: Ratio of false positives to total issues raised
-```
+    description: "Ratio of false positives to total issues raised"
 
-### Documentation Agent Metrics
-```yaml
 docs:
   pages_created:
     type: counter
     labels:
-      - doc_type (api|user_guide|tutorial|reference)
+      - doc_type  # (api|user_guide|tutorial|reference)
   
   documentation_completeness:
     type: gauge
-    description: Percentage of code with documentation
+    description: "Percentage of code with documentation"
     
   readability_score:
     type: histogram
-    description: Flesch reading ease score
+    description: "Flesch reading ease score"
     buckets: [30, 40, 50, 60, 70, 80, 90]
     
   stale_documentation:
     type: gauge
-    description: Number of docs not updated after code changes
-```
+    description: "Number of docs not updated after code changes"
 
-## DevOps Agent Metrics
-```yaml
+# DevOps Agent Metrics
 devops_metrics:
   deployment_frequency:
     type: counter
-    description: Number of deployments per environment
+    description: "Number of deployments per environment"
     labels:
-      - environment (dev|staging|production)
-      - deployment_type (feature|hotfix|rollback)
-      - status (success|failure|partial)
+      - environment  # (dev|staging|production)
+      - deployment_type  # (feature|hotfix|rollback)
+      - status  # (success|failure|partial)
   
   deployment_duration:
     type: histogram
-    description: Time taken for deployments
+    description: "Time taken for deployments"
     unit: minutes
     buckets: [1, 5, 10, 20, 30, 60, 120]
     labels:
@@ -214,121 +184,115 @@ devops_metrics:
   
   infrastructure_provisioning:
     type: histogram
-    description: Time to provision new infrastructure
+    description: "Time to provision new infrastructure"
     unit: minutes
     buckets: [5, 10, 30, 60, 120, 300]
     labels:
-      - resource_type (compute|storage|network|database)
+      - resource_type  # (compute|storage|network|database)
       - cloud_provider
   
   pipeline_execution:
     type: histogram
-    description: CI/CD pipeline execution times
+    description: "CI/CD pipeline execution times"
     unit: minutes
     buckets: [1, 3, 5, 10, 15, 30, 60]
     labels:
-      - pipeline_stage (build|test|security_scan|deploy)
-      - branch_type (main|feature|hotfix)
+      - pipeline_stage  # (build|test|security_scan|deploy)
+      - branch_type  # (main|feature|hotfix)
   
   system_uptime:
     type: gauge
-    description: System availability percentage
+    description: "System availability percentage"
     labels:
       - service
       - environment
   
   resource_utilization:
     type: gauge
-    description: Infrastructure resource usage
+    description: "Infrastructure resource usage"
     labels:
-      - resource_type (cpu|memory|disk|network)
+      - resource_type  # (cpu|memory|disk|network)
       - service
       - environment
   
   backup_operations:
     type: counter
-    description: Database and file backup operations
+    description: "Database and file backup operations"
     labels:
-      - backup_type (full|incremental|differential)
-      - status (success|failure|timeout)
+      - backup_type  # (full|incremental|differential)
+      - status  # (success|failure|timeout)
   
   container_metrics:
     type: gauge
-    description: Container orchestration metrics
+    description: "Container orchestration metrics"
     labels:
-      - container_status (running|stopped|failed|pending)
+      - container_status  # (running|stopped|failed|pending)
       - service
       - environment
-```
 
-## Security Agent Metrics
-```yaml
+# Security Agent Metrics
 security_metrics:
   vulnerability_scans:
     type: counter
-    description: Security vulnerability scans performed
+    description: "Security vulnerability scans performed"
     labels:
-      - scan_type (sast|dast|dependency|container|infrastructure)
-      - severity (critical|high|medium|low|info)
-      - status (found|resolved|false_positive|accepted_risk)
+      - scan_type  # (sast|dast|dependency|container|infrastructure)
+      - severity  # (critical|high|medium|low|info)
+      - status  # (found|resolved|false_positive|accepted_risk)
   
   security_test_coverage:
     type: gauge
-    description: Percentage of security tests vs total endpoints
+    description: "Percentage of security tests vs total endpoints"
     labels:
-      - test_type (authentication|authorization|input_validation|encryption)
+      - test_type  # (authentication|authorization|input_validation|encryption)
   
   compliance_checks:
     type: counter
-    description: Compliance validation results
+    description: "Compliance validation results"
     labels:
-      - framework (owasp|gdpr|pci|sox|hipaa)
-      - check_type (automated|manual)
-      - result (pass|fail|warning)
+      - framework  # (owasp|gdpr|pci|sox|hipaa)
+      - check_type  # (automated|manual)
+      - result  # (pass|fail|warning)
   
   penetration_testing:
     type: histogram
-    description: Time spent on penetration testing activities
+    description: "Time spent on penetration testing activities"
     unit: hours
     buckets: [1, 2, 4, 8, 16, 24, 48]
     labels:
-      - test_phase (reconnaissance|scanning|enumeration|exploitation|reporting)
+      - test_phase  # (reconnaissance|scanning|enumeration|exploitation|reporting)
   
   threat_detection:
     type: counter
-    description: Security threats detected and responded to
+    description: "Security threats detected and responded to"
     labels:
-      - threat_type (malware|intrusion|data_breach|ddos|social_engineering)
-      - severity (critical|high|medium|low)
-      - response_time_minutes: [1, 5, 15, 30, 60, 240]
+      - threat_type  # (malware|intrusion|data_breach|ddos|social_engineering)
+      - severity  # (critical|high|medium|low)
+      - response_time_buckets: [1, 5, 15, 30, 60, 240]
   
   security_policy_violations:
     type: counter
-    description: Security policy violations detected
+    description: "Security policy violations detected"
     labels:
-      - policy_type (access_control|data_handling|encryption|authentication)
-      - severity (critical|high|medium|low)
+      - policy_type  # (access_control|data_handling|encryption|authentication)
+      - severity  # (critical|high|medium|low)
   
   certificate_management:
     type: gauge
-    description: SSL/TLS certificate status and expiry tracking
+    description: "SSL/TLS certificate status and expiry tracking"
     labels:
-      - certificate_type (ssl|code_signing|client)
-      - status (valid|expiring|expired|revoked)
-      - days_until_expiry: [7, 30, 60, 90]
+      - certificate_type  # (ssl|code_signing|client)
+      - status  # (valid|expiring|expired|revoked)
+      - days_until_expiry_buckets: [7, 30, 60, 90]
   
   access_control_audits:
     type: counter
-    description: User access and permission audits
+    description: "User access and permission audits"
     labels:
-      - audit_type (user_access|role_permissions|privileged_accounts)
-      - result (compliant|violation|needs_review)
-```
+      - audit_type  # (user_access|role_permissions|privileged_accounts)
+      - result  # (compliant|violation|needs_review)
 
-## Business Metrics
-
-### Development Velocity
-```yaml
+# Business Metrics - Development Velocity
 velocity:
   stories_completed:
     type: counter
@@ -338,48 +302,44 @@ velocity:
   
   cycle_time:
     type: histogram
-    description: Time from task start to completion
+    description: "Time from task start to completion"
     unit: hours
     buckets: [1, 4, 8, 24, 48, 72, 168]
   
   lead_time:
     type: histogram
-    description: Time from request to deployment
+    description: "Time from request to deployment"
     unit: hours
     buckets: [1, 4, 8, 24, 48, 72, 168, 336]
-```
 
-### Quality Metrics
-```yaml
+# Quality Metrics
 quality:
   defect_escape_rate:
     type: gauge
-    description: Bugs found in production vs development
+    description: "Bugs found in production vs development"
     
   mean_time_to_recovery:
     type: histogram
-    description: Time to fix production issues
+    description: "Time to fix production issues"
     unit: minutes
     buckets: [5, 15, 30, 60, 120, 240, 480]
     
   code_review_coverage:
     type: gauge
-    description: Percentage of code that went through review
+    description: "Percentage of code that went through review"
     
   technical_debt_ratio:
     type: gauge
-    description: Ratio of remediation cost to development cost
-```
+    description: "Ratio of remediation cost to development cost"
 
-### Cost Efficiency
-```yaml
+# Cost Efficiency
 efficiency:
   token_usage:
     type: counter
     labels:
-      - model (sonnet-4|opus-4)
+      - model  # (sonnet-4|opus-4)
       - operation_type
-    cost_calculation: tokens * price_per_token
+    cost_calculation: "tokens * price_per_token"
   
   compute_time:
     type: counter
@@ -390,163 +350,82 @@ efficiency:
   
   rework_ratio:
     type: gauge
-    description: Percentage of tasks requiring rework
-```
+    description: "Percentage of tasks requiring rework"
 
-## Alerting Rules
-
-### Performance Alerts
-```yaml
+# Alerting Rules
 alerts:
-  - name: high_response_time
-    condition: response_time_p95 > 5000
-    duration: 5m
-    severity: warning
-    
-  - name: agent_unavailable
-    condition: up == 0
-    duration: 1m
-    severity: critical
-    
-  - name: high_error_rate
-    condition: error_rate > 0.10
-    duration: 5m
-    severity: critical
-```
-
-### Capacity Alerts
-```yaml
-capacity_alerts:
-  - name: high_queue_depth
-    condition: task_queue_depth > 100
-    duration: 10m
-    severity: warning
-    
-  - name: agent_overload
-    condition: cpu_usage > 0.80 OR memory_usage > 0.80
-    duration: 5m
-    severity: warning
-```
-
-### Business Alerts
-```yaml
-business_alerts:
-  - name: velocity_drop
-    condition: stories_completed < historical_avg * 0.7
-    duration: 1d
-    severity: warning
-    
-  - name: quality_degradation  
-    condition: defect_escape_rate > 0.05
-    duration: 1h
-    severity: critical
-```
-
-## Dashboards Configuration
-
-### Agent Performance Dashboard
-```yaml
-agent_performance:
-  panels:
-    - title: "Task Completion Rate"
-      query: "rate(task_completion[5m])"
-      visualization: line_chart
+  performance:
+    - name: high_response_time
+      condition: "response_time_p95 > 5000"
+      duration: 5m
+      severity: warning
       
-    - title: "Response Time Distribution"
-      query: "histogram_quantile(0.95, response_time)"
-      visualization: heatmap
+    - name: agent_unavailable
+      condition: "up == 0"
+      duration: 1m
+      severity: critical
       
-    - title: "Agent Utilization"
-      query: "avg(agent_busy_time / agent_total_time)"
-      visualization: gauge
-      
-    - title: "Error Rate by Agent"
-      query: "rate(errors[5m]) by (agent)"
-      visualization: bar_chart
-```
-
-### Development Metrics Dashboard
-```yaml
-development_metrics:
-  panels:
-    - title: "Sprint Velocity"
-      query: "sum(stories_completed) by (sprint)"
-      visualization: bar_chart
-      
-    - title: "Cycle Time Trend"
-      query: "histogram_quantile(0.5, cycle_time)"
-      visualization: line_chart
-      
-    - title: "Code Coverage"
-      query: "avg(code_coverage) by (project)"
-      visualization: gauge
-      
-    - title: "PR Merge Time"
-      query: "histogram_quantile(0.9, pr_merge_time)"
-      visualization: line_chart
-```
-
-## Metric Collection Implementation
-
-### Instrumentation Example
-```javascript
-// Metric collection wrapper
-const withMetrics = (metricName, labels, fn) => {
-  const startTime = Date.now();
+    - name: high_error_rate
+      condition: "error_rate > 0.10"
+      duration: 5m
+      severity: critical
   
-  try {
-    const result = await fn();
-    
-    metrics.counter(`${metricName}_total`, labels).inc();
-    metrics.histogram(`${metricName}_duration`, labels)
-      .observe(Date.now() - startTime);
-    
-    return result;
-  } catch (error) {
-    metrics.counter(`${metricName}_errors`, {
-      ...labels,
-      error_type: error.constructor.name
-    }).inc();
-    
-    throw error;
-  }
-};
-
-// Usage
-const result = await withMetrics(
-  'task_execution',
-  { agent: 'backend', task_type: 'api_creation' },
-  async () => await createAPI(spec)
-);
-```
-
-### Batch Metric Updates
-```javascript
-// Efficient metric batching
-class MetricBatcher {
-  constructor(flushInterval = 10000) {
-    this.batch = new Map();
-    setInterval(() => this.flush(), flushInterval);
-  }
-  
-  record(metric, value, labels = {}) {
-    const key = `${metric}:${JSON.stringify(labels)}`;
-    if (!this.batch.has(key)) {
-      this.batch.set(key, []);
-    }
-    this.batch.get(key).push(value);
-  }
-  
-  flush() {
-    for (const [key, values] of this.batch) {
-      const [metric, labelsStr] = key.split(':');
-      const labels = JSON.parse(labelsStr);
+  capacity:
+    - name: high_queue_depth
+      condition: "task_queue_depth > 100"
+      duration: 10m
+      severity: warning
       
-      // Send aggregated metrics
-      metrics.histogram(metric, labels).observe(values);
-    }
-    
-    this.batch.clear();
-  }
-}
-```
+    - name: agent_overload
+      condition: "cpu_usage > 0.80 OR memory_usage > 0.80"
+      duration: 5m
+      severity: warning
+  
+  business:
+    - name: velocity_drop
+      condition: "stories_completed < historical_avg * 0.7"
+      duration: 1d
+      severity: warning
+      
+    - name: quality_degradation
+      condition: "defect_escape_rate > 0.05"
+      duration: 1h
+      severity: critical
+
+# Dashboards Configuration
+dashboards:
+  agent_performance:
+    panels:
+      - title: "Task Completion Rate"
+        query: "rate(task_completion[5m])"
+        visualization: line_chart
+        
+      - title: "Response Time Distribution"
+        query: "histogram_quantile(0.95, response_time)"
+        visualization: heatmap
+        
+      - title: "Agent Utilization"
+        query: "avg(agent_busy_time / agent_total_time)"
+        visualization: gauge
+        
+      - title: "Error Rate by Agent"
+        query: "rate(errors[5m]) by (agent)"
+        visualization: bar_chart
+  
+  development_metrics:
+    panels:
+      - title: "Sprint Velocity"
+        query: "sum(stories_completed) by (sprint)"
+        visualization: bar_chart
+        
+      - title: "Cycle Time Trend"
+        query: "histogram_quantile(0.5, cycle_time)"
+        visualization: line_chart
+        
+      - title: "Code Coverage"
+        query: "avg(code_coverage) by (project)"
+        visualization: gauge
+        
+      - title: "PR Merge Time"
+        query: "histogram_quantile(0.9, pr_merge_time)"
+        visualization: line_chart
