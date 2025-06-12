@@ -3,29 +3,56 @@
 ## Purpose
 Intelligent state detection and action command that adapts based on current project state.
 
-## Behavior Logic - Auto Command Delegation
+## Product Owner Orchestration Logic
 
 ```mermaid
 flowchart TD
-    A["/orchestrate called"] --> B{Check in_progress/ folder}
-    B -->|Has tasks| C["🚨 PRIORITY: Call /orch-resume<br/>Continue active work"]
-    B -->|Empty| D{Check todo/ folder}
-    D -->|Has tasks| E["📋 Call /orch-status + /orch-resume<br/>Show available work + assign"]
-    D -->|Empty| F{Check requirements/active/ for PRDs}
-    F -->|Has PRDs| G["📝 Call /orch-tasks-create<br/>Parse PRD → create tasks"]
-    F -->|No PRDs| H["🔧 Call /orch-prd-init<br/>Guide PRD creation"]
+    A["/orchestrate started"] --> B[Check All Task States]
+    B --> C{review/ has tasks?}
+    C -->|Yes| D["🔍 REVIEW completed work<br/>Validate quality & integration"]
+    C -->|No| E{in_progress/ has tasks?}
+    E -->|Yes| F["⏱️ MONITOR active work<br/>Check specialist progress"]
+    E -->|No| G{todo/ has tasks?}
+    G -->|Yes| H["📋 ASSIGN new work<br/>Spawn available specialists"]
+    G -->|No| I{blocked/ has tasks?}
+    I -->|Yes| J["🚫 RESOLVE blockers<br/>Update task guidance"]
+    I -->|No| K{requirements/ has PRDs?}
+    K -->|Yes| L["📝 CREATE tasks from PRD"]
+    K -->|No| M["✅ ALL WORK COMPLETE<br/>Project finished"]
     
-    C --> I[["🎯 Load specialist with full context<br/>Continue where left off"]]
-    E --> J[["📋 Show available work<br/>Assign new tasks to specialists"]]
-    G --> K[["🔨 Generate todo tasks<br/>Ready for assignment"]]
-    H --> L[["📄 Create new PRD<br/>Start project planning"]]
+    D --> N{Review passed?}
+    N -->|Yes| O["✅ Move to /completed/<br/>Update registry"]
+    N -->|No| P["❌ ROLLBACK to /todo/<br/>Add guidance on what went wrong"]
     
-    style C fill:#ff6b6b,color:#fff
+    F --> Q{Specialist finished?}
+    Q -->|Yes| R["📤 Task moved to /review/<br/>by specialist"]
+    Q -->|No| S["⏳ Continue monitoring<br/>Wait for completion"]
+    
+    H --> T["👥 Specialists working<br/>Tasks in /in_progress/"]
+    J --> U["🔧 Blockers resolved<br/>Move to /todo/"]
+    L --> V["📋 New tasks in /todo/"]
+    
+    O --> B
+    P --> B  
+    R --> B
+    S --> W[Wait for specialist updates]
+    W --> B
+    T --> B
+    U --> B
+    V --> B
+    
     style A fill:#4ecdc4,color:#fff
-    style I fill:#ff6b6b,color:#fff
+    style D fill:#ffd700,color:#000
+    style M fill:#90EE90,color:#000
+    style P fill:#ff6b6b,color:#fff
 ```
 
-**Priority Order**: in_progress → todo → PRD creation → initialization
+**Product Owner Principles**:
+- **Continuous Management**: Loop until all work complete
+- **Active Monitoring**: Check specialist progress via JSON updates
+- **Quality Control**: Review all completed work before accepting
+- **Issue Resolution**: Rollback and reassign tasks that aren't done properly
+- **Guidance Over Fixing**: Give specialists better directions, don't fix their work
 
 ## Task State Flow
 
@@ -53,12 +80,52 @@ stateDiagram-v2
 4. **No PRD, No Tasks** → `/orch-prd-init`
 5. **Force modes** → Direct command calls
 
-## Implementation
-1. **Minimal Context Load**: Only check directory existence, not file contents
-2. **Smart Routing**: Delegate heavy lifting to specialized commands
-3. **State Detection (Priority Order)**: 
-   - **FIRST**: Check `/.orchestrator/tasks/in_progress/` for active work (immediate priority)
-   - **SECOND**: Check `/.orchestrator/tasks/todo/` for available work
-   - **THIRD**: Check `/.orchestrator/requirements/active/` for PRDs to create tasks
-   - Route to appropriate command based on highest priority state found
-4. **Full Auto**: Enable completely autonomous operation through command chaining
+## Orchestrator as Product Owner
+
+### Core Management Loop
+```
+WHILE (tasks exist in any state) {
+  1. REVIEW: Check /review/ for completed work → validate → approve/rollback
+  2. MONITOR: Check /in_progress/ for specialist updates → detect completion
+  3. ASSIGN: Check /todo/ for available work → spawn specialists
+  4. RESOLVE: Check /blocked/ for issues → update guidance
+  5. CREATE: Check PRDs for new task generation
+  6. WAIT: Brief pause for specialist work updates
+}
+```
+
+### Quality Control & Rollback Logic
+**When specialist moves task to /review/:**
+- Load task JSON + check acceptance criteria
+- Validate work meets requirements
+- Check codebase integration (tests pass, no conflicts)
+- **If approved**: Move to /completed/, update registry
+- **If rejected**: Move to /todo/, add specific guidance on issues found
+
+### Specialist Monitoring
+**Claude Code Native Detection:**
+- Knows when sub-agents are spawned
+- Detects when they finish working
+- Monitors JSON file changes for status updates
+- Can check git commits for progress indicators
+
+### Task Assignment Strategy
+**For /todo/ tasks:**
+- Check specialist availability (not already working)
+- Prioritize high-confidence, high-priority tasks
+- Spawn specialist with full context: task JSON + last log + guidance
+- Move task to /in_progress/ with assignment log
+
+### Rollback & Reassignment
+**When work needs improvement:**
+- Move task back to /todo/ 
+- Add detailed log entry: "What was attempted, what went wrong, what to do instead"
+- Update acceptance criteria with more specific requirements
+- Reassign to same or different specialist with better guidance
+
+## Implementation Principles
+1. **Continuous Management**: Loop until all work complete
+2. **Quality Gates**: Review all work before accepting
+3. **Smart Guidance**: Give better directions, don't fix work yourself
+4. **Progress Monitoring**: Use JSON updates and Claude Code's native detection
+5. **Parallel Safety**: Multiple specialists can work simultaneously
