@@ -2,7 +2,7 @@
   "id": "task-xxx",
   "title": "Clear description",
   "type": "backend|frontend|qa|docs|devops|security",
-  "status": "active|done|blocked|review",
+  "status": "active|in_progress|blocked|review|completed",
   "confidence": "high|medium|low",
   "assigned_specialist": "backend|frontend|qa|docs|devops|security",
   "coordination_type": "development|infrastructure|security",
