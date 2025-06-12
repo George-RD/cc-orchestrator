@@ -1,0 +1,10 @@
+{
+  "id": "task-xxx",
+  "title": "Clear description",
+  "type": "backend|frontend|qa|docs",
+  "status": "active|done|blocked|review",
+  "confidence": "high|medium|low",
+  "dependencies": [],
+  "acceptance": [],
+  "log": []
+}

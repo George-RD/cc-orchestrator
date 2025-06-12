@@ -1,0 +1,36 @@
+# Confidence-Based Autonomy Configuration
+# Lightweight system with 3 simple rules
+
+confidence_thresholds:
+  high: 80        # >80%: Proceed autonomously
+  medium: 50      # 50-80%: Log concerns, continue
+  low: 0          # <50%: Flag for human review
+
+# Actions for each confidence level
+actions:
+  high:
+    - proceed_autonomously
+    - minimal_logging
+    - auto_mark_complete
+    
+  medium:
+    - log_concerns
+    - continue_execution
+    - detailed_logging
+    - notify_in_task_log
+    
+  low:
+    - flag_for_review
+    - pause_execution
+    - escalate_to_human
+    - document_concerns
+
+# Simple confidence assessment
+assessment:
+  factors:
+    - task_clarity: "Is the task clearly defined?"
+    - context_availability: "Do I have sufficient context?"
+    - domain_expertise: "Is this within my capabilities?"
+    - risk_level: "What are the consequences of errors?"
+  
+  scoring: "Use professional judgment, not complex calculations"
