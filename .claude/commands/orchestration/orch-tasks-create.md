@@ -25,17 +25,7 @@ Simple PRD-to-task conversion using logical mapping:
 
 ### Step 4: Basic Task Structure
 **Create task JSON with:**
-```json
-{
-  "id": "task-XXX",
-  "title": "[Clear description from PRD]",
-  "type": "[agent type]", 
-  "status": "active",
-  "confidence": "[high/medium/low based on complexity]",
-  "acceptance": ["[Bullet points from PRD section]"],
-  "dependencies": ["[Based on logical order]"]
-}
-```
+'/.orchestrator/templates/task-template.json'
 
 ### Step 5: Auto-Registry Update
 - Update `registry.json` with new task counts

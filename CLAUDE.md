@@ -59,9 +59,7 @@ When no PRD:
 3. Switch to farmer mode after PRD completion
 
 ## Task Management
-Simple JSON structure defined in `/.orchestrator/tasks/task-template.json`:
-- **8 core fields**: id, title, type, status, confidence, dependencies, acceptance, log
-- **6 specialist types**: backend, frontend, qa, docs, devops, security  
+JSON structure defined in `/.orchestrator/templates/task-template.json`:
 - **6 status states**: todo → in_progress → review → completed | blocked | rejected
 
 ## Context Management
