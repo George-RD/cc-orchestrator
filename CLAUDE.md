@@ -1,458 +1,333 @@
-# AI Project Orchestrator - Enhanced Edition
+# Claude Template Simplification Implementation Guide
 
-## Your Role
-You are a **Master Orchestrator** implementing sophisticated multi-agent coordination patterns. You leverage dynamic task decomposition, event-driven architecture, and confidence-based autonomy to deliver exceptional software projects.
+You are implementing a simplified AI Orchestration Framework that maintains power while dramatically reducing complexity. This framework leverages Claude Code's native capabilities for context management and persistence.
 
-## Core Architecture
+## Core Principles
+1. **MECE**: Mutually Exclusive, Collectively Exhaustive - no overlaps, no gaps
+2. **OOP**: Clear separation of concerns, encapsulation, single responsibility
+3. **Context Awareness**: Use Claude Code's `/clear` and command system strategically
+4. **Progressive Enhancement**: Start minimal, add only proven necessities
 
-### Hierarchical Decision Framework
-```yaml
-confidence_thresholds:
-  autonomous: 0.95      # Proceed without human review
-  logged: 0.75         # Execute with detailed logging
-  review_required: <0.75 # Require human approval
+## Implementation Tasks
+
+### Phase 1: Core Architecture Simplification (Foundation)
+
+#### Task 1.1: Simplify Master Orchestrator
+- [ ] **Reduce CLAUDE.md to ~100 lines**
+  - [ ] Extract only essential orchestration logic
+  - [ ] Remove complex decision trees
+  - [ ] Implement simple confidence handling
+  - [ ] Create clear delegation patterns
+  - [ ] **Notes**: _____________________
+
+#### Task 1.2: Create Lightweight Confidence System
+- [ ] **Design simple confidence mechanism**
+  - [ ] Add confidence field to task JSON (high/medium/low)
+  - [ ] Implement 3 simple rules:
+    - High (>80%): Proceed autonomously
+    - Medium (50-80%): Log concerns, continue
+    - Low (<50%): Flag for human review
+  - [ ] Remove complex calculations
+  - [ ] **Notes**: _____________________
+
+#### Task 1.3: Streamline Task Management
+- [ ] **Simplify task JSON structure**
+  ```json
+  {
+    "id": "task-xxx",
+    "title": "Clear description",
+    "type": "backend|frontend|qa|docs",
+    "status": "active|done|blocked|review",
+    "confidence": "high|medium|low",
+    "dependencies": [],
+    "acceptance": [],
+    "log": []
+  }
+  ```
+  - [ ] Remove unnecessary metadata
+  - [ ] Keep only resumability essentials
+  - [ ] **Notes**: _____________________
+
+### Phase 2: Specialist Consolidation (Agents)
+
+#### Task 2.1: Create Shared Coding Ethos
+- [ ] **Design shared principles document**
+  - [ ] Create `.orchestrator/shared/coding-ethos.md` (~30 lines)
+  - [ ] Include: TDD principles, error handling, documentation standards
+  - [ ] Include: Code quality expectations, naming conventions
+  - [ ] All specialists load this as base context
+  - [ ] **Notes**: _____________________
+
+#### Task 2.2: Simplify Specialist Definitions
+- [ ] **Reduce each specialist to ~50 lines**
+  - [ ] Backend: Focus on API, database, business logic
+  - [ ] Frontend: Focus on UI, components, accessibility
+  - [ ] QA: Focus on testing strategy and validation
+  - [ ] Docs: Focus on clear documentation
+  - [ ] Each references shared ethos for common patterns
+  - [ ] **Notes**: _____________________
+
+#### Task 2.3: Extract Common Patterns
+- [ ] **Move to shared ethos file**
+  - [ ] Common TDD workflow
+  - [ ] Shared handoff format
+  - [ ] Unified logging approach
+  - [ ] Standard error handling
+  - [ ] **Notes**: _____________________
+
+#### Task 2.4: Remove Redundancy
+- [ ] **Eliminate overlapping responsibilities**
+  - [ ] Clear ownership matrix
+  - [ ] No duplicate instructions
+  - [ ] Trust base Claude knowledge
+  - [ ] **Notes**: _____________________
+
+### Phase 3: Command System Optimization
+
+#### Task 3.1: Consolidate Commands
+- [ ] **Create smart /orchestrate command**
+  ```bash
+  # Intelligent detection of current state
+  # PRD exists? → Create tasks
+  # Tasks active? → Show status and resume
+  # Nothing? → Guide to start
+  ```
+  - [ ] Merge create/resume logic
+  - [ ] Auto-detect project state
+  - [ ] **Notes**: _____________________
+
+#### Task 3.2: Simplify Status Command
+- [ ] **Lightweight status without heavy parsing**
+  - [ ] Simple file counts
+  - [ ] Current task titles
+  - [ ] Clear next actions
+  - [ ] Avoid loading full JSONs
+  - [ ] **Notes**: _____________________
+
+#### Task 3.3: Context Management Integration
+- [ ] **Leverage Claude Code features**
+  - [ ] Use `/clear` between major tasks
+  - [ ] Document when to reset context
+  - [ ] Create context budget guidelines
+  - [ ] **Notes**: _____________________
+
+### Phase 4: Configuration Cleanup
+
+#### Task 4.1: Remove Non-Functional Configs
+- [ ] **Delete aspirational features**
+  - [ ] Remove monitoring/metrics.yaml (420+ lines)
+  - [ ] Remove event definitions
+  - [ ] Remove health check patterns
+  - [ ] Archive MCP config for later
+  - [ ] **Notes**: _____________________
+
+#### Task 4.2: Consolidate Essential Configs
+- [ ] **Single configuration approach**
+  - [ ] Merge related YAMLs
+  - [ ] Use conventions over configuration
+  - [ ] Provide smart defaults
+  - [ ] Document only exceptions
+  - [ ] **Notes**: _____________________
+
+#### Task 4.3: Simplify Communication Protocol
+- [ ] **Natural language over JSON**
+  - [ ] Simple handoff format
+  - [ ] Clear context preservation
+  - [ ] Minimal metadata
+  - [ ] Focus on clarity
+  - [ ] **Notes**: _____________________
+
+### Phase 5: PRD System Refinement
+
+#### Task 5.1: Standardize PRD Format
+- [ ] **Create strict PRD processing rules**
+  - [ ] Define required sections (problem, requirements, technical)
+  - [ ] Create parser for consistent interpretation
+  - [ ] Orchestrator becomes "farmer" after PRD parsed
+  - [ ] Predictable task generation from standard format
+  - [ ] **Notes**: _____________________
+
+#### Task 5.2: Simplify PRD Template
+- [ ] **Essential sections only**
+  - [ ] Problem statement
+  - [ ] Requirements (checkbox list)
+  - [ ] Technical needs (agents, complexity)
+  - [ ] Success criteria
+  - [ ] Remove complex YAML structures
+  - [ ] **Notes**: _____________________
+
+#### Task 5.3: Improve PRD → Task Flow
+- [ ] **Clearer transformation logic**
+  - [ ] Simple sizing heuristics
+  - [ ] Obvious task boundaries
+  - [ ] Natural dependencies
+  - [ ] Consistent task format from PRD structure
+  - [ ] **Notes**: _____________________
+
+### Phase 6: Documentation & Testing
+
+#### Task 6.1: Create Minimal Documentation
+- [ ] **Essential docs only**
+  - [ ] Quick start guide (<1 page)
+  - [ ] Command reference
+  - [ ] Simple examples
+  - [ ] Troubleshooting basics
+  - [ ] **Notes**: _____________________
+
+#### Task 6.2: Test Simplified Framework
+- [ ] **Real project validation**
+  - [ ] Test with simple project
+  - [ ] Test with complex project
+  - [ ] Test resumability
+  - [ ] Test with context resets
+  - [ ] **Notes**: _____________________
+
+#### Task 6.3: Measure Improvements
+- [ ] **Quantify simplification**
+  - [ ] Line count reduction (target: 80%)
+  - [ ] Token usage (target: 60% less)
+  - [ ] Time to first task (target: <2 min)
+  - [ ] Setup complexity (target: 5 min)
+  - [ ] **Notes**: _____________________
+
+### Phase 7: Advanced Features (Optional)
+
+#### Task 7.1: Design Plugin System
+- [ ] **For future enhancements**
+  - [ ] Optional specialist modules
+  - [ ] MCP integration hooks
+  - [ ] Advanced monitoring (if needed)
+  - [ ] Custom workflows
+  - [ ] **Notes**: _____________________
+
+#### Task 7.2: Plan MCP Integration
+- [ ] **For future enhancement**
+  - [ ] Research which MCP servers add value
+  - [ ] Design integration without core dependency
+  - [ ] Consider: filesystem, GitHub, database
+  - [ ] Keep as optional enhancement
+  - [ ] **Notes**: _____________________
+
+#### Task 7.3: Create Migration Guide
+- [ ] **From old to new**
+  - [ ] Mapping of changed features
+  - [ ] Conversion scripts
+  - [ ] Deprecation notices
+  - [ ] **Notes**: _____________________
+
+## Implementation Guidelines
+
+### Context Management Strategy
+1. Use `/compact` after completing major task groups (preserves key context)
+2. Load PRDs/tasks only when needed via commands
+3. Keep orchestrator context minimal but continuous
+4. Let specialists start fresh for each task with shared ethos
+
+### Confidence Integration
+```json
+// In task completion by specialist
+{
+  "status": "done",
+  "confidence": "high",
+  "confidence_notes": "All tests passing, follows patterns",
+  "concerns": []
+}
+
+// Orchestrator handles:
+// high → mark complete, continue
+// medium → log concerns, continue with note
+// low → pause for human review
 ```
 
-### Dynamic Task Decomposition (TDAG Pattern)
-When receiving requests:
-1. **Analyze Complexity**
-   - Simple (1-2 agents): Direct delegation
-   - Medium (3-5 agents): Phased approach  
-   - Complex (6+ agents): Full decomposition with dependency graph
+### Specialist Handoff Format
+When specialists complete tasks, they should:
+1. Update task JSON with status and confidence
+2. Add confidence_notes explaining their assessment
+3. List any concerns for medium/low confidence
+4. Save their work and update task log
 
-2. **Identify Dependencies**
-   - Map task relationships
-   - Determine parallel vs sequential execution
-   - Create optimal execution timeline
+This keeps confidence assessment simple and actionable.
 
-3. **Allocate Resources**
-   - Match tasks to agent capabilities
-   - Consider agent availability and load
-   - Optimize for minimal handoffs
+### MECE Architecture
+- **Orchestrator**: Overall coordination ONLY
+- **Specialists**: Domain expertise ONLY
+- **Commands**: State detection and action ONLY
+- **Tasks**: Work tracking ONLY
+- **PRDs**: Requirements ONLY
 
-## PRD-Driven Development
-
-### When PRD Exists
-1. Parse machine-readable configuration from PRD
-2. Extract agent requirements and constraints
-3. Generate task breakdown based on acceptance criteria
-4. Monitor alignment throughout development
-
-### PRD Integration
-```yaml
-prd_analysis:
-  - Extract technical requirements
-  - Identify success metrics
-  - Map to specialist capabilities
-  - Create traceable task chain
+### File Structure (Simplified)
+```
+/
+├── CLAUDE.md (100 lines)
+├── .claude/
+│   ├── commands/ (20 lines each)
+│   │   ├── orchestrate.md
+│   │   └── status.md
+│   └── confidence.yaml (20 lines)
+├── .orchestrator/
+│   ├── shared/
+│   │   └── coding-ethos.md (30 lines)
+│   ├── specialists/ (50 lines each)
+│   │   ├── backend.md
+│   │   ├── frontend.md
+│   │   ├── qa.md
+│   │   └── docs.md
+│   ├── tasks/
+│   │   ├── active/
+│   │   ├── done/
+│   │   └── blocked/
+│   └── requirements/
+│       ├── template.prd.md (30 lines)
+│       └── active/
+└── README.md (Updated, 100 lines)
 ```
 
-Reference: `/.orchestrator/requirements/template.prd.md` for PRD structure
+## Implementation Philosophy
 
-## Event-Driven Coordination
+### Farmer vs Chef Approach
+- **PRD Processing**: Orchestrator acts as "farmer" - structured, predictable
+- **Before PRD**: Flexible, help user create good PRD (chef mode)
+- **After PRD**: Systematic task generation and delegation (farmer mode)
+- **Specialists**: Start as farmers (follow ethos) but can be chefs when solving
 
-### Event Patterns
-- **Task Created**: Initialize workflow, assign agents
-- **Task Progress**: Monitor completion, adjust resources
-- **Task Completed**: Validate deliverables, trigger next phase
-- **Error Detected**: Implement recovery, adjust approach
+### Modularity Principles
+- Each component independently improvable
+- Changes to one specialist don't affect others
+- PRD format evolution doesn't break task generation
+- Command improvements don't require orchestrator changes
 
-### Asynchronous Execution
-Enable parallel workflows when tasks are independent:
-```yaml
-parallel_execution:
-  - Identify independent tasks
-  - Launch concurrent executions
-  - Monitor progress via events
-  - Synchronize at merge points
-```
+## Success Criteria
+- [ ] Total framework < 500 lines
+- [ ] Setup time < 5 minutes
+- [ ] Clear separation of concerns
+- [ ] Maintains resumability
+- [ ] Reduces token usage by >60%
+- [ ] Actually completes projects
 
-## Communication Protocols
+## Notes Section
+_Add implementation discoveries, decisions, and learnings here:_
 
-### Inter-Agent Messaging
-**IMPORTANT**: Use the complete communication protocol defined in `/.orchestrator/shared/protocols/communication.md`
+### Context Management Decision
+- Using `/compact` over `/clear` to preserve continuity
+- Future: Consider intelligent compression strategies
+- Keep implementation flexible for future enhancements
 
-All inter-agent communication must follow the standardized JSON message format with proper:
-- Message identification and correlation
-- Priority and metadata handling
-- Error handling and recovery patterns
-- Standard action types for common operations
+### Shared Ethos Benefits
+- Reduces specialist file sizes
+- Ensures consistent practices
+- Single place to update common patterns
+- Each specialist inherits base behavior
 
-### Task Handoff Protocol
-Follow `/.orchestrator/shared/protocols/handoff.md` for context preservation:
-- Include complete background
-- Document decisions made
-- Specify deliverables
-- Define clear next steps
+### PRD Standardization
+- Enables "farmer" approach post-PRD
+- Reduces orchestrator complexity
+- Makes task generation predictable
+- Allows PRD format evolution independently
 
-## Specialist Delegation
-
-### Enhanced Calling Format
-```
-Task ID: [UUID for tracking]
-Priority: [critical|high|normal|low]
-Confidence Required: [0.95|0.75|0.50]
-
-Task: [specific_task_description]
-Context: [relevant_background_and_prior_work]
-Requirements: [from PRD if available]
-Constraints: [technical and business limitations]
-Success Criteria: [measurable outcomes]
-
-Dependencies: [prior tasks that must complete]
-Deadline: [if time-sensitive]
-
-Use specialist template: /.orchestrator/specialists/[domain].md
-Expected Deliverables: [specific outputs needed]
-```
-
-### Available Specialists
-- `backend.md` - APIs, data models, security, performance
-- `frontend.md` - UI/UX, components, accessibility, performance
-- `qa.md` - Testing, validation, quality assurance, security
-- `docs.md` - Documentation, guides, knowledge management
-- `devops.md` - Infrastructure, deployment, CI/CD, monitoring
-- `security.md` - Security architecture, penetration testing, compliance
-
-### Specialist Selection Logic
-```yaml
-selection_criteria:
-  backend:
-    - API design and implementation
-    - Database operations
-    - Authentication/authorization
-    - Performance optimization
-    
-  frontend:
-    - User interface creation
-    - State management
-    - Responsive design
-    - Accessibility implementation
-    
-  qa:
-    - Test strategy design
-    - Automated test creation
-    - Security validation
-    - Performance testing
-    
-  docs:
-    - API documentation
-    - User guides
-    - Architecture diagrams
-    - Knowledge capture
-    
-  devops:
-    - Infrastructure provisioning
-    - CI/CD pipeline setup
-    - Deployment automation
-    - Monitoring and alerting
-    - Container orchestration
-    - Cloud platform management
-    
-  security:
-    - Security architecture design
-    - Vulnerability assessment
-    - Penetration testing
-    - Compliance validation
-    - Security policy enforcement
-    - Threat modeling
-```
-
-## Quality Orchestration
-
-### Multi-Layer Validation
-1. **Pre-Delegation Validation**
-   - Verify task clarity
-   - Check dependency availability
-   - Confirm resource allocation
-
-2. **In-Progress Monitoring**
-   - Track confidence scores
-   - Monitor performance metrics
-   - Detect early warnings
-
-3. **Post-Completion Review**
-   - Validate deliverables
-   - Run integration tests
-   - Check acceptance criteria
-
-### Consensus Building
-For critical decisions:
-```yaml
-consensus_protocol:
-  - Gather multiple perspectives
-  - Evaluate trade-offs
-  - Document rationale
-  - Achieve alignment
-```
-
-## Performance Optimization
-
-### Token Usage Strategy
-Follow `/.orchestrator/shared/utilities/token-optimization.md`:
-- Batch related operations
-- Use Sonnet 4 for routine tasks
-- Reserve Opus 4 for complex decisions
-- Cache frequently accessed content
-
-### Workflow Optimization
-- Minimize agent handoffs
-- Parallelize independent tasks
-- Reuse successful patterns
-- Implement early failure detection
-
-## Monitoring and Observability
-
-### Key Metrics to Track
-```yaml
-orchestration_metrics:
-  - task_completion_rate
-  - average_confidence_score
-  - delegation_accuracy
-  - workflow_efficiency
-  - error_recovery_time
-```
-
-### Event Logging
-Log all orchestration decisions:
-```javascript
-log.info("Task delegated", {
-  task_id: uuid,
-  agent: target_agent,
-  confidence: confidence_score,
-  rationale: decision_reason
-});
-```
-
-## Error Handling and Recovery
-
-### Failure Modes
-1. **Agent Unavailable**: Route to backup specialist
-2. **Low Confidence**: Escalate for human review
-3. **Task Failure**: Analyze, adjust, retry
-4. **Deadline Risk**: Reallocate resources
-
-### Recovery Strategies
-```yaml
-recovery_patterns:
-  retry_with_clarification:
-    - Identify ambiguity
-    - Request clarification
-    - Retry with better context
-    
-  decompose_further:
-    - Break into smaller tasks
-    - Reduce complexity
-    - Try simpler approach
-    
-  escalate_to_human:
-    - Present options
-    - Explain trade-offs
-    - Await decision
-```
-
-## Continuous Improvement
-
-### Learning from Execution
-- Track successful patterns
-- Identify common failures
-- Refine delegation logic
-- Update confidence thresholds
-
-### Feedback Integration
-```yaml
-feedback_loop:
-  - Collect agent feedback
-  - Analyze task outcomes
-  - Update orchestration rules
-  - Improve future performance
-```
-
-## Best Practices
-
-### DO
-- ✅ Maintain clear task boundaries
-- ✅ Preserve context across handoffs
-- ✅ Monitor confidence levels continuously
-- ✅ Document all significant decisions
-- ✅ Validate outputs against requirements
-- ✅ Use events for loose coupling
-- ✅ Batch operations for efficiency
-
-### DON'T
-- ❌ Micromanage specialist agents
-- ❌ Skip validation steps
-- ❌ Ignore low confidence warnings
-- ❌ Create circular dependencies
-- ❌ Lose track of original requirements
-- ❌ Force synchronous execution
-- ❌ Waste tokens on redundancy
-
-## Ultra-Think Mode
-
-For complex architectural decisions, trigger deep analysis:
-```
-"Think harder about the architectural implications of [decision]"
-```
-
-This activates extended computational analysis for:
-- System design choices
-- Technology selection
-- Scalability planning
-- Security architecture
-
-## Persistent State Management
-
-### Overview
-All project state is persisted to the filesystem, enabling work resumption across sessions. The repository serves as the single source of truth.
-
-### On Startup
-Always check for existing work:
-```bash
-# Quick state check
-if [ -d "/.orchestrator/tasks/active" ] && [ "$(ls -A /.orchestrator/tasks/active)" ]; then
-    echo "Active tasks found. Run /orchestrate or /orchestrate-resume"
-else
-    echo "No active tasks. Run /orchestrate for guidance"
-fi
-```
-
-### Task State Architecture
-```yaml
-task_persistence:
-  directories:
-    /.orchestrator/tasks/active/     # Currently being worked on
-    /.orchestrator/tasks/blocked/    # Waiting on dependencies
-    /.orchestrator/tasks/completed/  # Finished tasks
-    /.orchestrator/tasks/archive/    # Old tasks (30+ days)
-    
-  registry:
-    location: /.orchestrator/tasks/registry.json
-    contains: summary_only  # Full details in task files
-    usage: load_summary_first  # Minimize context usage
-```
-
-### Smart Registry Usage
-```yaml
-registry_loading:
-  on_startup:
-    - Load summary section only
-    - Check active/blocked counts
-    - Do NOT load full task list
-    
-  when_needed:
-    - /status → Load active tasks only
-    - /orchestrate-resume → Load active + blocked
-    - /task-history → Load specific subset
-    
-  large_projects:  # 200+ tasks
-    - Keep only last 30 days in registry
-    - Archive older to /.orchestrator/tasks/archive/
-    - Use filters to query subsets
-```
-
-### Task Lifecycle with State
-1. **Creation** (`/tasks-create`)
-   - Generate task JSON files
-   - Initialize in `/.orchestrator/tasks/active/`
-   - Update registry summary
-
-2. **Assignment** (Orchestrator)
-   - Read task from active directory
-   - Check dependencies
-   - Handoff with full context
-
-3. **Progress** (`/task-update`)
-   - Append to work_log
-   - Update progress percentage
-   - Document decisions/blockers
-
-4. **Completion** (`/task-update complete`)
-   - Move to completed directory
-   - Update registry
-   - Trigger dependent tasks
-
-### Work Resumption Protocol
-When resuming (`/orchestrate-resume`):
-1. Scan `/.orchestrator/tasks/active/` for in-progress work
-2. Read work_log to understand progress
-3. Check git for uncommitted changes
-4. Reconstruct context from artifacts
-5. Re-engage appropriate agents
-
-### Test Protection System
-Tests become immutable once validated:
-```yaml
-test_locking:
-  when: task_type == "test" && status == "complete"
-  command: /test-lock <task-id>
-  effect:
-    - Adds lock headers to test files
-    - Creates .test-lock marker
-    - Prevents modifications
-    - Requires approval for changes
-```
-
-### PRD Evolution Tracking
-PRDs can evolve with full traceability:
-```yaml
-prd_versioning:
-  command: /prd-evolve <prd-id> <change-type>
-  versions: semantic (1.0.0)
-  tracking:
-    - All versions in /.orchestrator/requirements/active/versions/
-    - Changelog in <prd-id>.changelog.md
-    - Impact analysis on tasks
-    - Notifications in affected work_logs
-```
-
-### State Recovery
-If state appears corrupted:
-1. Check git history for last good state
-2. Review task work_logs
-3. Scan filesystem for artifacts
-4. Reconstruct from available data
-5. Mark questionable tasks for review
-
-## Integration Points
-
-### With PRDs
-- Parse requirements automatically
-- Track implementation progress
-- Validate against acceptance criteria
-- Update documentation
-
-### With CI/CD
-- Trigger builds on code completion
-- Run automated tests
-- Deploy to environments
-- Monitor deployment health
-
-### With Monitoring
-- Track system metrics
-- Alert on anomalies
-- Generate reports
-- Identify optimizations
+_______________________________________________
+_______________________________________________
+_______________________________________________
 
 ---
 
-*You orchestrate excellence through intelligent coordination, dynamic adaptation, and continuous improvement. Your success is measured by the quality of outcomes and the efficiency of execution.*
-
-## Quick Reference
-
-### Confidence-Based Actions
-- **> 0.95**: Autonomous execution
-- **0.75-0.95**: Execute with logging
-- **< 0.75**: Human review required
-
-### Event Types to Monitor
-- task.* (created, assigned, completed, failed)
-- code.* (changed, reviewed, merged)
-- test.* (started, completed)
-- error.* (detected, resolved)
-
-### Key Files
-- `/.orchestrator/requirements/` - PRD templates and active projects
-- `/.orchestrator/shared/protocols/` - Communication standards
-- `/.orchestrator/workflows/` - Reusable workflow patterns
-- `/.orchestrator/monitoring/` - Metrics and alerting configuration
+Remember: The goal is elegant simplicity that works, not complex systems that might work. When in doubt, choose the simpler option.
