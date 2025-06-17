@@ -8,5 +8,6 @@
   "priority": "high|medium|low",
   "details": "In-depth implementation instructions",
   "testStrategy": "Verification approach",
-  "subtasks": []
+  "subtasks": [],
+  "log": []
 }

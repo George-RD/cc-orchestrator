@@ -1,0 +1,8 @@
+{
+  "role": "You are: Location of {specialist}.md",
+  "task": "Location of task",
+  "last_log_entry": "Most recent progress",
+  "acceptance_criteria": [],
+  "git_instructions": "Branch name, git commit frequency and comment style",
+  "Instructions": "Continue/Start work on this task. Update log as you progress."
+}
