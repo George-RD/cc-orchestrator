@@ -18,28 +18,15 @@ Create and initialize specialist context for task execution:
 
 **For resuming tasks (already in_progress):**
 - Load existing task with full log history
-- Preserve specialist context and progress
+- Instruct the specialist on additional relevant information from your higher project perspective, such as another specialist will be working in a similar area.
 - Add log entry: "Resumed by [specialist] at [timestamp]"
 
 ### Step 3: Specialist Initialization
 **Context Package:**
-```
-Task: {task JSON}
-Specialist: {specialist type}
-Context: {
-  "role": "You are a [specialist] working on this specific task",
-  "task_details": {task JSON},
-  "last_log_entry": "Most recent progress",
-  "acceptance_criteria": [list],
-  "git_worktree": "worktrees/{specialist}-work"
-}
-Instructions: "Continue/Start work on this task. Update log as you progress."
-```
+Initiate {specialist} using format:
+`/.orchestrator/templates/context-package-template.json`
 
-### Step 4: Git Worktree Setup (Optional)
-- Check if `worktrees/{specialist}-work` exists
-- Create or update worktree as needed
-- Switch specialist to appropriate branch
+
 
 ## Anti-Circular Design
 - **One-way spawning**: Orchestrator → Specialist (no callback)

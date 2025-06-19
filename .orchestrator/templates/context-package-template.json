@@ -1,6 +1,6 @@
 {
-  "role": "You are: Location of {specialist}.md",
-  "task": "Location of task",
+  "role": "/.orchestrator/specialists/{specialist}.md",
+  "task": "/.orchestrator/tasks/in_progress/{task}.json",
   "last_log_entry": "Most recent progress",
   "acceptance_criteria": [],
   "git_instructions": "Branch name, git commit frequency and comment style",
