@@ -1,4 +1,6 @@
-# Claude Template Simplification
+# CC Orchestrator
+
+No code template repo for claude code development.
 
 ## Overview
 A simplified AI orchestration framework that maintains power while dramatically reducing complexity. Uses MECE principles and confidence-based delegation for elegant project coordination.
