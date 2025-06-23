@@ -9,17 +9,17 @@ while True:
     # Get current status via headless command
     status = get_status_headless()  # cat .claude/commands/status.md | claude -p --output-format json
     
-    # PRIORITY ORDER (stop at first match):
+    # Handle all priorities in same cycle:
     
-    # 1. Review tasks have highest priority
+    # 1. Review tasks have highest priority - process ALL reviews
     if status.review_tasks:
         for task_id in status.review_tasks:
             task = read_task(task_id)
             spawn_tdd_reviewer(task_id, task.type)
             # After reviewer completes, check if passed/failed
             
-    # 2. Check in-progress tasks for stalls
-    elif status.in_progress_tasks:
+    # 2. Check in-progress tasks for stalls (run regardless of reviews)
+    if status.in_progress_tasks:
         for task_id in status.in_progress_tasks:
             task = read_task(task_id)
             # Task is stalled if it has confidence_assessment but still in_progress
@@ -29,27 +29,29 @@ while True:
             elif task_was_just_assigned and still_in_progress:
                 reset_task_to_todo(task_id, "Specialist failed to start work")
                 
-    # 3. Assign new work
-    elif status.todo_tasks:
+    # 3. Assign new work based on dependencies and conflicts
+    if status.todo_tasks:
         # Get all todo tasks with their dependencies
         available_tasks = [t for t in status.todo_tasks if dependencies_met(t)]
         
         if available_tasks:
             # Check which tasks can run together without file conflicts
-            conflict_analysis = check_conflicts_headless(available_tasks)
-            # Returns: {"safe_groups": [[1,2], [3,4,5]], "max_parallel": 3}
+            # considering what's already in progress
+            current_in_progress = status.in_progress_tasks
+            conflict_analysis = check_conflicts_headless(available_tasks, current_in_progress)
+            # Returns: {"safe_groups": [[1,2], [3,4,5]], "conflicts_with_current": [6,7]}
             
-            # Select a group of non-conflicting tasks
+            # Assign tasks that don't conflict with current work
             for group in conflict_analysis.safe_groups:
-                # Check if any tasks in this group are already in progress
-                group_available = all(
-                    task_id not in status.in_progress_ids 
-                    for task_id in group
-                )
+                # Filter out tasks that would conflict with current work
+                safe_to_start = [
+                    task_id for task_id in group 
+                    if task_id not in conflict_analysis.get('conflicts_with_current', [])
+                ]
                 
-                if group_available:
-                    # Assign tasks in this group
-                    for task_id in group:
+                if safe_to_start:
+                    # Assign all safe tasks
+                    for task_id in safe_to_start:
                         task = get_task(task_id)
                         # Spawn specialist with common instructions
                         result = Task(
@@ -124,12 +126,9 @@ IMPORTANT: You will be reviewed on:
                         if task_after.status == "todo":
                             # Specialist didn't even start
                             add_to_task_log(task.id, "Specialist failed to update status")
-                    
-                    # Break after assigning first available group
-                    break
                 
     # 4. Handle blocked tasks
-    elif status.blocked_tasks:
+    if status.blocked_tasks:
         for task_id in status.blocked_tasks:
             task = read_task(task_id)
             # Add guidance and reset to todo
@@ -139,14 +138,14 @@ IMPORTANT: You will be reviewed on:
                 "guidance": "Try a different approach or break down the task"
             })
             
-    # 5. All done!
-    else:
-        if all(t.status == "completed" for t in all_tasks):
-            print("✅ All tasks completed!")
-            break
-        else:
-            # Wait a bit before checking again
-            sleep(30)
+    # 5. Check if all done
+    all_tasks = read_all_tasks()
+    if all(t.status == "completed" for t in all_tasks):
+        print("✅ All tasks completed!")
+        break
+    
+    # Wait a bit before next cycle
+    sleep(30)
 
 def spawn_tdd_reviewer(task_id, task_type):
     """Spawn a TDD reviewer for a task in review status"""
