@@ -49,9 +49,6 @@
     "ghcr.io/devcontainers/features/git:1": {
       "version": "latest",
       "ppa": true
-    },
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "20"
     }
   },
   "forwardPorts": [3000, 3001, 4000, 5000, 5173, 5174, 8000, 8080],

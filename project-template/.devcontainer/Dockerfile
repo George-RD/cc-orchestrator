@@ -18,31 +18,26 @@ RUN apt update && apt install -y \
   ipset \
   iproute2 \
   dnsutils \
+  bind9-dnsutils \
   aggregate \
   jq \
   python3-pip \
-  cargo \
-  build-essential
-
-# Install search and navigation tools
-RUN cargo install fd-find && \
-  cargo install ripgrep && \
-  cargo install ast-grep && \
-  ln -s /root/.cargo/bin/fd /usr/local/bin/fd && \
-  ln -s /root/.cargo/bin/rg /usr/local/bin/rg && \
-  ln -s /root/.cargo/bin/ast-grep /usr/local/bin/ast-grep
+  build-essential \
+  fd-find \
+  ripgrep \
+  curl
 
 # Install fzf (fuzzy finder)
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
   ~/.fzf/install --all --no-bash --no-fish
 
+# Install ast-grep using their install script
+RUN curl -sSfL https://raw.githubusercontent.com/ast-grep/ast-grep/main/scripts/install.sh | sh -s -- -b /usr/local/bin
+
 # Install yq for YAML/XML processing
 RUN wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && \
   chmod +x /usr/local/bin/yq
 
-# Ensure default node user has access to /usr/local/share
-RUN mkdir -p /usr/local/share/npm-global && \
-  chown -R node:node /usr/local/share
 
 ARG USERNAME=node
 
@@ -67,12 +62,11 @@ RUN ARCH=$(dpkg --print-architecture) && \
   sudo dpkg -i "git-delta_0.18.2_${ARCH}.deb" && \
   rm "git-delta_0.18.2_${ARCH}.deb"
 
+# Install Claude Code as root
+RUN npm install -g @anthropic-ai/claude-code
+
 # Set up non-root user
 USER node
-
-# Install global packages
-ENV NPM_CONFIG_PREFIX=/usr/local/share/npm-global
-ENV PATH=$PATH:/usr/local/share/npm-global/bin:/root/.cargo/bin
 
 # Set the default shell to zsh
 ENV SHELL=/bin/zsh
@@ -88,9 +82,6 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
   -a "alias grep='rg'" \
   -x
 
-# Install Claude Code
-RUN npm install -g @anthropic-ai/claude-code
-
 # Copy and set up firewall script
 COPY init-firewall.sh /usr/local/bin/
 USER root
@@ -98,3 +89,4 @@ RUN chmod +x /usr/local/bin/init-firewall.sh && \
   echo "node ALL=(root) NOPASSWD: /usr/local/bin/init-firewall.sh" > /etc/sudoers.d/node-firewall && \
   chmod 0440 /etc/sudoers.d/node-firewall
 USER node
+

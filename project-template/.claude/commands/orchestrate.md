@@ -14,7 +14,8 @@ while True:
     # 1. Review tasks have highest priority
     if status.review_tasks:
         for task_id in status.review_tasks:
-            spawn_tdd_reviewer(task_id)
+            task = read_task(task_id)
+            spawn_tdd_reviewer(task_id, task.type)
             # After reviewer completes, check if passed/failed
             
     # 2. Check in-progress tasks for stalls
@@ -58,31 +59,64 @@ while True:
 COMMON INSTRUCTIONS FOR ALL SPECIALISTS:
 1. Read your role definition: /.cc-orchestrator/specialists/{task.type}.md
 2. Read your task: /.cc-orchestrator/tasks/task-{task.id}.json
-3. For efficient searching, use rg (ripgrep) instead of grep
-4. Follow TDD:
-   - Write FAILING tests first
-   - Run tests to ensure they fail
-   - Implement until tests pass
-   - Do NOT modify tests to make them pass
-5. Code quality standards:
+3. IMMEDIATELY update task status to "in_progress": {{"status": "in_progress"}}
+4. Create and switch to a feature branch: git checkout -b task-{task.id}-{task.type}
+5. For efficient searching, use rg (ripgrep) instead of grep
+6. STRICT TDD WORKFLOW (CRITICAL - You will be reviewed on this):
+   For EACH feature/function:
+   a) Write ONE failing test
+   b) Run test to verify it fails
+   c) Commit: "Add failing test for [feature]"
+   d) Write MINIMAL code to make test pass
+   e) Run test to verify it passes
+   f) Commit: "Implement [feature] to pass test"
+   g) Refactor if needed
+   h) Commit: "Refactor [feature]" (if applicable)
+   i) Repeat for next feature
+   
+   NEVER:
+   - Write multiple tests at once
+   - Commit tests and implementation together
+   - Delete or replace existing tests
+   - Write implementation before test
+7. Code quality standards:
    - Clear, self-documenting names
    - Single responsibility per function/class
    - Proper error handling
    - No code without tests
-6. Repository organization:
+8. Repository organization:
    - Keep files in appropriate directories (src/, tests/, docs/, etc.)
    - Don't clutter the root directory
-   - Update README/docs when adding major features
-7. When complete, update the task JSON with:
-   {{"status": "review", "confidence_assessment": {{"level": "high|medium|low", "notes": "explanation"}}}}
+   - DO NOT create status reports or completion files
+   - DO NOT create new documentation unless specified in task
+   - Update existing README/docs ONLY when adding major features
+9. Git workflow:
+   - Work ONLY on your feature branch
+   - Commit AFTER EVERY TDD STEP (test, implementation, refactor)
+   - Each commit should be atomic and have a clear message
+   - Example commit sequence:
+     * "Add failing test for todo creation"
+     * "Implement todo creation"
+     * "Add failing test for todo toggle"
+     * "Implement todo toggle functionality"
+   - Do NOT merge to main - the TDD reviewer will merge if approved
+10. When complete:
+   - Update the task JSON with: {{"status": "review", "confidence_assessment": {{"level": "high|medium|low", "notes": "explanation"}}}}
    - High: All criteria met, tests pass, follows patterns
    - Medium: Good solution, minor concerns noted
    - Low: Blockers exist, needs help
-8. If blocked, update: {{"status": "blocked", "blocker_reason": "explanation"}}
-9. Commit your changes with clear messages
+   - DO NOT create completion reports or summary files
+   - Task JSON update is your ONLY completion signal
 
 CRITICAL: You MUST update the task JSON status before finishing!
-Start work immediately."""
+If blocked at any point, update: {{"status": "blocked", "blocker_reason": "explanation"}}
+Start work immediately.
+
+IMPORTANT: You will be reviewed on:
+- Test-first development (tests before implementation)
+- Incremental commits showing red-green-refactor cycle
+- Each commit should represent ONE small step
+- Git history must clearly show TDD process"""
                         )
                         
                         # IMMEDIATELY check what happened
@@ -114,20 +148,26 @@ Start work immediately."""
             # Wait a bit before checking again
             sleep(30)
 
-def spawn_tdd_reviewer(task_id):
+def spawn_tdd_reviewer(task_id, task_type):
     """Spawn a TDD reviewer for a task in review status"""
     result = Task(
         description=f"TDD Review for task {task_id}",
         prompt=f"""You are a TDD review specialist.
 
 Review task: /.cc-orchestrator/tasks/task-{task_id}.json
+Task type: {task_type}
 
-1. Check git history for test-first development
-2. Verify tests were written before implementation  
-3. Ensure tests weren't modified to pass
-4. Return your verdict by updating the task with:
-   - If passed: {{"status": "completed", "review_passed": true}}
-   - If failed: {{"status": "todo", "review_feedback": "what went wrong"}}"""
+1. Switch to the feature branch: git checkout task-{task_id}-{task_type}
+2. Check git history for test-first development
+3. Verify tests were written before implementation  
+4. Ensure tests weren't modified to pass
+5. If approved:
+   - Merge to main: git checkout main && git merge task-{task_id}-{task_type}
+   - Delete feature branch: git branch -d task-{task_id}-{task_type}
+   - Update task: {{"status": "completed", "review_passed": true}}
+6. If rejected:
+   - Stay on feature branch
+   - Update task: {{"status": "todo", "review_feedback": "what went wrong"}}"""
     )
     
 def get_status_headless():

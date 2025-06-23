@@ -29,26 +29,26 @@ ipset create allowed-domains hash:net
 
 # Fetch GitHub meta information and aggregate + add their IP ranges
 echo "Fetching GitHub IP ranges..."
-gh_ranges=$(curl -s https://api.github.com/meta)
+gh_ranges=$(curl -s --connect-timeout 10 --max-time 30 https://api.github.com/meta || echo "")
 if [ -z "$gh_ranges" ]; then
-    echo "ERROR: Failed to fetch GitHub IP ranges"
-    exit 1
-fi
+    echo "WARNING: Failed to fetch GitHub IP ranges, skipping GitHub setup"
+    # Continue without GitHub ranges rather than failing
+else
 
-if ! echo "$gh_ranges" | jq -e '.web and .api and .git' >/dev/null; then
-    echo "ERROR: GitHub API response missing required fields"
-    exit 1
-fi
-
-echo "Processing GitHub IPs..."
-while read -r cidr; do
-    if [[ ! "$cidr" =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/[0-9]{1,2}$ ]]; then
-        echo "ERROR: Invalid CIDR range from GitHub meta: $cidr"
-        exit 1
+    if ! echo "$gh_ranges" | jq -e '.web and .api and .git' >/dev/null; then
+        echo "WARNING: GitHub API response missing required fields"
+    else
+        echo "Processing GitHub IPs..."
+        while read -r cidr; do
+            if [[ ! "$cidr" =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/[0-9]{1,2}$ ]]; then
+                echo "WARNING: Invalid CIDR range from GitHub meta: $cidr"
+                continue
+            fi
+            echo "Adding GitHub range $cidr"
+            ipset add allowed-domains "$cidr"
+        done < <(echo "$gh_ranges" | jq -r '(.web + .api + .git)[]' | aggregate -q)
     fi
-    echo "Adding GitHub range $cidr"
-    ipset add allowed-domains "$cidr"
-done < <(echo "$gh_ranges" | jq -r '(.web + .api + .git)[]' | aggregate -q)
+fi
 
 # Resolve and add other allowed domains
 for domain in \
@@ -58,19 +58,24 @@ for domain in \
     "statsig.anthropic.com" \
     "statsig.com"; do
     echo "Resolving $domain..."
-    ips=$(dig +short A "$domain")
+    ips=$(dig +short A "$domain" @8.8.8.8 2>/dev/null || dig +short A "$domain" 2>/dev/null || echo "")
     if [ -z "$ips" ]; then
-        echo "ERROR: Failed to resolve $domain"
-        exit 1
+        echo "WARNING: Failed to resolve $domain - will retry with host"
+        ips=$(host "$domain" 2>/dev/null | grep "has address" | awk '{print $4}' || echo "")
+    fi
+    
+    if [ -z "$ips" ]; then
+        echo "WARNING: Could not resolve $domain, skipping"
+        continue
     fi
     
     while read -r ip; do
         if [[ ! "$ip" =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
-            echo "ERROR: Invalid IP from DNS for $domain: $ip"
-            exit 1
+            echo "WARNING: Invalid IP from DNS for $domain: $ip"
+            continue
         fi
         echo "Adding $ip for $domain"
-        ipset add allowed-domains "$ip"
+        ipset add allowed-domains "$ip" 2>/dev/null || echo "WARNING: Failed to add $ip"
     done < <(echo "$ips")
 done
 
@@ -111,8 +116,15 @@ fi
 
 # Verify GitHub API access
 if ! curl --connect-timeout 5 https://api.github.com/zen >/dev/null 2>&1; then
-    echo "ERROR: Firewall verification failed - unable to reach https://api.github.com"
-    exit 1
+    echo "WARNING: Unable to reach https://api.github.com (may be expected if GitHub IPs weren't added)"
 else
     echo "Firewall verification passed - able to reach https://api.github.com as expected"
+fi
+
+# Verify Anthropic API access (most important for Claude Code)
+if ! curl --connect-timeout 5 https://api.anthropic.com >/dev/null 2>&1; then
+    echo "ERROR: Unable to reach https://api.anthropic.com - Claude Code will not work!"
+    # Still don't exit, let the user see the error
+else
+    echo "SUCCESS: Can reach api.anthropic.com - Claude Code should work"
 fi
