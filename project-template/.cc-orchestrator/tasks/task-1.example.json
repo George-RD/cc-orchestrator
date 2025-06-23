@@ -1,0 +1,19 @@
+{
+  "id": 1,
+  "title": "Create user authentication API",
+  "type": "backend",
+  "status": "todo",
+  "priority": "high",
+  "files": ["src/api/auth.js", "src/models/user.js"],
+  "details": "Implement user registration and login endpoints with JWT tokens",
+  "acceptance_criteria": [
+    "POST /api/register creates new user",
+    "POST /api/login returns JWT token",
+    "Password hashing with bcrypt",
+    "Input validation for email and password",
+    "Comprehensive test coverage"
+  ],
+  "test_strategy": "Unit tests for auth logic, integration tests for endpoints",
+  "dependencies": [],
+  "log": []
+}

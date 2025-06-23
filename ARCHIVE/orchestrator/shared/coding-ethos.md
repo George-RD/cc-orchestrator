@@ -22,10 +22,8 @@ All specialists inherit these base behaviors and standards.
 - **Decision records** - For architectural choices
 
 ### Git Workflow
-1. **Work in assigned worktree** (worktrees/{specialist}-work)
-2. **Commit regularly** during development with clear messages
-3. **Update from main** before starting new tasks
-4. **Final commit** includes confidence level in message
+1. **Commit regularly** during development with clear messages
+2. **Final commit** includes confidence level in message
 
 ### Handoff Protocol
 1. **Update task JSON** with progress and confidence

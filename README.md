@@ -1,52 +1,76 @@
 # CC Orchestrator
 
-No code template repo for claude code development.
-
-## Overview
-A simplified AI orchestration framework that maintains power while dramatically reducing complexity. Uses MECE principles and confidence-based delegation for elegant project coordination.
+A minimal AI orchestration framework for Claude Code that uses mermaid diagrams to define behavior and leverages headless mode for clean context management.
 
 ## Quick Start
-1. **Copy to your project**: `cp CLAUDE_template.md your-project/CLAUDE.md`
-2. **Create a PRD**: Use `.orchestrator/templates/prd-template.md`
-3. **Start orchestrating**: The master orchestrator handles the rest
 
-## Structure
-```
-├── CLAUDE_template.md (95 lines)      # Master orchestrator with confidence rules
-├── worktrees/                         # Development specialist worktrees
-│   ├── backend-work/                  # Backend development branch
-│   ├── frontend-work/                 # Frontend development branch
-│   ├── qa-work/                       # QA development branch
-│   └── docs-work/                     # Documentation branch
-│   # DevOps & Security work in main branch (infrastructure/project-wide)
-└── .orchestrator/
-    ├── shared/coding-ethos.md          # Common principles with git workflow
-    ├── specialists/                    # 4 core specialists (~55 lines each)
-    ├── templates/task-template.json     # Task structure with git tracking
-    └── templates/prd-template.md        # Simple PRD format
+```bash
+# Copy the project template to your project
+cp -r project-template/* your-project/
+cd your-project/
+
+# You now have a complete orchestration framework!
+# Start orchestrating:
+/orchestrate
 ```
 
-## Core Principles
-- **MECE**: Mutually Exclusive, Collectively Exhaustive
-- **Confidence-Based**: Simple high/medium/low autonomy levels
-- **Context Efficient**: Natural flow through orchestrator delegation
-- **Progressive Enhancement**: Start minimal, add only proven necessities
+## What You Get
 
-## Usage
-1. **Create PRD**: Define what you want to build
-2. **Setup git worktrees**: `git worktree add worktrees/{specialist}-work {specialist}-work` (for backend, frontend, qa, docs)
-3. **Run `/orchestrate`**: Smart command detects state and delegates to worktrees
-4. **Monitor progress**: Each specialist commits regularly in their worktree
-5. **Integration**: Orchestrator merges completed features from worktrees to main
+The `project-template/` directory contains a complete, working example of the framework:
 
-## Success Metrics
-- ✅ Total framework < 500 lines (achieved: ~308 lines)
-- ✅ Setup time < 5 minutes
-- ✅ Clear separation of concerns (MECE architecture)
-- ✅ Maintains resumability across sessions
-- ✅ 88% reduction from original complexity
+```
+your-project/
+├── CLAUDE.md                    # Makes Claude the orchestrator
+├── .claude/commands/            # Custom commands (/orchestrate, /status, check-conflicts)
+├── .cc-orchestrator/            # Framework files (kept separate from your code)
+│   ├── specialists/             # AI role definitions
+│   └── tasks/                   # Task JSON files
+└── src/                         # Your actual project code
+```
+
+## How It Works
+
+1. **Self-Contained Commands**: Logic embedded in command files (mermaid + implementation)
+2. **Pure Functions**: Headless commands for status and analysis (JSON in/out)
+3. **Smart Orchestration**: Checks in-progress before assigning new tasks
+4. **Sub-Agent Delegation**: Specialists handle implementation, TDD review
+5. **Simple State**: Task status field tracks everything
+
+## Key Features
+
+✅ **< 300 lines total** - Minimal complexity  
+✅ **Zero configuration** - Just copy and run  
+✅ **Visual programming** - Mermaid diagrams as code  
+✅ **Parallel work** - Smart conflict detection  
+✅ **State persistence** - Resume anytime via JSON  
+
+## Repository Structure
+
+```
+cc-orchestrator/
+├── project-template/      # Complete deployable framework (copy this!)
+├── docs/                  # Documentation
+├── ARCHIVE/               # Old code (will be deleted)
+└── README.md             # This file
+```
+
+## For Framework Developers
+
+To modify the framework:
+1. Read `CLAUDE.md` (framework development guide)
+2. Edit files in `project-template/`
+3. Test changes by running commands in `project-template/`
 
 ## Philosophy
-*Elegant simplicity that works, not complex systems that might work.*
 
-When in doubt, choose the simpler option.
+> "Elegant simplicity that works, not complex systems that might work."
+
+This framework prioritizes:
+- Clear separation of concerns (MECE)
+- Visual understanding over code complexity
+- Leveraging Claude Code's native capabilities
+- Maintaining context cleanliness
+
+## License
+
+MIT

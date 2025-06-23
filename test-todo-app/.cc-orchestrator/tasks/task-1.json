@@ -1,0 +1,20 @@
+{
+  "id": 1,
+  "title": "Create HTML structure and CSS styling",
+  "type": "frontend",
+  "status": "todo",
+  "priority": "high",
+  "files": ["index.html", "styles.css"],
+  "details": "Create the main HTML page with sections for todo input, todo list display, and filter buttons. Style with modern CSS including flexbox/grid layout, pleasant colors, and smooth transitions.",
+  "acceptance_criteria": [
+    "index.html with proper semantic HTML5 structure",
+    "Input field for new todos with add button",
+    "Container for todo list items",
+    "Filter buttons for All/Active/Completed",
+    "Responsive design that works on mobile and desktop",
+    "Clean, modern styling with good UX"
+  ],
+  "test_strategy": "Create visual regression tests using CSS selectors to verify all elements exist and are properly styled",
+  "dependencies": [],
+  "log": []
+}

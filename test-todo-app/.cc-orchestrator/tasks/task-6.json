@@ -1,0 +1,20 @@
+{
+  "id": 6,
+  "title": "Implement import/export functionality",
+  "type": "backend",
+  "status": "todo",
+  "priority": "medium",
+  "files": ["js/import-export.js"],
+  "details": "Add ability to export todos as JSON and import from JSON file. This allows users to backup and restore their todo lists.",
+  "acceptance_criteria": [
+    "Export button downloads todos as JSON file",
+    "Import accepts JSON file via file input",
+    "Validate imported data structure",
+    "Merge or replace options for import",
+    "Error handling for invalid files",
+    "Download uses proper filename with timestamp"
+  ],
+  "test_strategy": "Unit tests for export format and import validation, integration tests for file operations",
+  "dependencies": [2],
+  "log": []
+}

@@ -1,107 +1,85 @@
-# Claude Template
- - Master Orchestrator
+# CLAUDE.md - CC Orchestrator Framework Development
 
-## Your Role
-You are a **Master Orchestrator** implementing a simplified AI coordination framework. You maintain power while dramatically reducing complexity through MECE principles and confidence-based delegation.
+This file guides Claude Code sessions working on the CC Orchestrator framework itself.
 
-## Core Principles
-1. **MECE**: Mutually Exclusive, Collectively Exhaustive - no overlaps, no gaps
-2. **Progressive Enhancement**: Start minimal, add only proven necessities  
-3. **Confidence-Based Autonomy**: Simple, actionable decision rules
-4. **Natural Context Flow**: Orchestrator manages context through delegation
+## Framework Overview
 
-## Confidence System
-```yaml
-confidence_rules:
-  high (>80%): Proceed autonomously
-  medium (50-80%): Log concerns, continue
-  low (<50%): Flag for human review
+CC Orchestrator is a minimal AI orchestration framework using:
+- **Self-contained commands** with embedded logic
+- **Pure headless functions** for status and analysis
+- **Sub-agent delegation** via Task tool
+- **Simple task management** with JSON status field
+
+## Repository Structure
+
+```
+/cc-orchestrator/
+├── project-template/            # 🎯 Complete deployable framework
+│   ├── CLAUDE.md               # User's orchestrator
+│   ├── .claude/commands/       # Self-contained commands
+│   │   ├── orchestrate.md      # Main loop + mermaid
+│   │   ├── status.md           # Pure status function
+│   │   └── check-conflicts.md  # Pure conflict checker
+│   └── .cc-orchestrator/       
+│       ├── specialists/        # AI roles (including tdd-reviewer)
+│       └── tasks/              # Task JSON files
+│
+├── docs/                        # Documentation
+├── ARCHIVE/                     # Old code (delete after stable)
+└── README.md                    # User guide
 ```
 
-## Specialist Delegation
+## Key Design Principles
 
-### Available Specialists
-- **Backend** (`/.orchestrator/specialists/backend.md`): APIs, database, security
-- **Frontend** (`/.orchestrator/specialists/frontend.md`): UI, components, accessibility  
-- **QA** (`/.orchestrator/specialists/qa.md`): Testing, validation, quality
-- **Docs** (`/.orchestrator/specialists/docs.md`): Documentation, guides
+### 1. Commands Are Logic
+Each command file contains:
+- Mermaid diagram (if flow logic)
+- Implementation referencing the diagram
+- No external dependencies
 
-### Task Handoff Format
+### 2. Headless Functions
+Pure functions that:
+- Take input (stdin or parameters)
+- Return JSON output
+- No side effects or explanations
+
+### 3. Sub-Agent Pattern
+- Orchestrator delegates specialized work
+- TDD verification → tdd-reviewer specialist
+- Each specialist has single responsibility
+
+## Development Workflow
+
+```bash
+cd project-template/
+
+# Test orchestration
+/orchestrate
+
+# Test headless functions
+cat .claude/commands/status.md | claude -p --output-format json
 ```
-Task: [clear_description]
-Context: [essential_background]
-Requirements: [from_PRD_if_available]
-Success Criteria: [measurable_outcomes]
-Confidence Required: [high|medium|low]
-Git Worktree: worktrees/{specialist}-work
-Git Instructions: Update from main, commit regularly, include confidence in final commit
-```
 
-## Intelligent Delegation
-1. **Analyze tasks**: Dependencies, blockers, specialist types, shared resources
-2. **Determine pattern**: Full parallel, staged parallel, sequential, or mixed coordination
-3. **Execute optimally**: 
-   - Parallel: Multiple specialists in worktrees simultaneously
-   - Sequential: Coordinated handoffs through main branch
-   - Staged: Groups of parallel work with dependency checkpoints
-   - Mixed: Parallel streams with sequential coordination points
+## Common Modifications
 
-## PRD Processing
-When PRD exists:
-1. Parse requirements systematically ("farmer" mode)
-2. Generate task breakdown with dependency analysis
-3. Apply intelligent delegation patterns
-4. Monitor progress via confidence scores
+### Change Orchestration Logic
+1. Edit mermaid in `orchestrate.md`
+2. Update implementation to match
+3. Test full cycle
 
-When no PRD:
-1. Help create focused PRD ("chef" mode)
-2. Use `/.orchestrator/requirements/template.prd.md`
-3. Switch to farmer mode after PRD completion
+### Add New Specialist
+1. Create `.cc-orchestrator/specialists/role.md`
+2. Update orchestrator assignment logic
+3. Test task delegation
 
-## Task Management
-JSON structure defined in `/.orchestrator/templates/task-template.json`:
-- **6 status states**: todo → in_progress → review → completed | blocked | rejected
+### Modify Status Logic
+1. Edit `status.md` analysis rules
+2. Test JSON output format
+3. Verify orchestrator uses it correctly
 
-## Context Management
-- Load PRDs/tasks only when needed
-- Keep orchestrator context minimal but continuous
-- Let specialists start fresh with shared ethos
-- Auto-compact handles optimization naturally
+## Framework Philosophy
 
-## Communication Protocol
-Follow natural language handoffs:
-1. Clear task definition
-2. Essential context only
-3. Measurable success criteria
-4. Confidence assessment
-
-## Orchestration Patterns
-
-### Parallel Development (Worktree Specialists)
-- **Backend, Frontend, QA, Docs**: Can work simultaneously on different tasks
-- **Setup**: `git worktree add worktrees/{specialist}-work {specialist}-work`
-- **Pattern**: Delegate multiple tasks in parallel, merge when complete
-- **Recovery**: Check worktree commits + task JSON for progress
-
-### Sequential Coordination (Main Branch Specialists)  
-- **DevOps, Security**: Work sequentially when infrastructure/security needs arise
-- **Setup**: Work directly in main branch with coordination
-- **Pattern**: Execute when triggered by project needs or completion milestones
-- **Recovery**: Check main branch commits + task JSON for progress
-
-## MECE Architecture
-- **Orchestrator**: Coordination AND git integration ONLY
-- **Specialists**: Domain expertise in assigned worktrees ONLY  
-- **Tasks**: Work tracking with git commit history ONLY
-- **PRDs**: Requirements ONLY
-
-## Success Criteria
-- Total framework < 500 lines
-- Setup time < 5 minutes
-- Clear separation of concerns
-- Maintains resumability
-- Actually completes projects
-
----
-
-Remember: Elegant simplicity that works, not complex systems that might work. When in doubt, choose the simpler option.
+- **Simple**: Each piece does one thing well
+- **Visual**: Logic visible in mermaid
+- **Testable**: Pure functions, clear contracts
+- **Maintainable**: Self-contained components

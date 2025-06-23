@@ -1,0 +1,19 @@
+{
+  "id": 3,
+  "title": "Build todo controller and event handling",
+  "type": "frontend",
+  "status": "todo",
+  "priority": "high",
+  "files": ["js/controller.js", "js/events.js"],
+  "details": "Implement the controller that connects the model to the view. Handle all user interactions including adding todos, toggling completion, deleting todos, and filtering.",
+  "acceptance_criteria": [
+    "Controller module that initializes the app",
+    "Event handlers for add, toggle, delete actions",
+    "Filter logic for all/active/completed views",
+    "Proper event delegation for dynamic elements",
+    "No memory leaks from event listeners"
+  ],
+  "test_strategy": "Integration tests simulating user interactions and verifying correct model updates and view changes",
+  "dependencies": [1, 2],
+  "log": []
+}
