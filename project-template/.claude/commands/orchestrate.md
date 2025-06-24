@@ -32,7 +32,8 @@ while True:
     # 3. Assign new work based on dependencies and conflicts
     if status.todo_tasks:
         # Get all todo tasks with their dependencies
-        available_tasks = [t for t in status.todo_tasks if dependencies_met(t)]
+        # For now, assume all dependencies are met (can be enhanced later)
+        available_tasks = status.todo_tasks
         
         if available_tasks:
             # Check which tasks can run together without file conflicts
@@ -129,8 +130,9 @@ IMPORTANT: You will be reviewed on:
                         # IMMEDIATELY check what happened
                         task_after = read_task(task.id)
                         if task_after.status == "todo":
-                            # Specialist didn't even start
-                            add_to_task_log(task.id, "Specialist failed to update status")
+                            # Specialist didn't even start - try once more
+                            print(f"⚠️ Task {task.id} specialist failed to start, resetting...")
+                            # Could spawn again or mark for manual intervention
                 
     # 4. Handle blocked tasks
     if status.blocked_tasks:
@@ -179,9 +181,10 @@ def get_status_headless():
     # cat .claude/commands/status.md | claude -p --output-format json
     # This now runs both JSON analysis AND git-sync-check internally
     
-def check_conflicts_headless(todo_tasks):
-    """Check which tasks can run in parallel"""
-    # echo "$TASKS" | claude -p < .claude/commands/check-conflicts.md
+def check_conflicts_headless(todo_tasks, in_progress_tasks):
+    """Check which tasks can run in parallel considering current work"""
+    # Combine both task lists with status markers
+    # echo '{"todo": $TODO_TASKS, "in_progress": $IN_PROGRESS_TASKS}' | claude -p < .claude/commands/check-conflicts.md
 ```
 
 ## Key Principles
@@ -191,3 +194,25 @@ def check_conflicts_headless(todo_tasks):
 3. **Stall detection** - Reset tasks that get stuck
 4. **Clear priorities** - Review → Monitor → Assign → Blocked
 5. **Common instructions** - All specialists get the same base requirements
+
+## Error Handling Examples
+
+### Git Branch Issues
+If specialist reports "fatal: A branch named 'task-X' already exists":
+- This is expected for resumed tasks
+- Specialist should checkout existing branch and continue
+
+### Stalled Tasks
+If task remains in_progress with no commits for >30min:
+- Check git branch for activity
+- Consider resetting to todo with guidance
+
+### Failed Reviews
+If TDD reviewer rejects work:
+- Task returns to todo with feedback
+- Next specialist continues from existing branch
+
+### Sync Issues
+If status.git_sync_issues detected:
+- Priority becomes "fix_sync_issues"
+- May need manual intervention for orphaned branches
