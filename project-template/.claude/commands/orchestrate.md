@@ -62,7 +62,12 @@ COMMON INSTRUCTIONS FOR ALL SPECIALISTS:
 1. Read your role definition: /.cc-orchestrator/specialists/{task.type}.md
 2. Read your task: /.cc-orchestrator/tasks/task-{task.id}.json
 3. IMMEDIATELY update task status to "in_progress": {{"status": "in_progress"}}
-4. Create and switch to a feature branch: git checkout -b task-{task.id}-{task.type}
+4. Check for existing feature branch and switch/create:
+   - First check: git branch -l task-{task.id}-{task.type}
+   - If exists: git checkout task-{task.id}-{task.type}
+     Then review commit history: git log --oneline -10
+     Understand what's been done and continue from there
+   - If not exists: git checkout -b task-{task.id}-{task.type}
 5. For efficient searching, use rg (ripgrep) instead of grep
 6. STRICT TDD WORKFLOW (CRITICAL - You will be reviewed on this):
    For EACH feature/function:
@@ -157,7 +162,7 @@ Review task: /.cc-orchestrator/tasks/task-{task_id}.json
 Task type: {task_type}
 
 1. Switch to the feature branch: git checkout task-{task_id}-{task_type}
-2. Check git history for test-first development
+2. Check git history for test-first development: git log --oneline main..HEAD
 3. Verify tests were written before implementation  
 4. Ensure tests weren't modified to pass
 5. If approved:
@@ -170,8 +175,9 @@ Task type: {task_type}
     )
     
 def get_status_headless():
-    """Get task status summary without loading task details"""
+    """Get task status summary with git sync analysis"""
     # cat .claude/commands/status.md | claude -p --output-format json
+    # This now runs both JSON analysis AND git-sync-check internally
     
 def check_conflicts_headless(todo_tasks):
     """Check which tasks can run in parallel"""

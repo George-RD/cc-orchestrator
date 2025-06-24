@@ -51,4 +51,3 @@ fd . | fzf | xargs code
 - These tools are available in the devcontainer
 - Always prefer `rg` over `grep` for speed
 - Use `fd` over `find` for simplicity
-- Claude Code's built-in tools also work well
