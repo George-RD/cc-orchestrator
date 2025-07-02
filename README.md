@@ -139,6 +139,41 @@ This framework prioritizes:
 - Leveraging Claude Code's native capabilities
 - Maintaining context cleanliness
 
+## Next Steps
+
+### Planned Development
+
+#### 1. Claude Taskmaster Integration
+- Build adapter to convert Taskmaster-generated JSON to CC Orchestrator task format
+- Direct CLI integration: Use Claude Code hooks to call Taskmaster commands directly
+- Hook-based workflow: Trigger Taskmaster task generation via pre/post orchestration hooks
+- Explore MCP integration once Taskmaster MCP support stabilizes
+- Support seamless workflow from Taskmaster task generation to orchestration execution
+
+#### 2. Visual Project Dashboard
+- Create web-based visualizer to parse and display project structure from task JSON files
+- Show task dependencies, status, and specialist assignments in an interactive graph
+- Real-time updates as orchestration progresses
+
+#### 3. Claude Code Hooks Implementation
+- Leverage Claude Code's new hooks functionality to streamline context usage
+- Replace verbose tool calls with efficient bash commands via hooks
+- Implement pre/post-task hooks for automatic validation and formatting
+- Use hooks to enforce consistent git operations and testing workflows
+
+#### 4. Enhanced Headless Mode Usage
+- Explore additional headless mode applications for automation
+- Build command-line utilities for common orchestration patterns
+- Create reusable headless scripts for CI/CD integration
+
+### Contributing
+
+Contributions welcome! Priority areas:
+- Taskmaster JSON adapter development
+- Visual dashboard implementation
+- Hook templates for common workflows
+- Documentation and examples
+
 ## License
 
 MIT
