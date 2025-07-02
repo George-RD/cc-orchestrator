@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CC-Orchestrator - Semantic AI Task Orchestration</title>
+    <meta name="description" content="A novel semantic AI orchestration framework using natural language instructions in markdown as executable logic.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f1419 0%, #1a2332 50%, #0f1419 100%);
+            color: #e2e8f0;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .background-pattern {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background-image: 
+                radial-gradient(circle at 25% 25%, #4ade80 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, #3b82f6 2px, transparent 2px);
+            background-size: 60px 60px;
+            z-index: -1;
+        }
+        
+        /* Header */
+        .header {
+            padding: 3rem 0;
+            text-align: center;
+            position: relative;
+        }
+        
+        .main-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        
+        .highlight {
+            background: linear-gradient(90deg, #4ade80, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+        
+        .description {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            color: #cbd5e1;
+            line-height: 1.8;
+        }
+        
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: rgba(15, 20, 25, 0.8);
+            border: 2px solid;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn-primary {
+            border-color: #4ade80;
+            color: #4ade80;
+            box-shadow: 0 4px 20px rgba(74, 222, 128, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: rgba(74, 222, 128, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(74, 222, 128, 0.4);
+        }
+        
+        .btn-secondary {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4);
+        }
+        
+        /* Demo Section */
+        .demo-section {
+            margin: 4rem 0;
+            text-align: center;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-bottom: 3rem;
+        }
+        
+        .demo-flow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            margin: 3rem 0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .demo-card {
+            background: rgba(15, 20, 25, 0.8);
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .demo-card.input {
+            border-color: #4ade80;
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+        }
+        
+        .demo-card.input .card-content {
+            color: #94a3b8;
+        }
+        
+        .demo-card.input .card-title {
+            color: #4ade80;
+        }
+        
+        .demo-card.input .card-content pre {
+            background: rgba(74, 222, 128, 0.1);
+            border-color: rgba(74, 222, 128, 0.3);
+        }
+        
+        .demo-card.command {
+            border-color: #f59e0b;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+        }
+        
+        .demo-card.command .card-content {
+            color: #94a3b8;
+        }
+        
+        .demo-card.command .card-title {
+            color: #f59e0b;
+        }
+        
+        .demo-card.command .card-content pre {
+            font-size: 1.2rem;
+            color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+        }
+        
+        .demo-card.output {
+            border-color: #3b82f6;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .demo-card.output .card-content {
+            color: #3b82f6;
+        }
+        
+        .demo-card.output .card-content p {
+            background: rgba(59, 130, 246, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            margin: 0.25rem 0;
+        }
+        
+        .card-title {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .card-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+        
+        .card-content pre {
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.85rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #334155;
+        }
+        
+        .arrow {
+            font-size: 2.5rem;
+            color: #64748b;
+            animation: pulse 2s infinite;
+            text-align: center;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+        
+        /* Features */
+        .features {
+            margin: 6rem 0;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .feature-card {
+            background: rgba(15, 20, 25, 0.6);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 2rem;
+            backdrop-filter: blur(5px);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #f1f5f9;
+        }
+        
+        .feature-description {
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+        
+        /* Specialists Section */
+        .specialists {
+            margin: 6rem 0;
+            text-align: center;
+        }
+        
+        .specialists-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .specialist-card {
+            background: rgba(15, 20, 25, 0.8);
+            border: 1px solid #3b82f6;
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+        }
+        
+        .specialist-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #3b82f6;
+            margin-bottom: 0.5rem;
+        }
+        
+        .specialist-role {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid #334155;
+            margin-top: 6rem;
+        }
+        
+        .footer-text {
+            color: #64748b;
+            margin-bottom: 1rem;
+        }
+        
+        .open-source-badge {
+            display: inline-block;
+            background: rgba(74, 222, 128, 0.1);
+            color: #4ade80;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid #4ade80;
+        }
+        
+        .hanging-indent {
+            display: inline;
+            text-indent: -1.5em;
+            padding-left: 1.5em;
+            margin-left: 1.5em;
+        }
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .demo-flow {
+                grid-template-columns: 1fr;
+            }
+            
+            .arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-pattern"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="main-title">
+                CC-<span class="highlight">Orchestrator</span>
+            </h1>
+            <p class="subtitle">Semantic AI Task Orchestration Framework</p>
+            
+            <p class="description">
+                A novel semantic AI orchestration framework that uses natural language instructions in markdown as executable logic. Instead of traditional code, Claude interprets structured markdown to coordinate specialist AI agents intelligently.
+            </p>
+            
+            <div class="button-group">
+                <a href="https://github.com/George-RD/cc-orchestrator" class="btn btn-primary">
+                    📦 View on GitHub
+                </a>
+                <a href="https://github.com/George-RD/cc-orchestrator#quick-start" class="btn btn-secondary">
+                    🚀 Quick Start
+                </a>
+            </div>
+        </header>
+        
+        <!-- Demo Flow -->
+        <section class="demo-section">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">From tasks to execution in one command</p>
+            
+            <div class="demo-flow">
+                <div class="demo-card input">
+                    <div class="card-title">Input: JSON Tasks or PRD</div>
+                    <div class="card-content">
+                        <pre>{
+  "id": "feature-auth",
+  "description": "Build login system",
+  "status": "pending",
+  "requirements": ["OAuth", "JWT", "Tests"]
+}</pre>
+                    </div>
+                </div>
+                
+                <div class="arrow">↓</div>
+                
+                <div class="demo-card command">
+                    <div class="card-title">Command</div>
+                    <div class="card-content">
+                        <pre>/orchestrate</pre>
+                        <p style="margin-top: 1rem;">Main Claude acts as Product Owner, delegating to specialists</p>
+                    </div>
+                </div>
+                
+                <div class="arrow">↓</div>
+                
+                <div class="demo-card output">
+                    <div class="card-title">Orchestrated Execution</div>
+                    <div class="card-content">
+                        <p>✅ Specialist agents coordinate</p>
+                        <p>✅ State maintained in JSON</p>
+                        <p>✅ Context managed efficiently</p>
+                        <p>✅ Docker-secured execution</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Specialists -->
+        <section class="specialists">
+            <h2 class="section-title">Meet Your AI Team</h2>
+            <p class="section-subtitle">Specialist agents that work together</p>
+            
+            <div class="specialists-grid">
+                <div class="specialist-card">
+                    <div class="specialist-name">FE Dev</div>
+                    <div class="specialist-role">Frontend Development</div>
+                </div>
+                <div class="specialist-card">
+                    <div class="specialist-name">BE Dev</div>
+                    <div class="specialist-role">Backend Development</div>
+                </div>
+                <div class="specialist-card">
+                    <div class="specialist-name">QA</div>
+                    <div class="specialist-role">Quality Assurance</div>
+                </div>
+                <div class="specialist-card">
+                    <div class="specialist-name">Doc Controller</div>
+                    <div class="specialist-role">Documentation</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Features -->
+        <section class="features">
+            <h2 class="section-title">Key Features</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3 class="feature-title">Semantic Programming</h3>
+                    <p class="feature-description">Natural language instructions in markdown become executable logic. No traditional code required.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Smart Context Management</h3>
+                    <p class="feature-description">Prevents context explosion through intelligent delegation and headless bash commands.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💾</div>
+                    <h3 class="feature-title">Stateful Orchestration</h3>
+                    <p class="feature-description">JSON-based state persistence allows resuming and tracking progress across complex tasks.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🐳</div>
+                    <h3 class="feature-title">Docker Integration</h3>
+                    <p class="feature-description">Safe execution environment with <code style="background: rgba(0,0,0,0.3); padding: 0.2em 0.4em; border-radius: 4px; word-break: break-all;">--dangerously-skip-permissions</code> without system risk.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Zero Configuration</h3>
+                    <p class="feature-description">Copy project template and start orchestrating immediately. Simplicity that actually works.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3 class="feature-title">Intelligent Delegation</h3>
+                    <p class="feature-description">Main Claude acts as Product Owner, coordinating specialist sub-agents for maximum efficiency.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">Built to solve real workflow frustrations, then open-sourced for the community</p>
+            <div class="open-source-badge">Open Source MIT License</div>
+        </footer>
+    </div>
+</body>
+</html>
