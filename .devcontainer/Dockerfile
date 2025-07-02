@@ -3,12 +3,12 @@ FROM node:20
 ARG TZ
 ENV TZ="$TZ"
 
-# Install basic development tools and iptables/ipset
-RUN apt update && apt install -y less \
+# Install basic development tools, search tools, and utilities
+RUN apt update && apt install -y \
+  less \
   git \
   procps \
   sudo \
-  fzf \
   zsh \
   man-db \
   unzip \
@@ -18,56 +18,69 @@ RUN apt update && apt install -y less \
   ipset \
   iproute2 \
   dnsutils \
+  bind9-dnsutils \
   aggregate \
-  jq
+  jq \
+  python3-pip \
+  build-essential \
+  fd-find \
+  ripgrep \
+  curl
 
-# Ensure default node user has access to /usr/local/share
-RUN mkdir -p /usr/local/share/npm-global && \
-  chown -R node:node /usr/local/share
+# Install fzf (fuzzy finder)
+RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
+  ~/.fzf/install --all --no-bash --no-fish
+
+# Install ast-grep using their install script
+RUN curl -sSfL https://raw.githubusercontent.com/ast-grep/ast-grep/main/scripts/install.sh | sh -s -- -b /usr/local/bin
+
+# Install yq for YAML/XML processing
+RUN wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && \
+  chmod +x /usr/local/bin/yq
+
 
 ARG USERNAME=node
 
-# Persist bash history.
+# Persist bash history
 RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
   && mkdir /commandhistory \
   && touch /commandhistory/.bash_history \
   && chown -R $USERNAME /commandhistory
 
-# Set `DEVCONTAINER` environment variable to help with orientation
+# Set DEVCONTAINER environment variable
 ENV DEVCONTAINER=true
 
-# Create workspace and config directories and set permissions
+# Create workspace and config directories
 RUN mkdir -p /workspace /home/node/.claude && \
   chown -R node:node /workspace /home/node/.claude
 
 WORKDIR /workspace
 
+# Install git-delta for better diffs
 RUN ARCH=$(dpkg --print-architecture) && \
   wget "https://github.com/dandavison/delta/releases/download/0.18.2/git-delta_0.18.2_${ARCH}.deb" && \
   sudo dpkg -i "git-delta_0.18.2_${ARCH}.deb" && \
   rm "git-delta_0.18.2_${ARCH}.deb"
 
+# Install Claude Code as root
+RUN npm install -g @anthropic-ai/claude-code
+
 # Set up non-root user
 USER node
 
-# Install global packages
-ENV NPM_CONFIG_PREFIX=/usr/local/share/npm-global
-ENV PATH=$PATH:/usr/local/share/npm-global/bin
-
-# Set the default shell to zsh rather than sh
+# Set the default shell to zsh
 ENV SHELL=/bin/zsh
 
-# Default powerline10k theme
+# Install oh-my-zsh with plugins
 RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.2.0/zsh-in-docker.sh)" -- \
   -p git \
   -p fzf \
   -a "source /usr/share/doc/fzf/examples/key-bindings.zsh" \
   -a "source /usr/share/doc/fzf/examples/completion.zsh" \
   -a "export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
+  -a "alias search='fd'" \
+  -a "alias grep='rg'" \
   -x
-
-# Install Claude
-RUN npm install -g @anthropic-ai/claude-code
 
 # Copy and set up firewall script
 COPY init-firewall.sh /usr/local/bin/
@@ -76,3 +89,4 @@ RUN chmod +x /usr/local/bin/init-firewall.sh && \
   echo "node ALL=(root) NOPASSWD: /usr/local/bin/init-firewall.sh" > /etc/sudoers.d/node-firewall && \
   chmod 0440 /etc/sudoers.d/node-firewall
 USER node
+

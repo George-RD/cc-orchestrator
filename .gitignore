@@ -1,4 +1,57 @@
 
-# CC Orchestrator
-# Keep task files in git for state tracking
-/test-todo-app/
+# Dependencies
+node_modules/
+vendor/
+venv/
+env/
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+build/
+out/
+*.pyc
+__pycache__/
+*.class
+*.jar
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+.coverage
+htmlcov/
+.pytest_cache/
+.phpunit.result.cache
+
+# CC Orchestrator specific
+.claude/settings.local.json
+# Note: Task files are kept in git for state tracking
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+tmp/
+temp/

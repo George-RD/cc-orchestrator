@@ -1,22 +1,35 @@
-# CC Orchestrator
+# CC Orchestrator Template
 
-A minimal AI orchestration framework for Claude Code that uses mermaid diagrams to define behavior and leverages headless mode for clean context management.
+A minimal AI orchestration framework for Claude Code that leverages headless mode for clean context management and self-contained command logic.
 
-## Quick Start
+## Using This Template
+
+### Quick Start with GitHub Templates
+
+1. Click the "Use this template" button on GitHub
+2. Name your new repository
+3. Clone your new repository
+4. Add task JSON files to `.cc-orchestrator/tasks/` (see task creation section below)
+5. Start orchestrating with `/orchestrate`
+
+### Manual Setup
+
+If not using GitHub's template feature:
 
 ```bash
-# Copy the project template to your project
-cp -r project-template/* your-project/
-cd your-project/
+git clone https://github.com/George-RD/cc-orchestrator
+cd cc-orchestrator
 
-# You now have a complete orchestration framework!
-# Start orchestrating:
+# Add your task JSON files to .cc-orchestrator/tasks/
+# See "Create Your Tasks" section below for details
+
+# Then start orchestrating
 /orchestrate
 ```
 
 ## What You Get
 
-The `project-template/` directory contains a complete, working example of the framework:
+This template provides a complete AI orchestration framework:
 
 ```
 your-project/
@@ -25,7 +38,7 @@ your-project/
 ├── .cc-orchestrator/            # Framework files (kept separate from your code)
 │   ├── specialists/             # AI role definitions
 │   └── tasks/                   # Task JSON files
-└── src/                         # Your actual project code
+└── src/                         # Your actual project code (create as needed)
 ```
 
 ## How It Works
@@ -36,30 +49,85 @@ your-project/
 4. **Sub-Agent Delegation**: Specialists handle implementation, TDD review
 5. **Simple State**: Task status field tracks everything
 
+## Getting Started with Your Project
+
+### 1. Customize This README
+
+Replace this content with your project-specific documentation:
+- Project name and description
+- Installation instructions
+- Usage examples
+- Contributing guidelines
+
+### 2. Create Your Tasks
+
+The orchestration framework uses JSON files to define development tasks. Here's how to get started:
+
+#### Option A: Manual Task Creation
+
+Add task JSON files to `.cc-orchestrator/tasks/` following the template:
+
+```json
+{
+  "id": "task-001",
+  "name": "Your task name",
+  "description": "What needs to be done",
+  "specialist": "backend|frontend|qa|documentation",
+  "status": "todo",
+  "requirements": ["List of requirements"],
+  "acceptance_criteria": ["How to verify completion"]
+}
+```
+
+#### Option B: Use Claude Taskmaster (Recommended)
+
+For a more streamlined task creation experience, we recommend using [Claude Taskmaster](https://github.com/eyaltoledano/claude-task-master) - an AI-powered task management system that integrates seamlessly with Claude Code.
+
+Taskmaster can help you:
+- Generate properly formatted task JSON files automatically
+- Break down complex features into manageable tasks
+- Ensure tasks follow best practices for AI delegation
+- Maintain consistent task structure across your project
+
+### 3. Start Development
+
+Once you have your task JSON files in `.cc-orchestrator/tasks/`:
+
+```bash
+/orchestrate
+```
+
+The orchestrator will:
+- Automatically detect and load your task files
+- Manage development tasks in the optimal order
+- Coordinate AI specialists for parallel work
+- Ensure code quality through TDD review
+- Keep documentation updated throughout development
+
 ## Key Features
 
-✅ **< 300 lines total** - Minimal complexity  
+✅ **Minimal complexity** - Framework focused on simplicity  
 ✅ **Zero configuration** - Just copy and run  
-✅ **Visual programming** - Mermaid diagrams as code  
+✅ **Self-contained logic** - Commands contain their implementation  
 ✅ **Parallel work** - Smart conflict detection  
 ✅ **State persistence** - Resume anytime via JSON  
 
-## Repository Structure
+## Framework Commands
 
-```
-cc-orchestrator/
-├── project-template/      # Complete deployable framework (copy this!)
-├── docs/                  # Documentation
-├── ARCHIVE/               # Old code (will be deleted)
-└── README.md             # This file
-```
+- `/orchestrate` - Start the orchestration loop
+- `/status` - Check current task statuses
+- `/check-conflicts` - Verify no file conflicts between tasks
+- `/git-sync-check` - Ensure git repository is in sync
+- `/search-tips` - Get help with code search
 
-## For Framework Developers
+## Customizing Specialists
 
-To modify the framework:
-1. Read `CLAUDE.md` (framework development guide)
-2. Edit files in `project-template/`
-3. Test changes by running commands in `project-template/`
+Modify specialist behaviors by editing files in `.cc-orchestrator/specialists/`:
+- `backend.md` - APIs, databases, business logic
+- `frontend.md` - UI, UX, client-side code
+- `qa.md` - Testing, validation, quality
+- `documentation.md` - Docs, examples, guides
+- `tdd-reviewer.md` - Test-driven development verification
 
 ## Philosophy
 

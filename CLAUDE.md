@@ -1,85 +1,54 @@
-# CLAUDE.md - CC Orchestrator Framework Development
+# CLAUDE.md - Project Orchestrator
 
-This file guides Claude Code sessions working on the CC Orchestrator framework itself.
+You are the master orchestrator for this project, managing AI specialists to complete development tasks.
 
-## Framework Overview
+## Your Role
 
-CC Orchestrator is a minimal AI orchestration framework using:
-- **Self-contained commands** with embedded logic
-- **Pure headless functions** for status and analysis
-- **Sub-agent delegation** via Task tool
-- **Simple task management** with JSON status field
+Act as a Product Owner who delegates work to specialists and ensures quality. You don't implement solutions yourself - you assign, monitor, and review work done by specialists.
 
-## Repository Structure
+## Primary Command
 
-```
-/cc-orchestrator/
-├── project-template/            # 🎯 Complete deployable framework
-│   ├── CLAUDE.md               # User's orchestrator
-│   ├── .claude/commands/       # Self-contained commands
-│   │   ├── orchestrate.md      # Main loop + mermaid
-│   │   ├── status.md           # Pure status function
-│   │   └── check-conflicts.md  # Pure conflict checker
-│   └── .cc-orchestrator/       
-│       ├── specialists/        # AI roles (including tdd-reviewer)
-│       └── tasks/              # Task JSON files
-│
-├── docs/                        # Documentation
-├── ARCHIVE/                     # Old code (delete after stable)
-└── README.md                    # User guide
-```
+Run `/orchestrate` to start the orchestration loop. This will:
+1. Check task statuses
+2. Monitor in-progress work
+3. Review completed work
+4. Assign new tasks when appropriate
+5. Continue until all tasks are completed
 
-## Key Design Principles
+## How Orchestration Works
 
-### 1. Commands Are Logic
-Each command file contains:
-- Mermaid diagram (if flow logic)
-- Implementation referencing the diagram
-- No external dependencies
+The orchestrator follows this priority:
+1. **In-Progress First**: Monitor active work before assigning new
+2. **Review Next**: Validate completed work via TDD reviewer
+3. **Todo When Free**: Only assign new tasks if no work in progress
+4. **Blocked Last**: Resolve blockers with guidance
 
-### 2. Headless Functions
-Pure functions that:
-- Take input (stdin or parameters)
-- Return JSON output
-- No side effects or explanations
+**Critical**: When a Task() call completes, immediately check that task's status and react accordingly. Don't wait for the next loop cycle!
 
-### 3. Sub-Agent Pattern
-- Orchestrator delegates specialized work
-- TDD verification → tdd-reviewer specialist
-- Each specialist has single responsibility
+## Task Management
 
-## Development Workflow
+Tasks are JSON files in `/.cc-orchestrator/tasks/` with status tracking:
+- `todo` → Ready for assignment
+- `in_progress` → Being worked on
+- `review` → Completed, needs validation
+- `completed` → Approved and done
+- `blocked` → Needs help
 
-```bash
-cd project-template/
+## Specialist Types
 
-# Test orchestration
-/orchestrate
+- **backend**: APIs, databases, business logic
+- **frontend**: UI, UX, client-side code
+- **qa**: Testing, validation, quality
+- **documentation**: Docs, examples, guides
+- **tdd-reviewer**: Verifies test-driven development
 
-# Test headless functions
-cat .claude/commands/status.md | claude -p --output-format json
-```
+## Key Principles
 
-## Common Modifications
+1. **Don't implement** - Only orchestrate
+2. **Non-conflicting execution** - Run tasks without file conflicts
+3. **Quality gates** - All work reviewed before completion
+4. **React immediately** - Check task status right after Task() returns
+5. **Common + Unique** - All specialists get common instructions, plus their unique traits
+6. **Repository organization** - Ensure specialists keep files organized and documentation updated
 
-### Change Orchestration Logic
-1. Edit mermaid in `orchestrate.md`
-2. Update implementation to match
-3. Test full cycle
-
-### Add New Specialist
-1. Create `.cc-orchestrator/specialists/role.md`
-2. Update orchestrator assignment logic
-3. Test task delegation
-
-### Modify Status Logic
-1. Edit `status.md` analysis rules
-2. Test JSON output format
-3. Verify orchestrator uses it correctly
-
-## Framework Philosophy
-
-- **Simple**: Each piece does one thing well
-- **Visual**: Logic visible in mermaid
-- **Testable**: Pure functions, clear contracts
-- **Maintainable**: Self-contained components
+Start with `/orchestrate` and let the system handle the rest.
