@@ -20,6 +20,9 @@ If not using GitHub's template feature:
 git clone https://github.com/George-RD/cc-orchestrator
 cd cc-orchestrator
 
+# Initialize git worktrees for parallel development
+/worktree-init
+
 # Add your task JSON files to .cc-orchestrator/tasks/
 # See "Create Your Tasks" section below for details
 
@@ -94,13 +97,17 @@ Taskmaster can help you:
 Once you have your task JSON files in `.cc-orchestrator/tasks/`:
 
 ```bash
+# Initialize git worktrees for parallel development (first time only)
+/worktree-init
+
+# Start orchestrating
 /orchestrate
 ```
 
 The orchestrator will:
 - Automatically detect and load your task files
 - Manage development tasks in the optimal order
-- Coordinate AI specialists for parallel work
+- Coordinate AI specialists for parallel work in isolated worktrees
 - Ensure code quality through TDD review
 - Keep documentation updated throughout development
 
@@ -109,7 +116,7 @@ The orchestrator will:
 ✅ **Minimal complexity** - Framework focused on simplicity  
 ✅ **Zero configuration** - Just copy and run  
 ✅ **Self-contained logic** - Commands contain their implementation  
-✅ **Parallel work** - Smart conflict detection  
+✅ **Parallel work** - Git worktrees enable true parallel development  
 ✅ **State persistence** - Resume anytime via JSON  
 
 ## Framework Commands
@@ -119,6 +126,7 @@ The orchestrator will:
 - `/check-conflicts` - Verify no file conflicts between tasks
 - `/git-sync-check` - Ensure git repository is in sync
 - `/search-tips` - Get help with code search
+- `/worktree-init` - Initialize git worktrees for parallel development
 
 ## Customizing Specialists
 

@@ -63,7 +63,8 @@ COMMON INSTRUCTIONS FOR ALL SPECIALISTS:
 1. Read your role definition: /.cc-orchestrator/specialists/{task.type}.md
 2. Read your task: /.cc-orchestrator/tasks/task-{task.id}.json
 3. IMMEDIATELY update task status to "in_progress": {{"status": "in_progress"}}
-4. Check for existing feature branch and switch/create:
+4. Switch to your dedicated worktree: cd .worktrees/{task.type}/
+5. Check for existing feature branch and switch/create:
    - First check: git branch -l task-{task.id}-{task.type}
    - If exists: git checkout task-{task.id}-{task.type}
      Then review commit history: git log --oneline -10
