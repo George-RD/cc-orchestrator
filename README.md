@@ -17,8 +17,8 @@ A minimal AI orchestration framework for Claude Code that leverages headless mod
 If not using GitHub's template feature:
 
 ```bash
-git clone https://github.com/George-RD/cc-orchestrator
-cd cc-orchestrator
+git clone https://github.com/George-RD/cc-orchestrator your-project-name
+cd your-project-name
 
 # Initialize git worktrees for parallel development
 /worktree-init
