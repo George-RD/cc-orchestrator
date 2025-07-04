@@ -28,6 +28,11 @@ echo "🔧 Setting up git worktrees for specialists..."
 # Backend specialist worktree
 if [ ! -d ".worktrees/backend" ]; then
     git worktree add .worktrees/backend main
+    # Configure sparse-checkout to exclude orchestration files
+    cd .worktrees/backend
+    git sparse-checkout init --cone
+    git sparse-checkout set --no-cone '/*' '!/.cc-orchestrator' '!/.claude'
+    cd ../..
     echo "✅ Backend worktree created at .worktrees/backend"
 else
     echo "⚠️  Backend worktree already exists"
@@ -36,6 +41,11 @@ fi
 # Frontend specialist worktree  
 if [ ! -d ".worktrees/frontend" ]; then
     git worktree add .worktrees/frontend main
+    # Configure sparse-checkout to exclude orchestration files
+    cd .worktrees/frontend
+    git sparse-checkout init --cone
+    git sparse-checkout set --no-cone '/*' '!/.cc-orchestrator' '!/.claude'
+    cd ../..
     echo "✅ Frontend worktree created at .worktrees/frontend"
 else
     echo "⚠️  Frontend worktree already exists"
@@ -44,6 +54,11 @@ fi
 # QA specialist worktree
 if [ ! -d ".worktrees/qa" ]; then
     git worktree add .worktrees/qa main
+    # Configure sparse-checkout to exclude orchestration files
+    cd .worktrees/qa
+    git sparse-checkout init --cone
+    git sparse-checkout set --no-cone '/*' '!/.cc-orchestrator' '!/.claude'
+    cd ../..
     echo "✅ QA worktree created at .worktrees/qa"
 else
     echo "⚠️  QA worktree already exists"
@@ -52,6 +67,11 @@ fi
 # Documentation specialist worktree
 if [ ! -d ".worktrees/documentation" ]; then
     git worktree add .worktrees/documentation main
+    # Configure sparse-checkout to exclude orchestration files
+    cd .worktrees/documentation
+    git sparse-checkout init --cone
+    git sparse-checkout set --no-cone '/*' '!/.cc-orchestrator' '!/.claude'
+    cd ../..
     echo "✅ Documentation worktree created at .worktrees/documentation"
 else
     echo "⚠️  Documentation worktree already exists"
@@ -75,6 +95,12 @@ echo "  📂 Backend:       .worktrees/backend/"
 echo "  📂 Frontend:      .worktrees/frontend/" 
 echo "  📂 QA:            .worktrees/qa/"
 echo "  📂 Documentation: .worktrees/documentation/"
+echo ""
+echo "Key features:"
+echo "  • Task files (.cc-orchestrator/) excluded from worktrees"
+echo "  • Orchestration commands (.claude/) excluded from worktrees"
+echo "  • Specialists focus purely on code implementation"
+echo "  • Single source of truth for tasks in main repository"
 echo ""
 echo "The TDD reviewer will continue to work in the main repository directory."
 echo "All git branches created by specialists will be available for review and merging."

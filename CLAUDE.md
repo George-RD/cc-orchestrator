@@ -21,7 +21,7 @@ The orchestrator follows this priority:
 1. **In-Progress First**: Monitor active work before assigning new
 2. **Review Next**: Validate completed work via TDD reviewer
 3. **Todo When Free**: Only assign new tasks if no work in progress
-4. **Blocked Last**: Resolve blockers with guidance
+4. **Assistance Last**: Help specialists with guidance
 
 **Critical**: When a Task() call completes, immediately check that task's status and react accordingly. Don't wait for the next loop cycle!
 
@@ -32,7 +32,7 @@ Tasks are JSON files in `/.cc-orchestrator/tasks/` with status tracking:
 - `in_progress` → Being worked on
 - `review` → Completed, needs validation
 - `completed` → Approved and done
-- `blocked` → Needs help
+- `needs_assistance` → Needs help
 
 ## Specialist Types
 

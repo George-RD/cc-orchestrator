@@ -30,10 +30,9 @@ while True:
                 reset_task_to_todo(task_id, "Specialist failed to start work")
                 
     # 3. Assign new work based on dependencies and conflicts
-    if status.todo_tasks:
-        # Get all todo tasks with their dependencies
-        # For now, assume all dependencies are met (can be enhanced later)
-        available_tasks = status.todo_tasks
+    if status.available_todo_tasks:
+        # Get todo tasks with all dependencies met (pre-filtered by status command)
+        available_tasks = status.available_todo_tasks
         
         if available_tasks:
             # Check which tasks can run together without file conflicts
@@ -113,12 +112,12 @@ COMMON INSTRUCTIONS FOR ALL SPECIALISTS:
    - Update the task JSON with: {{"status": "review", "confidence_assessment": {{"level": "high|medium|low", "notes": "explanation"}}}}
    - High: All criteria met, tests pass, follows patterns
    - Medium: Good solution, minor concerns noted
-   - Low: Blockers exist, needs help
+   - Low: Issues exist, needs help
    - DO NOT create completion reports or summary files
    - Task JSON update is your ONLY completion signal
 
 CRITICAL: You MUST update the task JSON status before finishing!
-If blocked at any point, update: {{"status": "blocked", "blocker_reason": "explanation"}}
+If you need assistance at any point, update: {{"status": "needs_assistance", "assistance_reason": "explanation"}}
 Start work immediately.
 
 IMPORTANT: You will be reviewed on:
@@ -135,14 +134,14 @@ IMPORTANT: You will be reviewed on:
                             print(f"⚠️ Task {task.id} specialist failed to start, resetting...")
                             # Could spawn again or mark for manual intervention
                 
-    # 4. Handle blocked tasks
-    if status.blocked_tasks:
-        for task_id in status.blocked_tasks:
+    # 4. Handle tasks needing assistance
+    if status.needs_assistance_tasks:
+        for task_id in status.needs_assistance_tasks:
             task = read_task(task_id)
             # Add guidance and reset to todo
             update_task(task_id, {
                 "status": "todo",
-                "previous_blocker": task.blocker_reason,
+                "previous_assistance_reason": task.assistance_reason,
                 "guidance": "Try a different approach or break down the task"
             })
             
@@ -193,7 +192,7 @@ def check_conflicts_headless(todo_tasks, in_progress_tasks):
 1. **Non-conflicting work** - Assign tasks that don't have file conflicts
 2. **Immediate reaction** - Check task status right after each Task() returns
 3. **Stall detection** - Reset tasks that get stuck
-4. **Clear priorities** - Review → Monitor → Assign → Blocked
+4. **Clear priorities** - Review → Monitor → Assign → Assistance
 5. **Common instructions** - All specialists get the same base requirements
 
 ## Error Handling Examples
