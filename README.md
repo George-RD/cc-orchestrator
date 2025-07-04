@@ -30,6 +30,23 @@ cd cc-orchestrator
 /orchestrate
 ```
 
+## Recent Updates
+
+🚀 **Git Worktree Support** (July 4, 2025)
+- Added `/worktree-init` command for true parallel development
+- Multiple specialists can now work simultaneously without conflicts
+- Isolated workspaces prevent branch switching issues
+
+📋 **GitHub Template** (July 2, 2025)  
+- Converted to GitHub template for easy project creation
+- Added comprehensive documentation and Next Steps section
+- Streamlined setup process
+
+🔧 **Framework Improvements** (June 24, 2025)
+- Enhanced git synchronization and conflict detection
+- Updated task templates and orchestration documentation
+- Improved framework consistency
+
 ## What You Get
 
 This template provides a complete AI orchestration framework:
