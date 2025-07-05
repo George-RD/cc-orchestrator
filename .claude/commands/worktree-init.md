@@ -19,63 +19,43 @@ if [ ! -d ".cc-orchestrator" ]; then
     exit 1
 fi
 
+# Clean up any existing worktrees
+echo "🧹 Cleaning up existing worktrees..."
+rm -rf .worktrees/
+git worktree prune
+
 # Create worktrees directory
 mkdir -p .worktrees
 
 # Initialize worktrees for each specialist type
 echo "🔧 Setting up git worktrees for specialists..."
 
+# Store current directory to prevent recursive worktree creation
+PROJECT_ROOT=$(pwd)
+
 # Backend specialist worktree
-if [ ! -d ".worktrees/backend" ]; then
-    git worktree add .worktrees/backend main
-    # Configure sparse-checkout to exclude orchestration files
-    cd .worktrees/backend
-    git sparse-checkout init --cone
-    git sparse-checkout set --no-cone '/*' '!/.cc-orchestrator' '!/.claude'
-    cd ../..
-    echo "✅ Backend worktree created at .worktrees/backend"
-else
-    echo "⚠️  Backend worktree already exists"
-fi
+git worktree add .worktrees/backend HEAD
+git -C .worktrees/backend sparse-checkout init
+echo -e "/*\n!.cc-orchestrator\n!.claude" | git -C .worktrees/backend sparse-checkout set --stdin
+echo "✅ Backend worktree created at .worktrees/backend"
 
 # Frontend specialist worktree  
-if [ ! -d ".worktrees/frontend" ]; then
-    git worktree add .worktrees/frontend main
-    # Configure sparse-checkout to exclude orchestration files
-    cd .worktrees/frontend
-    git sparse-checkout init --cone
-    git sparse-checkout set --no-cone '/*' '!/.cc-orchestrator' '!/.claude'
-    cd ../..
-    echo "✅ Frontend worktree created at .worktrees/frontend"
-else
-    echo "⚠️  Frontend worktree already exists"
-fi
+git worktree add .worktrees/frontend HEAD
+git -C .worktrees/frontend sparse-checkout init
+echo -e "/*\n!.cc-orchestrator\n!.claude" | git -C .worktrees/frontend sparse-checkout set --stdin
+echo "✅ Frontend worktree created at .worktrees/frontend"
 
 # QA specialist worktree
-if [ ! -d ".worktrees/qa" ]; then
-    git worktree add .worktrees/qa main
-    # Configure sparse-checkout to exclude orchestration files
-    cd .worktrees/qa
-    git sparse-checkout init --cone
-    git sparse-checkout set --no-cone '/*' '!/.cc-orchestrator' '!/.claude'
-    cd ../..
-    echo "✅ QA worktree created at .worktrees/qa"
-else
-    echo "⚠️  QA worktree already exists"
-fi
+git worktree add .worktrees/qa HEAD
+git -C .worktrees/qa sparse-checkout init
+echo -e "/*\n!.cc-orchestrator\n!.claude" | git -C .worktrees/qa sparse-checkout set --stdin
+echo "✅ QA worktree created at .worktrees/qa"
 
 # Documentation specialist worktree
-if [ ! -d ".worktrees/documentation" ]; then
-    git worktree add .worktrees/documentation main
-    # Configure sparse-checkout to exclude orchestration files
-    cd .worktrees/documentation
-    git sparse-checkout init --cone
-    git sparse-checkout set --no-cone '/*' '!/.cc-orchestrator' '!/.claude'
-    cd ../..
-    echo "✅ Documentation worktree created at .worktrees/documentation"
-else
-    echo "⚠️  Documentation worktree already exists"
-fi
+git worktree add .worktrees/documentation HEAD
+git -C .worktrees/documentation sparse-checkout init
+echo -e "/*\n!.cc-orchestrator\n!.claude" | git -C .worktrees/documentation sparse-checkout set --stdin
+echo "✅ Documentation worktree created at .worktrees/documentation"
 
 # Add .worktrees/ to .gitignore if not already present
 if ! grep -q "^\.worktrees/" .gitignore 2>/dev/null; then
