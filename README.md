@@ -144,6 +144,7 @@ The orchestrator will:
 - `/git-sync-check` - Ensure git repository is in sync
 - `/search-tips` - Get help with code search
 - `/worktree-init` - Initialize git worktrees for parallel development
+- `/init-claude` - Restore CLAUDE.md orchestrator configuration
 
 ## Customizing Specialists
 
